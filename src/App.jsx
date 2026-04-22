@@ -121,7 +121,7 @@ function App() {
               </tr>
             </thead>
             <tbody>
-              {[...users].sort((a, b) => b.xp - a.xp).map((user, index) => (
+              {[...users].sort((a, b) => b.xp - a.xp).slice(0, 20).map((user, index) => (
                 <tr key={user.id} className="border-b border-gray-200 hover:bg-white/50 transition-colors">
                   <td className="py-3 px-4 font-medium">
                     {index + 1 === 1 && <span className="text-yellow-500">🥇</span>}

@@ -36,12 +36,17 @@
     "name": "Xiaolan",
     "displayName": "月野子",
     "title": "",
-    "xp": 10,
+    "xp": 20,
     "points": 0,
     "xpHistory": [
       {
         "date": "2026-04-21",
         "reason": "新用户注册",
+        "amount": 10
+      },
+      {
+        "date": "2026-04-22",
+        "reason": "Outing 九宫图",
         "amount": 10
       }
     ],
@@ -164,12 +169,17 @@
     "name": "Serena",
     "displayName": "艺臻",
     "title": "",
-    "xp": 10,
+    "xp": 20,
     "points": 0,
     "xpHistory": [
       {
         "date": "2026-04-21",
         "reason": "新用户注册",
+        "amount": 10
+      },
+      {
+        "date": "2026-04-22",
+        "reason": "Outing 九宫图",
         "amount": 10
       }
     ],
@@ -452,12 +462,17 @@
     "name": "Oscar",
     "displayName": "不是艺术家",
     "title": "",
-    "xp": 10,
+    "xp": 20,
     "points": 0,
     "xpHistory": [
       {
         "date": "2026-04-21",
         "reason": "新用户注册",
+        "amount": 10
+      },
+      {
+        "date": "2026-04-22",
+        "reason": "Outing 九宫图",
         "amount": 10
       }
     ],
@@ -516,12 +531,17 @@
     "name": "Strange",
     "displayName": "于适的老公",
     "title": "",
-    "xp": 10,
+    "xp": 20,
     "points": 0,
     "xpHistory": [
       {
         "date": "2026-04-21",
         "reason": "新用户注册",
+        "amount": 10
+      },
+      {
+        "date": "2026-04-22",
+        "reason": "Outing 九宫图",
         "amount": 10
       }
     ],
