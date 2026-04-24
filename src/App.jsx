@@ -323,7 +323,12 @@ function App() {
             </div>
           </div>
           <div className="text-center text-textSecondary text-sm">
-            <p>© 2026 ELA 积分系统 | 动物森友会风格</p>
+            <a 
+              href="mailto:neverwhateve@me.com?subject=意见与反馈" 
+              className="text-textSecondary hover:text-primary transition-colors underline"
+            >
+              感谢 xxx、xx、xxxx 还有 xxxxx 的反馈和建议！
+            </a>
           </div>
         </div>
       </div>
