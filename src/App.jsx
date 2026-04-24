@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Time, Cursor, Modal, Footer, Divider, Collapse } from 'animal-island-ui';
+import { Time, Cursor, Modal, Footer, Divider, Collapse, Button } from 'animal-island-ui';
 import 'animal-island-ui/style';
 import { announcementConfig } from './announcementConfig';
 
@@ -144,12 +144,9 @@ function App() {
               onChange={(e) => setSearchName(e.target.value)}
               className="flex-1 px-4 py-3 rounded-acnh border-2 border-border focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-bgSecondary"
             />
-            <button
-              onClick={handleSearch}
-              className="px-6 py-3 bg-primary text-white rounded-acnh hover:bg-primaryHover transition-colors font-medium shadow-acnh-sm"
-            >
+            <Button type="primary" onClick={handleSearch}>
               🔍 查询
-            </button>
+            </Button>
           </div>
 
           {searchResult && (
@@ -207,30 +204,24 @@ function App() {
           <div className="flex flex-col md:flex-row justify-between items-center mb-6">
             <h2 className="text-2xl font-semibold text-primary mb-4 md:mb-0">排行榜</h2>
             <div className="flex gap-2">
-              <button
+              <Button 
+                type={leaderboardType === 'total' ? 'primary' : 'default'} 
                 onClick={() => setLeaderboardType('total')}
-                className={`px-4 py-2 rounded-acnh font-medium transition-colors ${
-                  leaderboardType === 'total' ? 'bg-primary text-white' : 'bg-primaryBg text-primary border-2 border-primary'
-                }`}
               >
                 总榜单
-              </button>
-              <button
+              </Button>
+              <Button 
+                type={leaderboardType === 'month' ? 'primary' : 'default'} 
                 onClick={() => setLeaderboardType('month')}
-                className={`px-4 py-2 rounded-acnh font-medium transition-colors ${
-                  leaderboardType === 'month' ? 'bg-success text-white' : 'bg-primaryBg text-success border-2 border-success'
-                }`}
               >
                 月榜单
-              </button>
-              <button
+              </Button>
+              <Button 
+                type={leaderboardType === 'week' ? 'primary' : 'default'} 
                 onClick={() => setLeaderboardType('week')}
-                className={`px-4 py-2 rounded-acnh font-medium transition-colors ${
-                  leaderboardType === 'week' ? 'bg-warning text-white' : 'bg-primaryBg text-warning border-2 border-warning'
-                }`}
               >
                 周榜单
-              </button>
+              </Button>
             </div>
           </div>
           
@@ -268,9 +259,7 @@ function App() {
                           {index + 1 <= 3 ? (
                             <span className="flex items-center gap-2">
                               {user.displayName}
-                              <span className="text-xs text-textSecondary">
-                                {expandedUsers[user.id] ? '▲' : '▼'}
-                              </span>
+                              {expandedUsers[user.id] && <span className="text-xs">🌟</span>}
                             </span>
                           ) : (
                             user.displayName
@@ -285,30 +274,41 @@ function App() {
                       </tr>
                       {index + 1 <= 3 && expandedUsers[user.id] && (
                         <tr key={`${user.id}-expanded`}>
-                          <td colSpan="4" className="p-0 bg-primaryBg">
-                            <div className="p-4">
-                              <h4 className="text-sm font-semibold text-primary mb-2">
-                                {leaderboardType === 'total' ? '总' : leaderboardType === 'month' ? '月' : '周'}经验值记录
-                              </h4>
-                              {user.xpHistory && user.xpHistory.length > 0 ? (
-                                <div className="space-y-1">
-                                  {user.xpHistory
-                                    .filter(record => {
-                                      if (leaderboardType === 'total') return true;
-                                      const { start } = getDateRange(leaderboardType);
-                                      return new Date(record.date) >= start;
-                                    })
-                                    .slice(0, 5)
-                                    .map((record, idx) => (
-                                      <div key={idx} className="flex justify-between text-sm">
-                                        <span className="text-textSecondary">{record.date} - {record.reason}</span>
-                                        <span className="text-primary font-semibold">+{record.amount}</span>
-                                      </div>
-                                    ))}
+                          <td colSpan="4" className="p-2 bg-primaryBg">
+                            <div className="bg-white rounded-acnh overflow-hidden">
+                              <div 
+                                className="p-3 cursor-pointer flex justify-between items-center"
+                                onClick={() => toggleUserExpand(user.id)}
+                              >
+                                <span className="font-semibold text-primary">{user.displayName}</span>
+                                <span>🌟</span>
+                              </div>
+                              <div className="px-3 pb-3">
+                                <div className="border-t-2 border-primaryBg pt-2">
+                                  <h4 className="text-sm font-semibold text-primary mb-2">
+                                    {leaderboardType === 'total' ? '总' : leaderboardType === 'month' ? '月' : '周'}经验值记录
+                                  </h4>
+                                  {user.xpHistory && user.xpHistory.length > 0 ? (
+                                    <div className="space-y-1">
+                                      {user.xpHistory
+                                        .filter(record => {
+                                          if (leaderboardType === 'total') return true;
+                                          const { start } = getDateRange(leaderboardType);
+                                          return new Date(record.date) >= start;
+                                        })
+                                        .slice(0, 5)
+                                        .map((record, idx) => (
+                                          <div key={idx} className="flex justify-between text-sm">
+                                            <span className="text-textSecondary">{record.date} - {record.reason}</span>
+                                            <span className="text-primary font-semibold">+{record.amount}</span>
+                                          </div>
+                                        ))}
+                                    </div>
+                                  ) : (
+                                    <p className="text-sm text-textSecondary">暂无记录</p>
+                                  )}
                                 </div>
-                              ) : (
-                                <p className="text-sm text-textSecondary">暂无记录</p>
-                              )}
+                              </div>
                             </div>
                           </td>
                         </tr>
