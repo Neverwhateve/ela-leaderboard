@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Time, Cursor, Modal, Footer } from 'animal-island-ui';
+import { Time, Cursor, Modal, Footer, Divider, Collapse } from 'animal-island-ui';
 import 'animal-island-ui/style';
 import { announcementConfig } from './announcementConfig';
 
@@ -58,6 +58,15 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [showAnnouncement, setShowAnnouncement] = useState(false);
   const [leaderboardType, setLeaderboardType] = useState('total'); // total, month, week
+  const [expandedUsers, setExpandedUsers] = useState({}); // 追踪展开的用户
+
+  // 处理折叠面板展开/收起
+  const toggleUserExpand = (userId) => {
+    setExpandedUsers(prev => ({
+      ...prev,
+      [userId]: !prev[userId]
+    }));
+  };
 
   useEffect(() => {
     setUsers(usersData);
@@ -113,7 +122,7 @@ function App() {
         </div>
 
         {/* 公告栏按钮 */}
-        <div className="max-w-4xl mx-auto mb-8 flex justify-center">
+        <div className="max-w-4xl mx-auto mb-4 flex justify-center">
           <button
             onClick={() => setShowAnnouncement(true)}
             className="px-6 py-3 bg-primary text-white rounded-acnh hover:bg-primaryHover transition-colors font-medium shadow-acnh animate-bounce-slow"
@@ -121,6 +130,8 @@ function App() {
             📢 公告栏
           </button>
         </div>
+
+        <Divider type="wave-yellow" className="my-6" />
 
         {/* 个人查询 */}
         <div className="max-w-2xl mx-auto mb-8 bg-white rounded-acnh p-6 shadow-acnh">
@@ -240,23 +251,69 @@ function App() {
                   .sort((a, b) => calculatePeriodXP(b, leaderboardType) - calculatePeriodXP(a, leaderboardType))
                   .slice(0, 20)
                   .map((user, index) => (
-                    <tr key={user.id} className="hover:bg-primaryBg transition-colors">
-                      <td className="py-3 px-4 font-medium w-16">
-                        <div className="flex items-center h-8">
-                          {index + 1 === 1 && <span className="text-warning text-2xl">🥇</span>}
-                          {index + 1 === 2 && <span className="text-textSecondary text-2xl">🥈</span>}
-                          {index + 1 === 3 && <span className="text-acnhBrown text-2xl">🥉</span>}
-                          {index + 1 > 3 && <span className="w-8"></span>}
-                        </div>
-                      </td>
-                      <td className="py-3 px-4 font-medium">{user.displayName}</td>
-                      <td className="py-3 px-4 font-bold text-primary w-32">{calculatePeriodXP(user, leaderboardType)}</td>
-                      <td className="py-3 px-4">
-                        <span className="text-textSecondary font-medium">
-                          {user.title || '无称号'}
-                        </span>
-                      </td>
-                    </tr>
+                    <React.Fragment key={user.id}>
+                      <tr 
+                        className={`hover:bg-primaryBg transition-colors cursor-pointer ${index + 1 <= 3 ? 'font-bold' : ''}`}
+                        onClick={() => index + 1 <= 3 && toggleUserExpand(user.id)}
+                      >
+                        <td className="py-3 px-4 font-medium w-16">
+                          <div className="flex items-center h-8">
+                            {index + 1 === 1 && <span className="text-warning text-2xl">🥇</span>}
+                            {index + 1 === 2 && <span className="text-textSecondary text-2xl">🥈</span>}
+                            {index + 1 === 3 && <span className="text-acnhBrown text-2xl">🥉</span>}
+                            {index + 1 > 3 && <span className="w-8"></span>}
+                          </div>
+                        </td>
+                        <td className="py-3 px-4 font-medium">
+                          {index + 1 <= 3 ? (
+                            <span className="flex items-center gap-2">
+                              {user.displayName}
+                              <span className="text-xs text-textSecondary">
+                                {expandedUsers[user.id] ? '▲' : '▼'}
+                              </span>
+                            </span>
+                          ) : (
+                            user.displayName
+                          )}
+                        </td>
+                        <td className="py-3 px-4 font-bold text-primary w-32">{calculatePeriodXP(user, leaderboardType)}</td>
+                        <td className="py-3 px-4">
+                          <span className="text-textSecondary font-medium">
+                            {user.title || '无称号'}
+                          </span>
+                        </td>
+                      </tr>
+                      {index + 1 <= 3 && expandedUsers[user.id] && (
+                        <tr key={`${user.id}-expanded`}>
+                          <td colSpan="4" className="p-0 bg-primaryBg">
+                            <div className="p-4">
+                              <h4 className="text-sm font-semibold text-primary mb-2">
+                                {leaderboardType === 'total' ? '总' : leaderboardType === 'month' ? '月' : '周'}经验值记录
+                              </h4>
+                              {user.xpHistory && user.xpHistory.length > 0 ? (
+                                <div className="space-y-1">
+                                  {user.xpHistory
+                                    .filter(record => {
+                                      if (leaderboardType === 'total') return true;
+                                      const { start } = getDateRange(leaderboardType);
+                                      return new Date(record.date) >= start;
+                                    })
+                                    .slice(0, 5)
+                                    .map((record, idx) => (
+                                      <div key={idx} className="flex justify-between text-sm">
+                                        <span className="text-textSecondary">{record.date} - {record.reason}</span>
+                                        <span className="text-primary font-semibold">+{record.amount}</span>
+                                      </div>
+                                    ))}
+                                </div>
+                              ) : (
+                                <p className="text-sm text-textSecondary">暂无记录</p>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                    </React.Fragment>
                   ))}
               </tbody>
             </table>
