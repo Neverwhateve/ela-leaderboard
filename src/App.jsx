@@ -1,6 +1,33 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Time, Cursor, Modal } from 'animal-island-ui';
+import 'animal-island-ui/style';
 
 import usersData from './data.json';
+
+// 打字机效果组件
+const Typewriter = ({ text, speed = 100 }) => {
+  const [displayedText, setDisplayedText] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (currentIndex < text.length) {
+      const timer = setTimeout(() => {
+        setDisplayedText(prev => prev + text[currentIndex]);
+        setCurrentIndex(prev => prev + 1);
+      }, speed);
+      return () => clearTimeout(timer);
+    }
+  }, [currentIndex, text, speed]);
+
+  return (
+    <div className="text-lg text-textSecondary font-medium">
+      {displayedText}
+      {currentIndex < text.length && (
+        <span className="animate-pulse">|</span>
+      )}
+    </div>
+  );
+};
 
 const calculateLevel = (xp) => {
   if (xp >= 300) return 'Lv3';
@@ -8,11 +35,46 @@ const calculateLevel = (xp) => {
   return 'Lv1';
 };
 
+const getDateRange = (type) => {
+  const now = new Date();
+  let startDate;
+  
+  if (type === 'week') {
+    startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+  } else if (type === 'month') {
+    startDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+  } else {
+    return { start: null, end: null };
+  }
+  
+  return { start: startDate, end: now };
+};
+
+const calculatePeriodXP = (user, type) => {
+  if (type === 'total') return user.xp;
+  
+  const { start } = getDateRange(type);
+  if (!start) return 0;
+  
+  let periodXP = 0;
+  if (user.xpHistory) {
+    user.xpHistory.forEach(record => {
+      const recordDate = new Date(record.date);
+      if (recordDate >= start) {
+        periodXP += record.amount;
+      }
+    });
+  }
+  return periodXP;
+};
+
 function App() {
   const [users, setUsers] = useState([]);
   const [searchName, setSearchName] = useState('');
   const [searchResult, setSearchResult] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showAnnouncement, setShowAnnouncement] = useState(false);
+  const [leaderboardType, setLeaderboardType] = useState('total'); // total, month, week
 
   useEffect(() => {
     setUsers(usersData);
@@ -28,125 +90,240 @@ function App() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-2xl font-semibold text-gray-600">加载中...</div>
+      <div className="flex items-center justify-center h-screen bg-bg">
+        <div className="text-2xl font-semibold text-primary animate-bounce">加载中...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen p-4 md:p-8">
-      <div className="text-center mb-8">
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-800">ELA 排行榜</h1>
-      </div>
+    <Cursor>
+      <div className="min-h-screen p-4 md:p-8 bg-bg font-acnh text-text">
+        {/* 头部 */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl md:text-5xl font-bold text-primary mb-2 animate-float">ELA 排行榜</h1>
+          <div className="flex justify-center mb-4">
+            <Time />
+          </div>
+          <div className="mb-6">
+            <Typewriter text="你好，欢迎来到丰富人生学院！今天的天气真不错呢～" />
+          </div>
+        </div>
 
-      <div className="max-w-2xl mx-auto mb-8 glassmorphism rounded-2xl p-6">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-4">个人查询</h2>
-        <div className="flex flex-col md:flex-row gap-4">
-          <input
-            type="text"
-            placeholder="输入玩家名字"
-            value={searchName}
-            onChange={(e) => setSearchName(e.target.value)}
-            className="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-          />
+        {/* 公告栏按钮 */}
+        <div className="max-w-4xl mx-auto mb-8 flex justify-center">
           <button
-            onClick={handleSearch}
-            className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium"
+            onClick={() => setShowAnnouncement(true)}
+            className="px-6 py-3 bg-primary text-white rounded-acnh hover:bg-primaryHover transition-colors font-medium shadow-acnh animate-bounce-slow"
           >
-            查询
+            📢 公告栏
           </button>
         </div>
 
-        {searchResult && (
-          <div className="mt-6 glassmorphism-dark rounded-xl p-4 text-white">
-            <h3 className="text-xl font-semibold mb-3">{searchResult.displayName}</h3>
-            <div className="grid grid-cols-2 gap-4 mb-4">
-              <div>
-                <p className="text-gray-300">经验值 (XP)</p>
-                <p className="text-2xl font-bold text-primary">{searchResult.xp}</p>
-                <p className="text-sm text-gray-400">{searchResult.title || '无称号'}</p>
+        {/* 个人查询 */}
+        <div className="max-w-2xl mx-auto mb-8 bg-white rounded-acnh p-6 shadow-acnh">
+          <h2 className="text-2xl font-semibold text-primary mb-4">个人查询</h2>
+          <div className="flex flex-col md:flex-row gap-4">
+            <input
+              type="text"
+              placeholder="输入玩家名字"
+              value={searchName}
+              onChange={(e) => setSearchName(e.target.value)}
+              className="flex-1 px-4 py-3 rounded-acnh border-2 border-border focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-bgSecondary"
+            />
+            <button
+              onClick={handleSearch}
+              className="px-6 py-3 bg-primary text-white rounded-acnh hover:bg-primaryHover transition-colors font-medium shadow-acnh-sm"
+            >
+              🔍 查询
+            </button>
+          </div>
+
+          {searchResult && (
+            <div className="mt-6 bg-primaryBg rounded-acnh p-4 border-2 border-primary">
+              <h3 className="text-xl font-semibold mb-3 text-primary">{searchResult.displayName}</h3>
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                <div className="bg-white p-4 rounded-acnh shadow-acnh-sm">
+                  <p className="text-textSecondary">经验值 (XP)</p>
+                  <p className="text-2xl font-bold text-primary">{searchResult.xp}</p>
+                  <p className="text-sm text-textSecondary">{searchResult.title || '无称号'}</p>
+                </div>
+                <div className="bg-white p-4 rounded-acnh shadow-acnh-sm">
+                  <p className="text-textSecondary">可用积分</p>
+                  <p className="text-2xl font-bold text-warning">{searchResult.xp - (searchResult.points || 0)}</p>
+                </div>
               </div>
+              
+              <div className="mb-4">
+                <h4 className="text-lg font-semibold mb-2 text-primary">经验值记录</h4>
+                <div className="bg-white rounded-acnh p-4 max-h-40 overflow-y-auto shadow-acnh-sm">
+                  {searchResult.xpHistory && searchResult.xpHistory.length > 0 ? (
+                    searchResult.xpHistory.map((record, index) => (
+                      <div key={index} className="flex justify-between text-sm py-1">
+                        <span>{record.date} - {record.reason}</span>
+                        <span className="text-success font-bold">+{record.amount}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-textDisabled text-sm">暂无记录</p>
+                  )}
+                </div>
+              </div>
+
               <div>
-                <p className="text-gray-300">可用积分</p>
-                <p className="text-2xl font-bold text-yellow-400">{searchResult.xp - (searchResult.points || 0)}</p>
+                <h4 className="text-lg font-semibold mb-2 text-primary">积分兑换记录</h4>
+                <div className="bg-white rounded-acnh p-4 max-h-40 overflow-y-auto shadow-acnh-sm">
+                  {searchResult.redeemHistory && searchResult.redeemHistory.length > 0 ? (
+                    searchResult.redeemHistory.map((record, index) => (
+                      <div key={index} className="flex justify-between text-sm py-1">
+                        <span>{record.date} - {record.item}</span>
+                        <span className="text-error font-bold">-{record.points}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-textDisabled text-sm">暂无兑换记录</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* 排行榜 */}
+        <div className="max-w-4xl mx-auto bg-white rounded-acnh p-6 shadow-acnh mb-8">
+          <div className="flex flex-col md:flex-row justify-between items-center mb-6">
+            <h2 className="text-2xl font-semibold text-primary mb-4 md:mb-0">排行榜</h2>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setLeaderboardType('total')}
+                className={`px-4 py-2 rounded-acnh font-medium transition-colors ${
+                  leaderboardType === 'total' ? 'bg-primary text-white' : 'bg-primaryBg text-primary border-2 border-primary'
+                }`}
+              >
+                总榜单
+              </button>
+              <button
+                onClick={() => setLeaderboardType('month')}
+                className={`px-4 py-2 rounded-acnh font-medium transition-colors ${
+                  leaderboardType === 'month' ? 'bg-success text-white' : 'bg-primaryBg text-success border-2 border-success'
+                }`}
+              >
+                月榜单
+              </button>
+              <button
+                onClick={() => setLeaderboardType('week')}
+                className={`px-4 py-2 rounded-acnh font-medium transition-colors ${
+                  leaderboardType === 'week' ? 'bg-warning text-white' : 'bg-primaryBg text-warning border-2 border-warning'
+                }`}
+              >
+                周榜单
+              </button>
+            </div>
+          </div>
+          
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[500px] border-collapse">
+              <thead>
+                <tr className="bg-primaryBg">
+                  <th className="py-3 px-4 text-left text-primary font-semibold border-b-2 border-primary">排名</th>
+                  <th className="py-3 px-4 text-left text-primary font-semibold border-b-2 border-primary">玩家名</th>
+                  <th className="py-3 px-4 text-left text-primary font-semibold border-b-2 border-primary">
+                    {leaderboardType === 'total' ? '总经验值' : leaderboardType === 'month' ? '月度经验值' : '周经验值'}
+                  </th>
+                  <th className="py-3 px-4 text-left text-primary font-semibold border-b-2 border-primary">称号</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[...users]
+                  .sort((a, b) => calculatePeriodXP(b, leaderboardType) - calculatePeriodXP(a, leaderboardType))
+                  .slice(0, 20)
+                  .map((user, index) => (
+                    <tr key={user.id} className="hover:bg-primaryBg transition-colors">
+                      <td className="py-3 px-4 font-medium">
+                        {index + 1 === 1 && <span className="text-warning text-2xl">🥇</span>}
+                        {index + 1 === 2 && <span className="text-textSecondary text-2xl">🥈</span>}
+                        {index + 1 === 3 && <span className="text-acnhBrown text-2xl">🥉</span>}
+                        {index + 1 > 3 && null}
+                      </td>
+                      <td className="py-3 px-4 font-medium">{user.displayName}</td>
+                      <td className="py-3 px-4 font-bold text-primary">{calculatePeriodXP(user, leaderboardType)}</td>
+                      <td className="py-3 px-4">
+                        <span className="text-textSecondary font-medium">
+                          {user.title || '无称号'}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* 公告栏弹窗 */}
+        <Modal
+          open={showAnnouncement}
+          onClose={() => setShowAnnouncement(false)}
+          title="📢 公告栏"
+          width={600}
+          maskClosable={true}
+          footer={null}
+        >
+          <div className="space-y-4">
+            <div className="bg-primaryBg p-4 rounded-acnh">
+              <h4 className="text-lg font-semibold text-primary mb-2">积分规则</h4>
+              <ul className="list-disc pl-5 space-y-2 text-text">
+                <li>完成日常任务：+10积分</li>
+                <li>参加团队活动：+20积分</li>
+                <li>分享知识：+30积分</li>
+                <li>获得月度之星：+50积分</li>
+                <li>100积分可兑换1个硬币</li>
+                <li>50积分可兑换艺术头像</li>
+              </ul>
+            </div>
+            
+            <div className="bg-primaryBg p-4 rounded-acnh">
+              <h4 className="text-lg font-semibold text-primary mb-2">特殊活动</h4>
+              <div className="space-y-3">
+                <div className="bg-white p-3 rounded-acnh shadow-acnh-sm">
+                  <h5 className="font-medium text-primary">春季摄影大赛</h5>
+                  <p className="text-sm text-textSecondary">截止日期：2026-05-31</p>
+                  <p className="text-sm text-textSecondary">奖励：第一名 +100积分，第二名 +80积分，第三名 +50积分</p>
+                </div>
+                <div className="bg-white p-3 rounded-acnh shadow-acnh-sm">
+                  <h5 className="font-medium text-primary">团队分享会</h5>
+                  <p className="text-sm text-textSecondary">时间：每周五下午</p>
+                  <p className="text-sm text-textSecondary">奖励：参与者 +20积分，分享者 +50积分</p>
+                </div>
               </div>
             </div>
             
-            <div className="mb-4">
-              <h4 className="text-lg font-semibold mb-2">经验值记录</h4>
-              <div className="space-y-2 max-h-40 overflow-y-auto">
-                {searchResult.xpHistory && searchResult.xpHistory.length > 0 ? (
-                  searchResult.xpHistory.map((record, index) => (
-                    <div key={index} className="flex justify-between text-sm">
-                      <span>{record.date} - {record.reason}</span>
-                      <span className="text-green-400">+{record.amount}</span>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-gray-400 text-sm">暂无记录</p>
-                )}
-              </div>
-            </div>
-
-            <div>
-              <h4 className="text-lg font-semibold mb-2">积分兑换记录</h4>
-              <div className="space-y-2 max-h-40 overflow-y-auto">
-                {searchResult.redeemHistory && searchResult.redeemHistory.length > 0 ? (
-                  searchResult.redeemHistory.map((record, index) => (
-                    <div key={index} className="flex justify-between text-sm">
-                      <span>{record.date} - {record.item}</span>
-                      <span className="text-red-400">-{record.points}</span>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-gray-400 text-sm">暂无兑换记录</p>
-                )}
-              </div>
+            <div className="bg-primaryBg p-4 rounded-acnh">
+              <h4 className="text-lg font-semibold text-primary mb-2">系统更新</h4>
+              <p className="text-sm text-text">🎉 系统已升级为动物森友会风格！</p>
+              <p className="text-sm text-text">📊 新增月榜和周榜功能</p>
+              <p className="text-sm text-text">📢 新增公告栏功能</p>
             </div>
           </div>
-        )}
-      </div>
+        </Modal>
 
-      <div className="max-w-4xl mx-auto glassmorphism rounded-2xl p-6">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-6">排行榜</h2>
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[500px]">
-            <thead>
-              <tr className="border-b border-gray-300">
-                <th className="py-3 px-4 text-left text-gray-700 font-semibold">排名</th>
-                <th className="py-3 px-4 text-left text-gray-700 font-semibold">玩家名</th>
-                <th className="py-3 px-4 text-left text-gray-700 font-semibold">经验值</th>
-                <th className="py-3 px-4 text-left text-gray-700 font-semibold">称号</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[...users].sort((a, b) => b.xp - a.xp).slice(0, 20).map((user, index) => (
-                <tr key={user.id} className="border-b border-gray-200 hover:bg-white/50 transition-colors">
-                  <td className="py-3 px-4 font-medium">
-                    {index + 1 === 1 && <span className="text-yellow-500">🥇</span>}
-                    {index + 1 === 2 && <span className="text-gray-400">🥈</span>}
-                    {index + 1 === 3 && <span className="text-amber-700">🥉</span>}
-                    {index + 1 > 3 && index + 1}
-                  </td>
-                  <td className="py-3 px-4 font-medium">{user.displayName}</td>
-                  <td className="py-3 px-4">{user.xp}</td>
-                  <td className="py-3 px-4">
-                    <span className="text-gray-600">
-                      {user.title || ''}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        {/* 底部 */}
+        <div className="mt-12">
+          {/* 底部装饰 */}
+          <div className="flex justify-center mb-8">
+            <div className="flex items-center gap-4">
+              <div className="w-3 h-3 bg-primary rounded-full animate-bounce-slow"></div>
+              <div className="w-3 h-3 bg-success rounded-full animate-bounce-slow" style={{ animationDelay: '0.2s' }}></div>
+              <div className="w-3 h-3 bg-warning rounded-full animate-bounce-slow" style={{ animationDelay: '0.4s' }}></div>
+              <div className="w-3 h-3 bg-primary rounded-full animate-bounce-slow" style={{ animationDelay: '0.6s' }}></div>
+              <div className="w-3 h-3 bg-success rounded-full animate-bounce-slow" style={{ animationDelay: '0.8s' }}></div>
+            </div>
+          </div>
+          <div className="text-center text-textSecondary text-sm">
+            <p>© 2026 ELA 积分系统 | 动物森友会风格</p>
+          </div>
         </div>
       </div>
-
-      <div className="mt-8 text-center text-gray-500 text-sm">
-        <p>© 2026 TLL XP 系统 | 部署在 Netlify</p>
-      </div>
-    </div>
+    </Cursor>
   );
 }
 

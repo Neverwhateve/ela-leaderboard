@@ -12,6 +12,10 @@
     "generate-excel": "node scripts/generateExcel.cjs"
   },
   "dependencies": {
+    "@fontsource/m-plus-rounded-1c": "^5.2.10",
+    "@fontsource/nunito": "^5.2.7",
+    "@fontsource/zen-maru-gothic": "^5.2.8",
+    "animal-island-ui": "^0.7.0",
     "firebase": "^12.12.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
