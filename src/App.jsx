@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Time, Cursor, Modal } from 'animal-island-ui';
 import 'animal-island-ui/style';
+import { announcementConfig } from './announcementConfig';
 
 import usersData from './data.json';
 
@@ -50,24 +51,6 @@ const getDateRange = (type) => {
   return { start: startDate, end: now };
 };
 
-const calculatePeriodXP = (user, type) => {
-  if (type === 'total') return user.xp;
-  
-  const { start } = getDateRange(type);
-  if (!start) return 0;
-  
-  let periodXP = 0;
-  if (user.xpHistory) {
-    user.xpHistory.forEach(record => {
-      const recordDate = new Date(record.date);
-      if (recordDate >= start) {
-        periodXP += record.amount;
-      }
-    });
-  }
-  return periodXP;
-};
-
 function App() {
   const [users, setUsers] = useState([]);
   const [searchName, setSearchName] = useState('');
@@ -80,6 +63,25 @@ function App() {
     setUsers(usersData);
     setLoading(false);
   }, []);
+
+  // 计算时间段经验值
+  const calculatePeriodXP = (user, type) => {
+    if (type === 'total') return user.xp;
+    
+    const { start } = getDateRange(type);
+    if (!start) return 0;
+    
+    let periodXP = 0;
+    if (user.xpHistory) {
+      user.xpHistory.forEach(record => {
+        const recordDate = new Date(record.date);
+        if (recordDate >= start) {
+          periodXP += record.amount;
+        }
+      });
+    }
+    return periodXP;
+  };
 
   const handleSearch = () => {
     const result = users.find(user => 
@@ -225,12 +227,12 @@ function App() {
             <table className="w-full min-w-[500px] border-collapse">
               <thead>
                 <tr className="bg-primaryBg">
-                  <th className="py-3 px-4 text-left text-primary font-semibold border-b-2 border-primary">排名</th>
-                  <th className="py-3 px-4 text-left text-primary font-semibold border-b-2 border-primary">玩家名</th>
-                  <th className="py-3 px-4 text-left text-primary font-semibold border-b-2 border-primary">
-                    {leaderboardType === 'total' ? '总经验值' : leaderboardType === 'month' ? '月度经验值' : '周经验值'}
+                  <th className={`py-3 px-4 text-left font-semibold border-b-2 w-16 ${leaderboardType === 'total' ? 'text-primary border-primary' : leaderboardType === 'month' ? 'text-success border-success' : 'text-warning border-warning'}`}>排名</th>
+                  <th className={`py-3 px-4 text-left font-semibold border-b-2 ${leaderboardType === 'total' ? 'text-primary border-primary' : leaderboardType === 'month' ? 'text-success border-success' : 'text-warning border-warning'}`}>玩家名</th>
+                  <th className={`py-3 px-4 text-left font-semibold border-b-2 w-32 ${leaderboardType === 'total' ? 'text-primary border-primary' : leaderboardType === 'month' ? 'text-success border-success' : 'text-warning border-warning'}`}>
+                    {leaderboardType === 'total' ? '总经验值' : leaderboardType === 'month' ? '月经验值' : '周经验值'}
                   </th>
-                  <th className="py-3 px-4 text-left text-primary font-semibold border-b-2 border-primary">称号</th>
+                  <th className={`py-3 px-4 text-left font-semibold border-b-2 ${leaderboardType === 'total' ? 'text-primary border-primary' : leaderboardType === 'month' ? 'text-success border-success' : 'text-warning border-warning'}`}>称号</th>
                 </tr>
               </thead>
               <tbody>
@@ -239,14 +241,16 @@ function App() {
                   .slice(0, 20)
                   .map((user, index) => (
                     <tr key={user.id} className="hover:bg-primaryBg transition-colors">
-                      <td className="py-3 px-4 font-medium">
-                        {index + 1 === 1 && <span className="text-warning text-2xl">🥇</span>}
-                        {index + 1 === 2 && <span className="text-textSecondary text-2xl">🥈</span>}
-                        {index + 1 === 3 && <span className="text-acnhBrown text-2xl">🥉</span>}
-                        {index + 1 > 3 && null}
+                      <td className="py-3 px-4 font-medium w-16">
+                        <div className="flex items-center h-8">
+                          {index + 1 === 1 && <span className="text-warning text-2xl">🥇</span>}
+                          {index + 1 === 2 && <span className="text-textSecondary text-2xl">🥈</span>}
+                          {index + 1 === 3 && <span className="text-acnhBrown text-2xl">🥉</span>}
+                          {index + 1 > 3 && <span className="w-8"></span>}
+                        </div>
                       </td>
                       <td className="py-3 px-4 font-medium">{user.displayName}</td>
-                      <td className="py-3 px-4 font-bold text-primary">{calculatePeriodXP(user, leaderboardType)}</td>
+                      <td className="py-3 px-4 font-bold text-primary w-32">{calculatePeriodXP(user, leaderboardType)}</td>
                       <td className="py-3 px-4">
                         <span className="text-textSecondary font-medium">
                           {user.title || '无称号'}
@@ -263,46 +267,46 @@ function App() {
         <Modal
           open={showAnnouncement}
           onClose={() => setShowAnnouncement(false)}
-          title="📢 公告栏"
+          title={announcementConfig.title}
           width={600}
           maskClosable={true}
           footer={null}
         >
           <div className="space-y-4">
-            <div className="bg-primaryBg p-4 rounded-acnh">
-              <h4 className="text-lg font-semibold text-primary mb-2">积分规则</h4>
-              <ul className="list-disc pl-5 space-y-2 text-text">
-                <li>完成日常任务：+10积分</li>
-                <li>参加团队活动：+20积分</li>
-                <li>分享知识：+30积分</li>
-                <li>获得月度之星：+50积分</li>
-                <li>100积分可兑换1个硬币</li>
-                <li>50积分可兑换艺术头像</li>
-              </ul>
-            </div>
-            
-            <div className="bg-primaryBg p-4 rounded-acnh">
-              <h4 className="text-lg font-semibold text-primary mb-2">特殊活动</h4>
-              <div className="space-y-3">
-                <div className="bg-white p-3 rounded-acnh shadow-acnh-sm">
-                  <h5 className="font-medium text-primary">春季摄影大赛</h5>
-                  <p className="text-sm text-textSecondary">截止日期：2026-05-31</p>
-                  <p className="text-sm text-textSecondary">奖励：第一名 +100积分，第二名 +80积分，第三名 +50积分</p>
-                </div>
-                <div className="bg-white p-3 rounded-acnh shadow-acnh-sm">
-                  <h5 className="font-medium text-primary">团队分享会</h5>
-                  <p className="text-sm text-textSecondary">时间：每周五下午</p>
-                  <p className="text-sm text-textSecondary">奖励：参与者 +20积分，分享者 +50积分</p>
-                </div>
+            {announcementConfig.sections.map((section, index) => (
+              <div key={index} className="bg-primaryBg p-4 rounded-acnh">
+                <h4 className="text-lg font-semibold text-primary mb-2">{section.title}</h4>
+                
+                {section.content && (
+                  <ul className="list-disc pl-5 space-y-2 text-text">
+                    {section.content.map((item, idx) => (
+                      <li key={idx}>{item}</li>
+                    ))}
+                  </ul>
+                )}
+                
+                {section.events && (
+                  <div className="space-y-3">
+                    {section.events.map((event, idx) => (
+                      <div key={idx} className="bg-white p-3 rounded-acnh shadow-acnh-sm">
+                        <h5 className="font-medium text-primary">{event.name}</h5>
+                        {event.deadline && <p className="text-sm text-textSecondary">截止日期：{event.deadline}</p>}
+                        {event.time && <p className="text-sm text-textSecondary">时间：{event.time}</p>}
+                        <p className="text-sm text-textSecondary">奖励：{event.reward}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                
+                {section.updates && (
+                  <div className="space-y-1">
+                    {section.updates.map((update, idx) => (
+                      <p key={idx} className="text-sm text-text">{update}</p>
+                    ))}
+                  </div>
+                )}
               </div>
-            </div>
-            
-            <div className="bg-primaryBg p-4 rounded-acnh">
-              <h4 className="text-lg font-semibold text-primary mb-2">系统更新</h4>
-              <p className="text-sm text-text">🎉 系统已升级为动物森友会风格！</p>
-              <p className="text-sm text-text">📊 新增月榜和周榜功能</p>
-              <p className="text-sm text-text">📢 新增公告栏功能</p>
-            </div>
+            ))}
           </div>
         </Modal>
 
