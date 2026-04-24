@@ -271,6 +271,7 @@ function App() {
           width={600}
           maskClosable={true}
           footer={null}
+          className="max-h-[80vh] overflow-y-auto sm:max-w-[90vw] sm:max-h-[90vh]"
         >
           <div className="space-y-4">
             {announcementConfig.sections.map((section, index) => (
