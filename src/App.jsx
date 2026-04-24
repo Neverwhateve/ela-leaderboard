@@ -103,7 +103,7 @@ function App() {
       <div className="min-h-screen p-4 md:p-8 bg-bg font-acnh text-text">
         {/* 头部 */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-primary mb-2 animate-float">ELA 排行榜</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-primary mb-2 animate-float">ELA 积分榜</h1>
           <div className="flex justify-center mb-4">
             <Time />
           </div>
@@ -273,7 +273,7 @@ function App() {
           footer={null}
           className="max-h-[80vh] overflow-y-auto sm:max-w-[90vw] sm:max-h-[90vh]"
         >
-          <div className="space-y-4">
+          <div className="space-y-4" style={{ fontFamily: "'M PLUS Rounded 1c', sans-serif" }}>
             {announcementConfig.sections.map((section, index) => (
               <div key={index} className="bg-primaryBg p-4 rounded-acnh">
                 <h4 className="text-lg font-semibold text-primary mb-2">{section.title}</h4>
