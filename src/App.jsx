@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Time, Cursor, Modal } from 'animal-island-ui';
+import { Time, Cursor, Modal, Footer } from 'animal-island-ui';
 import 'animal-island-ui/style';
 import { announcementConfig } from './announcementConfig';
 
@@ -313,17 +313,8 @@ function App() {
 
         {/* 底部 */}
         <div className="mt-12">
-          {/* 底部装饰 */}
-          <div className="flex justify-center mb-8">
-            <div className="flex items-center gap-4">
-              <div className="w-3 h-3 bg-primary rounded-full animate-bounce-slow"></div>
-              <div className="w-3 h-3 bg-success rounded-full animate-bounce-slow" style={{ animationDelay: '0.2s' }}></div>
-              <div className="w-3 h-3 bg-warning rounded-full animate-bounce-slow" style={{ animationDelay: '0.4s' }}></div>
-              <div className="w-3 h-3 bg-primary rounded-full animate-bounce-slow" style={{ animationDelay: '0.6s' }}></div>
-              <div className="w-3 h-3 bg-success rounded-full animate-bounce-slow" style={{ animationDelay: '0.8s' }}></div>
-            </div>
-          </div>
-          <div className="text-center text-textSecondary text-sm">
+          <Footer type="tree" />
+          <div className="text-center text-textSecondary text-sm mt-4">
             <a 
               href="mailto:neverwhateve@me.com?subject=意见与反馈" 
               className="text-textSecondary hover:text-primary transition-colors underline"
