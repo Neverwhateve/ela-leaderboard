@@ -1,6 +1,86 @@
 [
   {
     "id": "user_1",
+    "name": "Ada",
+    "displayName": "冃半",
+    "title": "",
+    "xp": 10,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_2",
+    "name": "Amelia Wu",
+    "displayName": "扭啊扭",
+    "title": "",
+    "xp": 10,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_3",
+    "name": "Angela",
+    "displayName": "没奶油的奥利奥",
+    "title": "",
+    "xp": 10,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_4",
+    "name": "Barry",
+    "displayName": "Flash",
+    "title": "",
+    "xp": 10,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_5",
+    "name": "Bryan",
+    "displayName": "幼儿园高材生",
+    "title": "",
+    "xp": 10,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_6",
     "name": "Candy",
     "displayName": "Candy",
     "title": "",
@@ -16,9 +96,9 @@
     "redeemHistory": []
   },
   {
-    "id": "user_2",
-    "name": "Vincent",
-    "displayName": "Vincent",
+    "id": "user_7",
+    "name": "CC",
+    "displayName": "宫西西",
     "title": "",
     "xp": 10,
     "points": 0,
@@ -32,9 +112,162 @@
     "redeemHistory": []
   },
   {
-    "id": "user_3",
-    "name": "Xiaolan",
-    "displayName": "月野子",
+    "id": "user_8",
+    "name": "Changliang",
+    "displayName": "机智的小胖哥",
+    "title": "",
+    "xp": 10,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_9",
+    "name": "Cody",
+    "displayName": "川川",
+    "title": "",
+    "xp": 60,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
+      },
+      {
+        "date": "2026-04-07",
+        "reason": "专业出题高手",
+        "amount": 50
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_10",
+    "name": "Daisy Lu",
+    "displayName": "漫野雏菊",
+    "title": "",
+    "xp": 10,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-22",
+        "reason": "Outing 九宫图",
+        "amount": 10
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_11",
+    "name": "Danni",
+    "displayName": "宇宙当红炸子鸡😎",
+    "title": "",
+    "xp": 10,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_12",
+    "name": "DJ",
+    "displayName": "déjà vu",
+    "title": "",
+    "xp": 0,
+    "points": 0,
+    "xpHistory": [],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_13",
+    "name": "Dobby",
+    "displayName": "时间管理大师",
+    "title": "",
+    "xp": 10,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_14",
+    "name": "Gina",
+    "displayName": "金佰利",
+    "title": "",
+    "xp": 0,
+    "points": 0,
+    "xpHistory": [],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_15",
+    "name": "Grace",
+    "displayName": "Grace",
+    "title": "",
+    "xp": 10,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_16",
+    "name": "Iris Yang",
+    "displayName": "羊没吐气",
+    "title": "",
+    "xp": 10,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_17",
+    "name": "Jason Sun",
+    "displayName": "森森",
+    "title": "",
+    "xp": 10,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_18",
+    "name": "Jesse",
+    "displayName": "二朵龙",
     "title": "",
     "xp": 20,
     "points": 0,
@@ -53,87 +286,7 @@
     "redeemHistory": []
   },
   {
-    "id": "user_4",
-    "name": "Cody",
-    "displayName": "川川",
-    "title": "",
-    "xp": 10,
-    "points": 0,
-    "xpHistory": [
-      {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
-        "amount": 10
-      }
-    ],
-    "redeemHistory": []
-  },
-  {
-    "id": "user_5",
-    "name": "Grace",
-    "displayName": "Grace",
-    "title": "",
-    "xp": 10,
-    "points": 0,
-    "xpHistory": [
-      {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
-        "amount": 10
-      }
-    ],
-    "redeemHistory": []
-  },
-  {
-    "id": "user_6",
-    "name": "Seven",
-    "displayName": "七七",
-    "title": "",
-    "xp": 10,
-    "points": 0,
-    "xpHistory": [
-      {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
-        "amount": 10
-      }
-    ],
-    "redeemHistory": []
-  },
-  {
-    "id": "user_7",
-    "name": "Zoe",
-    "displayName": "周芳菲",
-    "title": "",
-    "xp": 10,
-    "points": 0,
-    "xpHistory": [
-      {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
-        "amount": 10
-      }
-    ],
-    "redeemHistory": []
-  },
-  {
-    "id": "user_8",
-    "name": "Yolanda",
-    "displayName": "3199",
-    "title": "",
-    "xp": 10,
-    "points": 0,
-    "xpHistory": [
-      {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
-        "amount": 10
-      }
-    ],
-    "redeemHistory": []
-  },
-  {
-    "id": "user_9",
+    "id": "user_19",
     "name": "Jim",
     "displayName": "阿油几亩菜",
     "title": "",
@@ -149,9 +302,9 @@
     "redeemHistory": []
   },
   {
-    "id": "user_10",
-    "name": "Bryan",
-    "displayName": "幼儿园高材生",
+    "id": "user_20",
+    "name": "joy",
+    "displayName": "陶瓷女工",
     "title": "",
     "xp": 10,
     "points": 0,
@@ -165,7 +318,208 @@
     "redeemHistory": []
   },
   {
-    "id": "user_11",
+    "id": "user_21",
+    "name": "Krystal",
+    "displayName": "小黄努力减肥",
+    "title": "",
+    "xp": 10,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_22",
+    "name": "Laughing",
+    "displayName": "爆炸瓜",
+    "title": "",
+    "xp": 15,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
+      },
+      {
+        "date": "2026-04-25",
+        "reason": "专业解答",
+        "amount": 5
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_23",
+    "name": "Lori",
+    "displayName": "黎晚",
+    "title": "",
+    "xp": 10,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_24",
+    "name": "Mediha",
+    "displayName": "Mediha",
+    "title": "",
+    "xp": 10,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_25",
+    "name": "Moon",
+    "displayName": "花果山小母猴",
+    "title": "",
+    "xp": 10,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_26",
+    "name": "Nanyi",
+    "displayName": "QQ少爷",
+    "title": "",
+    "xp": 10,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_27",
+    "name": "Olivia",
+    "displayName": "一团儿ʚ🧸ྀིɞ",
+    "title": "",
+    "xp": 50,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-20",
+        "reason": "默默奉献设计师",
+        "amount": 50
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_28",
+    "name": "Oscar",
+    "displayName": "不是艺术家",
+    "title": "",
+    "xp": 75,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
+      },
+      {
+        "date": "2026-04-22",
+        "reason": "Outing 九宫图",
+        "amount": 10
+      },
+      {
+        "date": "2026-04-25",
+        "reason": "咨询分享",
+        "amount": 5
+      },
+      {
+        "date": "2026-04-20",
+        "reason": "默默奉献设计师",
+        "amount": 50
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_29",
+    "name": "Patrick Lu",
+    "displayName": "满山猴子我腚最红",
+    "title": "",
+    "xp": 10,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_30",
+    "name": "Rik",
+    "displayName": "Rik",
+    "title": "",
+    "xp": 60,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
+      },
+      {
+        "date": "2026-04-07",
+        "reason": "专业出题高手",
+        "amount": 50
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_31",
+    "name": "Rita",
+    "displayName": "陶喆演唱会抢票超人",
+    "title": "",
+    "xp": 10,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_32",
     "name": "Serena",
     "displayName": "艺臻",
     "title": "",
@@ -186,348 +540,23 @@
     "redeemHistory": []
   },
   {
-    "id": "user_12",
-    "name": "Barry",
-    "displayName": "Flash",
-    "title": "",
-    "xp": 10,
-    "points": 0,
-    "xpHistory": [
-      {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
-        "amount": 10
-      }
-    ],
-    "redeemHistory": []
-  },
-  {
-    "id": "user_13",
-    "name": "Patrick Lu",
-    "displayName": "满山猴子我腚最红",
-    "title": "",
-    "xp": 10,
-    "points": 0,
-    "xpHistory": [
-      {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
-        "amount": 10
-      }
-    ],
-    "redeemHistory": []
-  },
-  {
-    "id": "user_14",
-    "name": "CC",
-    "displayName": "宫西西",
-    "title": "",
-    "xp": 10,
-    "points": 0,
-    "xpHistory": [
-      {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
-        "amount": 10
-      }
-    ],
-    "redeemHistory": []
-  },
-  {
-    "id": "user_15",
-    "name": "Krystal",
-    "displayName": "小黄努力减肥",
-    "title": "",
-    "xp": 10,
-    "points": 0,
-    "xpHistory": [
-      {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
-        "amount": 10
-      }
-    ],
-    "redeemHistory": []
-  },
-  {
-    "id": "user_16",
-    "name": "Dobby",
-    "displayName": "时间管理大师",
-    "title": "",
-    "xp": 10,
-    "points": 0,
-    "xpHistory": [
-      {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
-        "amount": 10
-      }
-    ],
-    "redeemHistory": []
-  },
-  {
-    "id": "user_17",
-    "name": "Amelia Wu",
-    "displayName": "扭啊扭",
-    "title": "",
-    "xp": 10,
-    "points": 0,
-    "xpHistory": [
-      {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
-        "amount": 10
-      }
-    ],
-    "redeemHistory": []
-  },
-  {
-    "id": "user_18",
-    "name": "Jason Sun",
-    "displayName": "森森",
-    "title": "",
-    "xp": 10,
-    "points": 0,
-    "xpHistory": [
-      {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
-        "amount": 10
-      }
-    ],
-    "redeemHistory": []
-  },
-  {
-    "id": "user_19",
-    "name": "Rita",
-    "displayName": "陶喆演唱会抢票超人",
-    "title": "",
-    "xp": 10,
-    "points": 0,
-    "xpHistory": [
-      {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
-        "amount": 10
-      }
-    ],
-    "redeemHistory": []
-  },
-  {
-    "id": "user_20",
-    "name": "Lori",
-    "displayName": "黎晚",
-    "title": "",
-    "xp": 10,
-    "points": 0,
-    "xpHistory": [
-      {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
-        "amount": 10
-      }
-    ],
-    "redeemHistory": []
-  },
-  {
-    "id": "user_21",
-    "name": "Mediha",
-    "displayName": "Mediha",
-    "title": "",
-    "xp": 10,
-    "points": 0,
-    "xpHistory": [
-      {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
-        "amount": 10
-      }
-    ],
-    "redeemHistory": []
-  },
-  {
-    "id": "user_22",
-    "name": "Rik",
-    "displayName": "Rik",
-    "title": "",
-    "xp": 10,
-    "points": 0,
-    "xpHistory": [
-      {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
-        "amount": 10
-      }
-    ],
-    "redeemHistory": []
-  },
-  {
-    "id": "user_23",
-    "name": "Jesse",
-    "displayName": "二朵龙",
-    "title": "",
-    "xp": 10,
-    "points": 0,
-    "xpHistory": [
-      {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
-        "amount": 10
-      }
-    ],
-    "redeemHistory": []
-  },
-  {
-    "id": "user_24",
-    "name": "Changliang",
-    "displayName": "机智的小胖哥",
-    "title": "",
-    "xp": 10,
-    "points": 0,
-    "xpHistory": [
-      {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
-        "amount": 10
-      }
-    ],
-    "redeemHistory": []
-  },
-  {
-    "id": "user_25",
-    "name": "Victor",
-    "displayName": "皮卡丨皮卡",
-    "title": "",
-    "xp": 10,
-    "points": 0,
-    "xpHistory": [
-      {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
-        "amount": 10
-      }
-    ],
-    "redeemHistory": []
-  },
-  {
-    "id": "user_26",
-    "name": "Laughing",
-    "displayName": "爆炸瓜",
-    "title": "",
-    "xp": 10,
-    "points": 0,
-    "xpHistory": [
-      {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
-        "amount": 10
-      }
-    ],
-    "redeemHistory": []
-  },
-  {
-    "id": "user_27",
-    "name": "Iris Yang",
-    "displayName": "羊没吐气",
-    "title": "",
-    "xp": 10,
-    "points": 0,
-    "xpHistory": [
-      {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
-        "amount": 10
-      }
-    ],
-    "redeemHistory": []
-  },
-  {
-    "id": "user_28",
-    "name": "Danni",
-    "displayName": "宇宙当红炸子鸡😎",
-    "title": "",
-    "xp": 10,
-    "points": 0,
-    "xpHistory": [
-      {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
-        "amount": 10
-      }
-    ],
-    "redeemHistory": []
-  },
-  {
-    "id": "user_29",
-    "name": "Oscar",
-    "displayName": "不是艺术家",
-    "title": "",
-    "xp": 20,
-    "points": 0,
-    "xpHistory": [
-      {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
-        "amount": 10
-      },
-      {
-        "date": "2026-04-22",
-        "reason": "Outing 九宫图",
-        "amount": 10
-      }
-    ],
-    "redeemHistory": []
-  },
-  {
-    "id": "user_30",
-    "name": "Moon",
-    "displayName": "花果山小母猴",
-    "title": "",
-    "xp": 10,
-    "points": 0,
-    "xpHistory": [
-      {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
-        "amount": 10
-      }
-    ],
-    "redeemHistory": []
-  },
-  {
-    "id": "user_31",
-    "name": "Ada",
-    "displayName": "冃半",
-    "title": "",
-    "xp": 10,
-    "points": 0,
-    "xpHistory": [
-      {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
-        "amount": 10
-      }
-    ],
-    "redeemHistory": []
-  },
-  {
-    "id": "user_32",
-    "name": "joy",
-    "displayName": "陶瓷女工",
-    "title": "",
-    "xp": 10,
-    "points": 0,
-    "xpHistory": [
-      {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
-        "amount": 10
-      }
-    ],
-    "redeemHistory": []
-  },
-  {
     "id": "user_33",
+    "name": "Seven",
+    "displayName": "七七",
+    "title": "",
+    "xp": 10,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_34",
     "name": "Strange",
     "displayName": "于适的老公",
     "title": "",
@@ -548,9 +577,19 @@
     "redeemHistory": []
   },
   {
-    "id": "user_34",
-    "name": "Angela",
-    "displayName": "没奶油的奥利奥",
+    "id": "user_35",
+    "name": "Vicky",
+    "displayName": "山竹",
+    "title": "",
+    "xp": 0,
+    "points": 0,
+    "xpHistory": [],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_36",
+    "name": "Victor",
+    "displayName": "皮卡丨皮卡",
     "title": "",
     "xp": 10,
     "points": 0,
@@ -564,9 +603,94 @@
     "redeemHistory": []
   },
   {
-    "id": "user_35",
-    "name": "Nanyi",
-    "displayName": "QQ少爷",
+    "id": "user_37",
+    "name": "Vincent",
+    "displayName": "Vincent",
+    "title": "",
+    "xp": 10,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_38",
+    "name": "Xiaolan",
+    "displayName": "月野子",
+    "title": "",
+    "xp": 20,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
+      },
+      {
+        "date": "2026-04-22",
+        "reason": "Outing 九宫图",
+        "amount": 10
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_39",
+    "name": "Yolanda",
+    "displayName": "3199",
+    "title": "",
+    "xp": 10,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_40",
+    "name": "Yoyo",
+    "displayName": "YOYO",
+    "title": "",
+    "xp": 10,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-23",
+        "reason": "新用户注册",
+        "amount": 10
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_41",
+    "name": "Yulong",
+    "displayName": "毛腿吴彦祖",
+    "title": "",
+    "xp": 50,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-07",
+        "reason": "专业出题高手",
+        "amount": 50
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_42",
+    "name": "Zoe",
+    "displayName": "周芳菲",
     "title": "",
     "xp": 10,
     "points": 0,
