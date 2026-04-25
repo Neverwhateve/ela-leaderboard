@@ -250,6 +250,7 @@ function App() {
                           {index + 1 <= 3 ? (
                             <span className="flex items-center gap-2">
                               {user.displayName}
+                              <span className="text-primary">icon-miles</span>
                               {expandedUsers[user.id] && <span className="text-xs">🌟</span>}
                             </span>
                           ) : (
