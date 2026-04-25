@@ -110,7 +110,7 @@ function App() {
           <button
             onClick={() => {
               const phoneNumber = '18626053382';
-              const message = '您好，我是ELA成员，想要提交积分记录。';
+              const message = 'Hi，我是\n提交积分：';
               const smsUrl = `sms:${phoneNumber}?body=${encodeURIComponent(message)}`;
               window.location.href = smsUrl;
             }}
