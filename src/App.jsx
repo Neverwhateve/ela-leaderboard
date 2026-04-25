@@ -229,28 +229,39 @@ function App() {
                 </tr>
               </thead>
               <tbody>
-                {[...users]
-                  .sort((a, b) => calculatePeriodXP(b, leaderboardType) - calculatePeriodXP(a, leaderboardType))
-                  .slice(0, 20)
-                  .map((user, index) => (
+                {(() => {
+                  const sortedUsers = [...users].sort((a, b) => calculatePeriodXP(b, leaderboardType) - calculatePeriodXP(a, leaderboardType));
+                  const usersWithRank = [];
+                  sortedUsers.forEach((user, index) => {
+                    let rank = index + 1;
+                    if (index > 0) {
+                      const previousScore = calculatePeriodXP(sortedUsers[index - 1], leaderboardType);
+                      const currentScore = calculatePeriodXP(user, leaderboardType);
+                      if (previousScore === currentScore) {
+                        rank = usersWithRank[index - 1].rank;
+                      }
+                    }
+                    usersWithRank.push({ ...user, rank });
+                  });
+                  return usersWithRank.slice(0, 20);
+                })().map((user, index) => (
                     <React.Fragment key={user.id}>
                       <tr 
-                        className={`hover:bg-primaryBg transition-colors cursor-pointer ${index + 1 <= 3 ? 'font-bold' : ''}`}
-                        onClick={() => index + 1 <= 3 && toggleUserExpand(user.id)}
+                        className={`hover:bg-primaryBg transition-colors cursor-pointer ${user.rank <= 3 ? 'font-bold' : ''}`}
+                        onClick={() => user.rank <= 3 && toggleUserExpand(user.id)}
                       >
                         <td className="py-3 px-4 font-medium w-16">
                           <div className="flex items-center h-8">
-                            {index + 1 === 1 && <span className="text-warning text-2xl">🥇</span>}
-                            {index + 1 === 2 && <span className="text-textSecondary text-2xl">🥈</span>}
-                            {index + 1 === 3 && <span className="text-acnhBrown text-2xl">🥉</span>}
-                            {index + 1 > 3 && <span className="w-8"></span>}
+                            {user.rank === 1 && <span className="text-warning text-2xl">🥇</span>}
+                            {user.rank === 2 && <span className="text-textSecondary text-2xl">🥈</span>}
+                            {user.rank === 3 && <span className="text-acnhBrown text-2xl">🥉</span>}
+                            {user.rank > 3 && <span className="w-8"></span>}
                           </div>
                         </td>
                         <td className="py-3 px-4 font-medium">
-                          {index + 1 <= 3 ? (
+                          {user.rank <= 3 ? (
                             <span className="flex items-center gap-2">
                               {user.displayName}
-                              <span className="text-primary">icon-miles</span>
                               {expandedUsers[user.id] && <span className="text-xs">🌟</span>}
                             </span>
                           ) : (
@@ -264,7 +275,7 @@ function App() {
                           </span>
                         </td>
                       </tr>
-                      {index + 1 <= 3 && expandedUsers[user.id] && (
+                      {user.rank <= 3 && expandedUsers[user.id] && (
                         <tr key={`${user.id}-expanded`}>
                           <td colSpan="4" className="p-2 bg-primaryBg">
                             <div className="bg-white rounded-acnh overflow-hidden">
