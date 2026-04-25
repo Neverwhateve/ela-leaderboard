@@ -110,7 +110,9 @@ function App() {
           <button
             onClick={() => {
               const phoneNumber = '18626053382';
-              const message = 'Hi，我是\n提交积分：';
+              const today = new Date();
+              const date = today.toISOString().split('T')[0];
+              const message = `提交积分！\n日期：${date}\n我是：`;
               const smsUrl = `sms:${phoneNumber}?body=${encodeURIComponent(message)}`;
               window.location.href = smsUrl;
             }}
