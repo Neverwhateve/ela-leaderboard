@@ -1,34 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Time, Cursor, Modal, Footer, Divider, Collapse, Button } from 'animal-island-ui';
+import { Time, Cursor, Modal, Footer, Divider, Button, Typewriter as AnimalTypewriter } from 'animal-island-ui';
 import 'animal-island-ui/style';
 import { announcementConfig } from './announcementConfig';
 
 import usersData from './data.json';
-
-// 打字机效果组件
-const Typewriter = ({ text, speed = 100 }) => {
-  const [displayedText, setDisplayedText] = useState('');
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    if (currentIndex < text.length) {
-      const timer = setTimeout(() => {
-        setDisplayedText(prev => prev + text[currentIndex]);
-        setCurrentIndex(prev => prev + 1);
-      }, speed);
-      return () => clearTimeout(timer);
-    }
-  }, [currentIndex, text, speed]);
-
-  return (
-    <div className="text-lg text-textSecondary font-medium">
-      {displayedText}
-      {currentIndex < text.length && (
-        <span className="animate-pulse">|</span>
-      )}
-    </div>
-  );
-};
 
 const calculateLevel = (xp) => {
   if (xp >= 300) return 'Lv3';
@@ -117,17 +92,31 @@ function App() {
             <Time />
           </div>
           <div className="mb-6">
-            <Typewriter text="你好，欢迎来到丰富人生学院！今天的天气真不错呢～" />
+            <AnimalTypewriter speed={100}>
+              <div className="text-lg text-textSecondary font-medium">你好，欢迎来到丰富人生学院！</div>
+              <div className="text-lg text-textSecondary font-medium">今天的天气真不错呢～</div>
+            </AnimalTypewriter>
           </div>
         </div>
 
-        {/* 公告栏按钮 */}
-        <div className="max-w-4xl mx-auto mb-4 flex justify-center">
+        {/* 按钮区域 */}
+        <div className="max-w-4xl mx-auto mb-4 flex justify-center gap-4">
           <button
             onClick={() => setShowAnnouncement(true)}
             className="px-6 py-3 bg-primary text-white rounded-acnh hover:bg-primaryHover transition-colors font-medium shadow-acnh animate-bounce-slow"
           >
             📢 公告栏
+          </button>
+          <button
+            onClick={() => {
+              const phoneNumber = '18626053382';
+              const message = '您好，我是ELA成员，想要提交积分记录。';
+              const smsUrl = `sms:${phoneNumber}?body=${encodeURIComponent(message)}`;
+              window.location.href = smsUrl;
+            }}
+            className="px-6 py-3 bg-primary text-white rounded-acnh hover:bg-primaryHover transition-colors font-medium shadow-acnh animate-bounce-slow"
+          >
+            📝 提交积分
           </button>
         </div>
 
