@@ -88,7 +88,8 @@ function App() {
         {/* 头部 */}
         <div className="text-center mb-8">
           <h1 className="text-4xl md:text-5xl font-bold text-primary mb-2 animate-float">ELA 积分榜</h1>
-          <div className="flex justify-center mb-4">
+          <div className="flex justify-center items-center mb-4 gap-4">
+            <img src="/icon.png" alt="ELA Icon" className="w-12 h-12 rounded-full" />
             <Time />
           </div>
           <div className="mb-6">

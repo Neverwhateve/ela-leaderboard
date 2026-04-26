@@ -68,13 +68,18 @@
     "name": "Bryan",
     "displayName": "幼儿园高材生",
     "title": "",
-    "xp": 10,
+    "xp": 55,
     "points": 0,
     "xpHistory": [
       {
         "date": "2026-04-21",
         "reason": "新用户注册",
         "amount": 10
+      },
+      {
+        "date": "2026-04-25",
+        "reason": "三封邮件的含金量",
+        "amount": 45
       }
     ],
     "redeemHistory": []
@@ -132,18 +137,18 @@
     "name": "Cody",
     "displayName": "川川",
     "title": "",
-    "xp": 60,
+    "xp": 30,
     "points": 0,
     "xpHistory": [
+      {
+        "date": "2026-04-07",
+        "reason": "K-Lab",
+        "amount": 20
+      },
       {
         "date": "2026-04-21",
         "reason": "新用户注册",
         "amount": 10
-      },
-      {
-        "date": "2026-04-07",
-        "reason": "专业出题高手",
-        "amount": 50
       }
     ],
     "redeemHistory": []
@@ -153,12 +158,17 @@
     "name": "Daisy Lu",
     "displayName": "漫野雏菊",
     "title": "",
-    "xp": 10,
+    "xp": 20,
     "points": 0,
     "xpHistory": [
       {
         "date": "2026-04-22",
         "reason": "Outing 九宫图",
+        "amount": 10
+      },
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
         "amount": 10
       }
     ],
@@ -185,9 +195,15 @@
     "name": "DJ",
     "displayName": "déjà vu",
     "title": "",
-    "xp": 0,
+    "xp": 10,
     "points": 0,
-    "xpHistory": [],
+    "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
+      }
+    ],
     "redeemHistory": []
   },
   {
@@ -211,9 +227,15 @@
     "name": "Gina",
     "displayName": "金佰利",
     "title": "",
-    "xp": 0,
+    "xp": 10,
     "points": 0,
-    "xpHistory": [],
+    "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
+      }
+    ],
     "redeemHistory": []
   },
   {
@@ -273,13 +295,13 @@
     "points": 0,
     "xpHistory": [
       {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
+        "date": "2026-04-22",
+        "reason": "Outing 九宫图",
         "amount": 10
       },
       {
-        "date": "2026-04-22",
-        "reason": "Outing 九宫图",
+        "date": "2026-04-21",
+        "reason": "新用户注册",
         "amount": 10
       }
     ],
@@ -342,14 +364,14 @@
     "points": 0,
     "xpHistory": [
       {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
-        "amount": 10
-      },
-      {
         "date": "2026-04-25",
         "reason": "专业解答",
         "amount": 5
+      },
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
       }
     ],
     "redeemHistory": []
@@ -391,9 +413,14 @@
     "name": "Moon",
     "displayName": "花果山小母猴",
     "title": "",
-    "xp": 10,
+    "xp": 20,
     "points": 0,
     "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "Outing 九宫图",
+        "amount": 10
+      },
       {
         "date": "2026-04-21",
         "reason": "新用户注册",
@@ -423,13 +450,18 @@
     "name": "Olivia",
     "displayName": "一团儿ʚ🧸ྀིɞ",
     "title": "",
-    "xp": 50,
+    "xp": 30,
     "points": 0,
     "xpHistory": [
       {
         "date": "2026-04-20",
         "reason": "默默奉献设计师",
-        "amount": 50
+        "amount": 20
+      },
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
       }
     ],
     "redeemHistory": []
@@ -439,14 +471,9 @@
     "name": "Oscar",
     "displayName": "不是艺术家",
     "title": "",
-    "xp": 75,
+    "xp": 45,
     "points": 0,
     "xpHistory": [
-      {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
-        "amount": 10
-      },
       {
         "date": "2026-04-22",
         "reason": "Outing 九宫图",
@@ -454,13 +481,18 @@
       },
       {
         "date": "2026-04-25",
-        "reason": "咨询分享",
+        "reason": " 资讯分享",
         "amount": 5
       },
       {
         "date": "2026-04-20",
         "reason": "默默奉献设计师",
-        "amount": 50
+        "amount": 20
+      },
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
       }
     ],
     "redeemHistory": []
@@ -486,18 +518,18 @@
     "name": "Rik",
     "displayName": "Rik",
     "title": "",
-    "xp": 60,
+    "xp": 30,
     "points": 0,
     "xpHistory": [
+      {
+        "date": "2026-04-07",
+        "reason": "K-Lab",
+        "amount": 20
+      },
       {
         "date": "2026-04-21",
         "reason": "新用户注册",
         "amount": 10
-      },
-      {
-        "date": "2026-04-07",
-        "reason": "专业出题高手",
-        "amount": 50
       }
     ],
     "redeemHistory": []
@@ -527,13 +559,13 @@
     "points": 0,
     "xpHistory": [
       {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
+        "date": "2026-04-22",
+        "reason": "Outing 九宫图",
         "amount": 10
       },
       {
-        "date": "2026-04-22",
-        "reason": "Outing 九宫图",
+        "date": "2026-04-21",
+        "reason": "新用户注册",
         "amount": 10
       }
     ],
@@ -564,13 +596,13 @@
     "points": 0,
     "xpHistory": [
       {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
+        "date": "2026-04-22",
+        "reason": "Outing 九宫图",
         "amount": 10
       },
       {
-        "date": "2026-04-22",
-        "reason": "Outing 九宫图",
+        "date": "2026-04-21",
+        "reason": "新用户注册",
         "amount": 10
       }
     ],
@@ -581,9 +613,15 @@
     "name": "Vicky",
     "displayName": "山竹",
     "title": "",
-    "xp": 0,
+    "xp": 10,
     "points": 0,
-    "xpHistory": [],
+    "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
+      }
+    ],
     "redeemHistory": []
   },
   {
@@ -627,13 +665,13 @@
     "points": 0,
     "xpHistory": [
       {
-        "date": "2026-04-21",
-        "reason": "新用户注册",
+        "date": "2026-04-22",
+        "reason": "Outing 九宫图",
         "amount": 10
       },
       {
-        "date": "2026-04-22",
-        "reason": "Outing 九宫图",
+        "date": "2026-04-21",
+        "reason": "新用户注册",
         "amount": 10
       }
     ],
@@ -664,7 +702,7 @@
     "points": 0,
     "xpHistory": [
       {
-        "date": "2026-04-23",
+        "date": "2026-04-21",
         "reason": "新用户注册",
         "amount": 10
       }
@@ -676,13 +714,18 @@
     "name": "Yulong",
     "displayName": "毛腿吴彦祖",
     "title": "",
-    "xp": 50,
+    "xp": 30,
     "points": 0,
     "xpHistory": [
       {
         "date": "2026-04-07",
-        "reason": "专业出题高手",
-        "amount": 50
+        "reason": "K-Lab",
+        "amount": 20
+      },
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
       }
     ],
     "redeemHistory": []

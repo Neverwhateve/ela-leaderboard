@@ -16,7 +16,7 @@ export const announcementConfig = {
     {
       "title": "特殊活动",
       "content": [
-        "Outing九宫图：上传分享 +10积分，优秀作品 +20积分",
+        "Outing 九宫图：上传分享 +10积分",
         "截止日期：2026-04-30"
       ]
     },
@@ -24,7 +24,7 @@ export const announcementConfig = {
       "title": "系统更新",
       "content": [
         "2026-04-25：系统上线，支持总榜单、月度经验值和周榜单",
-        "2026-04-26：新增提交积分功能，支持一键跳转短信App"
+        "2026-04-26：新增提交积分功能，支持一键跳转短信 App 提交反馈"
       ]
     }
   ]
