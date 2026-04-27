@@ -107,22 +107,22 @@ function App() {
                   key={index}
                   question={section.title}
                   answer={
-                    <div className="text-text">
+                    <div className="text-text text-left">
                       {section.content && (
-                        <ul className="list-disc pl-5 space-y-2">
+                        <ul className="list-disc pl-5 space-y-2 text-left">
                           {section.content.map((item, idx) => (
-                            <li key={idx}>{item}</li>
+                            <li key={idx} className="text-left">{item}</li>
                           ))}
                         </ul>
                       )}
                       {section.events && (
                         <div className="space-y-3">
                           {section.events.map((event, idx) => (
-                            <div key={idx} className="bg-primaryBg p-3 rounded-acnh">
-                              <h5 className="font-medium text-primary">{event.name}</h5>
-                              {event.deadline && <p className="text-sm text-textSecondary">截止日期：{event.deadline}</p>}
-                              {event.time && <p className="text-sm text-textSecondary">时间：{event.time}</p>}
-                              <p className="text-sm text-textSecondary">奖励：{event.reward}</p>
+                            <div key={idx} className="bg-primaryBg p-3 rounded-acnh text-left">
+                              <h5 className="font-medium text-primary text-left">{event.name}</h5>
+                              {event.deadline && <p className="text-sm text-textSecondary text-left">截止日期：{event.deadline}</p>}
+                              {event.time && <p className="text-sm text-textSecondary text-left">时间：{event.time}</p>}
+                              <p className="text-sm text-textSecondary text-left">奖励：{event.reward}</p>
                             </div>
                           ))}
                         </div>
@@ -130,7 +130,7 @@ function App() {
                       {section.updates && (
                         <div className="space-y-1">
                           {section.updates.map((update, idx) => (
-                            <p key={idx} className="text-sm text-text">{update}</p>
+                            <p key={idx} className="text-sm text-text text-left">{update}</p>
                           ))}
                         </div>
                       )}
