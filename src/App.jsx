@@ -97,16 +97,53 @@ function App() {
               <div className="text-lg text-textSecondary font-medium">今天的天气真不错呢～</div>
             </AnimalTypewriter>
           </div>
+
+          {/* 公告栏折叠面板 */}
+          <div className="max-w-4xl mx-auto mb-6">
+            <h3 className="text-lg font-semibold text-primary mb-3">{announcementConfig.title}</h3>
+            <div className="space-y-2">
+              {announcementConfig.sections.map((section, index) => (
+                <Collapse
+                  key={index}
+                  question={section.title}
+                  answer={
+                    <div className="text-text">
+                      {section.content && (
+                        <ul className="list-disc pl-5 space-y-2">
+                          {section.content.map((item, idx) => (
+                            <li key={idx}>{item}</li>
+                          ))}
+                        </ul>
+                      )}
+                      {section.events && (
+                        <div className="space-y-3">
+                          {section.events.map((event, idx) => (
+                            <div key={idx} className="bg-primaryBg p-3 rounded-acnh">
+                              <h5 className="font-medium text-primary">{event.name}</h5>
+                              {event.deadline && <p className="text-sm text-textSecondary">截止日期：{event.deadline}</p>}
+                              {event.time && <p className="text-sm text-textSecondary">时间：{event.time}</p>}
+                              <p className="text-sm text-textSecondary">奖励：{event.reward}</p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      {section.updates && (
+                        <div className="space-y-1">
+                          {section.updates.map((update, idx) => (
+                            <p key={idx} className="text-sm text-text">{update}</p>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  }
+                />
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* 按钮区域 */}
         <div className="max-w-4xl mx-auto mb-4 flex justify-center gap-4">
-          <button
-            onClick={() => setShowAnnouncement(true)}
-            className="px-6 py-3 bg-primary text-white rounded-acnh hover:bg-primaryHover transition-colors font-medium shadow-acnh animate-bounce-slow"
-          >
-            📢 公告栏
-          </button>
           <button
             onClick={() => {
               const phoneNumber = '18626053382';
@@ -320,49 +357,6 @@ function App() {
                   ))}
               </tbody>
             </table>
-          </div>
-        </div>
-
-        {/* 公告栏折叠面板 */}
-        <div className="mb-6">
-          <h3 className="text-lg font-semibold text-primary mb-3">{announcementConfig.title}</h3>
-          <div className="space-y-2">
-            {announcementConfig.sections.map((section, index) => (
-              <Collapse 
-                key={index}
-                question={section.title} 
-                answer={
-                  <div className="text-text">
-                    {section.content && (
-                      <ul className="list-disc pl-5 space-y-2">
-                        {section.content.map((item, idx) => (
-                          <li key={idx}>{item}</li>
-                        ))}
-                      </ul>
-                    )}
-                    {section.events && (
-                      <div className="space-y-3">
-                        {section.events.map((event, idx) => (
-                          <div key={idx} className="bg-primaryBg p-3 rounded-acnh">
-                            <h5 className="font-medium text-primary">{event.name}</h5>
-                            {event.deadline && <p className="text-sm text-textSecondary">截止日期：{event.deadline}</p>}
-                            {event.time && <p className="text-sm text-textSecondary">时间：{event.time}</p>}
-                            <p className="text-sm text-textSecondary">奖励：{event.reward}</p>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                    {section.updates && (
-                      <div className="space-y-1">
-                        {section.updates.map((update, idx) => (
-                          <p key={idx} className="text-sm text-text">{update}</p>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                } 
-              />
-            ))}
           </div>
         </div>
 
