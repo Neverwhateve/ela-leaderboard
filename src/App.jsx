@@ -331,7 +331,7 @@ function App() {
           width={600}
           closable={true}
           maskClosable={true}
-          footer={null}
+          footer={<Button type="primary" onClick={() => setShowAnnouncement(false)}>我知道了</Button>}
           className="max-h-[80vh] overflow-y-auto sm:max-w-[90vw] sm:max-h-[90vh]"
         >
           <div className="space-y-4" style={{ fontFamily: "'M PLUS Rounded 1c', sans-serif" }}>
