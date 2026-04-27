@@ -458,7 +458,7 @@
   {
     "id": "user_27",
     "name": "Olivia",
-    "displayName": "一团儿ʚ🧸ྀིɞ",
+    "displayName": "一团儿",
     "title": "",
     "xp": 30,
     "points": 0,
@@ -802,6 +802,36 @@
         "amount": 10
       }
     ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_46",
+    "name": "Zoey",
+    "displayName": "z00-00e",
+    "title": "",
+    "xp": 0,
+    "points": 0,
+    "xpHistory": [],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_47",
+    "name": "Dido",
+    "displayName": "无锡荠菜馄饨",
+    "title": "",
+    "xp": 0,
+    "points": 0,
+    "xpHistory": [],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_48",
+    "name": "Lily",
+    "displayName": "啥呀这是",
+    "title": "",
+    "xp": 0,
+    "points": 0,
+    "xpHistory": [],
     "redeemHistory": []
   }
 ]
