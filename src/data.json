@@ -851,5 +851,37 @@
       }
     ],
     "redeemHistory": []
+  },
+  {
+    "id": "user_49",
+    "name": "Heidi",
+    "displayName": "Heidi",
+    "title": "",
+    "xp": 10,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-27",
+        "reason": "新用户注册",
+        "amount": 10
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_50",
+    "name": "Carmen",
+    "displayName": "Carmen",
+    "title": "",
+    "xp": 10,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-27",
+        "reason": "新用户注册",
+        "amount": 10
+      }
+    ],
+    "redeemHistory": []
   }
 ]
