@@ -329,6 +329,7 @@ function App() {
           onClose={() => setShowAnnouncement(false)}
           title={announcementConfig.title}
           width={600}
+          closable={true}
           maskClosable={true}
           footer={null}
           className="max-h-[80vh] overflow-y-auto sm:max-w-[90vw] sm:max-h-[90vh]"
