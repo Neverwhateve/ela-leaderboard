@@ -825,7 +825,7 @@
     "name": "Xiaolan",
     "displayName": "月野子",
     "title": "",
-    "xp": 20,
+    "xp": 35,
     "points": 0,
     "xpHistory": [
       {
@@ -837,6 +837,11 @@
         "date": "2026-04-22",
         "reason": "Outing 九宫图",
         "amount": 10
+      },
+      {
+        "date": "2026-04-27",
+        "reason": "Peer Tips",
+        "amount": 15
       }
     ],
     "redeemHistory": []
