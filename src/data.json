@@ -94,7 +94,7 @@
     "name": "Bryan",
     "displayName": "幼儿园高材生",
     "title": "",
-    "xp": 55,
+    "xp": 70,
     "points": 0,
     "xpHistory": [
       {
@@ -104,8 +104,8 @@
       },
       {
         "date": "2026-04-25",
-        "reason": "三封邮件的含金量",
-        "amount": 45
+        "reason": "四封邮件的含金量",
+        "amount": 60
       }
     ],
     "redeemHistory": []
@@ -883,9 +883,14 @@
     "name": "Yoyo",
     "displayName": "YOYO",
     "title": "",
-    "xp": 10,
+    "xp": 20,
     "points": 0,
     "xpHistory": [
+      {
+        "date": "2026-04-22",
+        "reason": "Outing 九宫图",
+        "amount": 10
+      },
       {
         "date": "2026-04-27",
         "reason": "新用户注册",
