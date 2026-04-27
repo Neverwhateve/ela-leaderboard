@@ -987,5 +987,26 @@
       }
     ],
     "redeemHistory": []
+  },
+  {
+    "id": "user_55",
+    "name": "Xiaoxiao",
+    "displayName": "Daddy",
+    "title": "",
+    "xp": 20,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-26",
+        "reason": "新用户注册",
+        "amount": 10
+      },
+      {
+        "date": "2026-04-22",
+        "reason": "Outing 九宫图",
+        "amount": 10
+      }
+    ],
+    "redeemHistory": []
   }
 ]
