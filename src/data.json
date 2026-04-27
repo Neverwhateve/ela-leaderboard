@@ -89,13 +89,23 @@
     "name": "Candy",
     "displayName": "Candy",
     "title": "",
-    "xp": 10,
+    "xp": 40,
     "points": 0,
     "xpHistory": [
       {
         "date": "2026-04-21",
         "reason": "新用户注册",
         "amount": 10
+      },
+      {
+        "date": "2026-04-21",
+        "reason": "Outing 九宫图",
+        "amount": 10
+      },
+      {
+        "date": "2026-04-24",
+        "reason": "DD 分享",
+        "amount": 20
       }
     ],
     "redeemHistory": []
@@ -740,6 +750,54 @@
     "xpHistory": [
       {
         "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_43",
+    "name": "Max",
+    "displayName": "马化藤",
+    "title": "",
+    "xp": 10,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-27",
+        "reason": "新用户注册",
+        "amount": 10
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_44",
+    "name": "ya",
+    "displayName": "ya",
+    "title": "",
+    "xp": 10,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-27",
+        "reason": "新用户注册",
+        "amount": 10
+      }
+    ],
+    "redeemHistory": []
+  },
+  {
+    "id": "user_45",
+    "name": "Tina",
+    "displayName": "大顺",
+    "title": "",
+    "xp": 10,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-27",
         "reason": "新用户注册",
         "amount": 10
       }
