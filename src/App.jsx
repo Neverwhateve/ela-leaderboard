@@ -34,12 +34,21 @@ function App() {
   const [showAnnouncement, setShowAnnouncement] = useState(false);
   const [leaderboardType, setLeaderboardType] = useState('total'); // total, month, week
   const [expandedUsers, setExpandedUsers] = useState({}); // 追踪展开的用户
+  const [expandedSections, setExpandedSections] = useState({}); // 追踪公告栏各章节展开状态
 
   // 处理折叠面板展开/收起
   const toggleUserExpand = (userId) => {
     setExpandedUsers(prev => ({
       ...prev,
       [userId]: !prev[userId]
+    }));
+  };
+
+  // 处理公告栏章节折叠展开/收起
+  const toggleSectionExpand = (index) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [index]: !prev[index]
     }));
   };
 
@@ -323,54 +332,72 @@ function App() {
           </div>
         </div>
 
-        {/* 公告栏弹窗 */}
-        <Modal
-          open={showAnnouncement}
-          onClose={() => setShowAnnouncement(false)}
-          title={announcementConfig.title}
-          width={600}
-          closable={true}
-          maskClosable={true}
-          footer={<Button type="primary" onClick={() => setShowAnnouncement(false)}>我知道了</Button>}
-          className="max-h-[80vh] overflow-y-auto sm:max-w-[90vw] sm:max-h-[90vh]"
-        >
-          <div className="space-y-4" style={{ fontFamily: "'M PLUS Rounded 1c', sans-serif" }}>
-            {announcementConfig.sections.map((section, index) => (
-              <div key={index} className="bg-primaryBg p-4 rounded-acnh">
-                <h4 className="text-lg font-semibold text-primary mb-2">{section.title}</h4>
-                
-                {section.content && (
-                  <ul className="list-disc pl-5 space-y-2 text-text">
-                    {section.content.map((item, idx) => (
-                      <li key={idx}>{item}</li>
-                    ))}
-                  </ul>
-                )}
-                
-                {section.events && (
-                  <div className="space-y-3">
-                    {section.events.map((event, idx) => (
-                      <div key={idx} className="bg-white p-3 rounded-acnh shadow-acnh-sm">
-                        <h5 className="font-medium text-primary">{event.name}</h5>
-                        {event.deadline && <p className="text-sm text-textSecondary">截止日期：{event.deadline}</p>}
-                        {event.time && <p className="text-sm text-textSecondary">时间：{event.time}</p>}
-                        <p className="text-sm text-textSecondary">奖励：{event.reward}</p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-                
-                {section.updates && (
-                  <div className="space-y-1">
-                    {section.updates.map((update, idx) => (
-                      <p key={idx} className="text-sm text-text">{update}</p>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
+        {/* 公告栏折叠面板 */}
+        <div className="bg-primaryBg rounded-acnh p-4 mb-6">
+          <div 
+            className="flex justify-between items-center cursor-pointer"
+            onClick={() => setShowAnnouncement(!showAnnouncement)}
+          >
+            <h3 className="text-lg font-semibold text-primary">{announcementConfig.title}</h3>
+            <span className={`transform transition-transform duration-300 ${showAnnouncement ? 'rotate-180' : ''}`}>
+              ▼
+            </span>
           </div>
-        </Modal>
+          
+          <div className={`overflow-hidden transition-all duration-300 ease-out ${showAnnouncement ? 'max-h-[2000px] opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
+            <div className="space-y-3" style={{ fontFamily: "'M PLUS Rounded 1c', sans-serif" }}>
+              {announcementConfig.sections.map((section, index) => (
+                <div key={index} className="bg-white rounded-acnh overflow-hidden">
+                  <div 
+                    className="p-3 cursor-pointer flex justify-between items-center bg-primaryBg"
+                    onClick={() => toggleSectionExpand(index)}
+                  >
+                    <span className="font-semibold text-primary">{section.title}</span>
+                    <span className={`transform transition-transform duration-200 ${expandedSections[index] ? 'rotate-180' : ''}`}>
+                      🌟
+                    </span>
+                  </div>
+                  
+                  <div className={`overflow-hidden transition-all duration-200 ease-out ${expandedSections[index] ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
+                    <div className="p-3">
+                      {section.content && (
+                        <ul className="list-disc pl-5 space-y-2 text-text">
+                          {section.content.map((item, idx) => (
+                            <li key={idx}>{item}</li>
+                          ))}
+                        </ul>
+                      )}
+                      
+                      {section.events && (
+                        <div className="space-y-3">
+                          {section.events.map((event, idx) => (
+                            <div key={idx} className="bg-primaryBg p-3 rounded-acnh">
+                              <h5 className="font-medium text-primary">{event.name}</h5>
+                              {event.deadline && <p className="text-sm text-textSecondary">截止日期：{event.deadline}</p>}
+                              {event.time && <p className="text-sm text-textSecondary">时间：{event.time}</p>}
+                              <p className="text-sm text-textSecondary">奖励：{event.reward}</p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      
+                      {section.updates && (
+                        <div className="space-y-1">
+                          {section.updates.map((update, idx) => (
+                            <p key={idx} className="text-sm text-text">{update}</p>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+              <div className="text-center pt-2">
+                <Button type="primary" onClick={() => setShowAnnouncement(false)}>我知道了</Button>
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* 底部 */}
         <div className="mt-12">
