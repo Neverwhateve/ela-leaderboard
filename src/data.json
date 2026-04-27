@@ -94,12 +94,17 @@
     "name": "Bryan",
     "displayName": "幼儿园高材生",
     "title": "",
-    "xp": 70,
+    "xp": 80,
     "points": 0,
     "xpHistory": [
       {
         "date": "2026-04-21",
         "reason": "新用户注册",
+        "amount": 10
+      },
+      {
+        "date": "2026-04-22",
+        "reason": "Outing 九宫图",
         "amount": 10
       },
       {
@@ -311,12 +316,17 @@
     "name": "Gina",
     "displayName": "金佰利",
     "title": "",
-    "xp": 10,
+    "xp": 20,
     "points": 0,
     "xpHistory": [
       {
         "date": "2026-04-21",
         "reason": "新用户注册",
+        "amount": 10
+      },
+      {
+        "date": "2026-04-21",
+        "reason": "Outing 九宫图",
         "amount": 10
       }
     ],
@@ -425,7 +435,7 @@
   },
   {
     "id": "user_25",
-    "name": "joy",
+    "name": "Joy",
     "displayName": "陶瓷女工",
     "title": "",
     "xp": 10,
@@ -433,7 +443,7 @@
     "xpHistory": [
       {
         "date": "2026-04-21",
-        "reason": "新用户注册",
+        "reason": "Outing 九宫图",
         "amount": 10
       }
     ],
@@ -566,12 +576,12 @@
     "xpHistory": [
       {
         "date": "2026-04-21",
-        "reason": "Outing 九宫图",
+        "reason": "新用户注册",
         "amount": 10
       },
       {
         "date": "2026-04-21",
-        "reason": "新用户注册",
+        "reason": "Outing 九宫图",
         "amount": 10
       }
     ],
