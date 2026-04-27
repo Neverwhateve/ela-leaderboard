@@ -438,9 +438,14 @@
     "name": "Joy",
     "displayName": "陶瓷女工",
     "title": "",
-    "xp": 10,
+    "xp": 20,
     "points": 0,
     "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "新用户注册",
+        "amount": 10
+      },
       {
         "date": "2026-04-21",
         "reason": "Outing 九宫图",
