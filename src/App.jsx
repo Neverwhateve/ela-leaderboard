@@ -100,7 +100,22 @@ function App() {
 
           {/* 公告栏折叠面板 */}
           <div className="max-w-4xl mx-auto mb-6">
-            <h3 className="text-lg font-semibold text-primary mb-3">{announcementConfig.title}</h3>
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-lg font-semibold text-primary">{announcementConfig.title}</h3>
+              <button
+                onClick={() => {
+                  const phoneNumber = '18626053382';
+                  const today = new Date();
+                  const date = today.toISOString().split('T')[0];
+                  const message = `提交积分！\n日期：${date}\n我是：`;
+                  const smsUrl = `sms:${phoneNumber}?body=${encodeURIComponent(message)}`;
+                  window.location.href = smsUrl;
+                }}
+                className="px-6 py-3 bg-primary text-white rounded-acnh hover:bg-primaryHover transition-colors font-medium shadow-acnh animate-bounce-slow"
+              >
+                📝 提交积分
+              </button>
+            </div>
             <div className="space-y-2">
               {announcementConfig.sections.map((section, index) => (
                 <Collapse
@@ -140,23 +155,6 @@ function App() {
               ))}
             </div>
           </div>
-        </div>
-
-        {/* 按钮区域 */}
-        <div className="max-w-4xl mx-auto mb-4 flex justify-center gap-4">
-          <button
-            onClick={() => {
-              const phoneNumber = '18626053382';
-              const today = new Date();
-              const date = today.toISOString().split('T')[0];
-              const message = `提交积分！\n日期：${date}\n我是：`;
-              const smsUrl = `sms:${phoneNumber}?body=${encodeURIComponent(message)}`;
-              window.location.href = smsUrl;
-            }}
-            className="px-6 py-3 bg-primary text-white rounded-acnh hover:bg-primaryHover transition-colors font-medium shadow-acnh animate-bounce-slow"
-          >
-            📝 提交积分
-          </button>
         </div>
 
         <Divider type="wave-yellow" className="my-6" />
