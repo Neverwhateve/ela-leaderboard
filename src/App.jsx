@@ -68,10 +68,21 @@ function App() {
   };
 
   const handleSearch = () => {
-    const result = users.find(user => 
-      user.displayName === searchName
+    if (!searchName.trim()) {
+      setSearchResult(null);
+      return;
+    }
+    const searchLower = searchName.toLowerCase();
+    const results = users.filter(user =>
+      user.displayName.toLowerCase().includes(searchLower)
     );
-    setSearchResult(result);
+    if (results.length === 1) {
+      setSearchResult(results[0]);
+    } else if (results.length > 1) {
+      setSearchResult({ isMultiple: true, matches: results });
+    } else {
+      setSearchResult(null);
+    }
   };
 
   if (loading) {
@@ -177,50 +188,70 @@ function App() {
 
           {searchResult && (
             <div className="mt-6 bg-primaryBg rounded-acnh p-4 border-2 border-primary">
-              <h3 className="text-xl font-semibold mb-3 text-primary">{searchResult.displayName}</h3>
-              <div className="grid grid-cols-2 gap-4 mb-4">
-                <div className="bg-white p-4 rounded-acnh shadow-acnh-sm">
-                  <p className="text-textSecondary">经验值 (XP)</p>
-                  <p className="text-2xl font-bold text-primary">{searchResult.xp}</p>
-                  <p className="text-sm text-textSecondary">{searchResult.title || '无称号'}</p>
-                </div>
-                <div className="bg-white p-4 rounded-acnh shadow-acnh-sm">
-                  <p className="text-textSecondary">可用积分</p>
-                  <p className="text-2xl font-bold text-warning">{searchResult.xp - (searchResult.points || 0)}</p>
-                </div>
-              </div>
-              
-              <div className="mb-4">
-                <h4 className="text-lg font-semibold mb-2 text-primary">经验值记录</h4>
-                <div className="bg-white rounded-acnh p-4 max-h-40 overflow-y-auto shadow-acnh-sm">
-                  {searchResult.xpHistory && searchResult.xpHistory.length > 0 ? (
-                    searchResult.xpHistory.map((record, index) => (
-                      <div key={index} className="flex justify-between text-sm py-1">
-                        <span>{record.date} - {record.reason}</span>
-                        <span className="text-success font-bold">+{record.amount}</span>
+              {searchResult.isMultiple ? (
+                <>
+                  <h3 className="text-xl font-semibold mb-3 text-primary">找到多个匹配的玩家</h3>
+                  <div className="space-y-2">
+                    {searchResult.matches.map((user, index) => (
+                      <div
+                        key={index}
+                        className="bg-white p-3 rounded-acnh cursor-pointer hover:bg-primaryBg transition-colors shadow-acnh-sm"
+                        onClick={() => setSearchResult(user)}
+                      >
+                        <span className="text-lg text-primary font-medium">{user.displayName}</span>
+                        <span className="text-sm text-textSecondary ml-2">🌟 {user.xp} XP</span>
                       </div>
-                    ))
-                  ) : (
-                    <p className="text-textDisabled text-sm">暂无记录</p>
-                  )}
-                </div>
-              </div>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <h3 className="text-xl font-semibold mb-3 text-primary">{searchResult.displayName}</h3>
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div className="bg-white p-4 rounded-acnh shadow-acnh-sm">
+                      <p className="text-textSecondary">经验值 (XP)</p>
+                      <p className="text-2xl font-bold text-primary">{searchResult.xp}</p>
+                      <p className="text-sm text-textSecondary">{searchResult.title || '无称号'}</p>
+                    </div>
+                    <div className="bg-white p-4 rounded-acnh shadow-acnh-sm">
+                      <p className="text-textSecondary">可用积分</p>
+                      <p className="text-2xl font-bold text-warning">{searchResult.xp - (searchResult.points || 0)}</p>
+                    </div>
+                  </div>
 
-              <div>
-                <h4 className="text-lg font-semibold mb-2 text-primary">积分兑换记录</h4>
-                <div className="bg-white rounded-acnh p-4 max-h-40 overflow-y-auto shadow-acnh-sm">
-                  {searchResult.redeemHistory && searchResult.redeemHistory.length > 0 ? (
-                    searchResult.redeemHistory.map((record, index) => (
-                      <div key={index} className="flex justify-between text-sm py-1">
-                        <span>{record.date} - {record.item}</span>
-                        <span className="text-error font-bold">-{record.points}</span>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-textDisabled text-sm">暂无兑换记录</p>
-                  )}
-                </div>
-              </div>
+                  <div className="mb-4">
+                    <h4 className="text-lg font-semibold mb-2 text-primary">经验值记录</h4>
+                    <div className="bg-white rounded-acnh p-4 max-h-40 overflow-y-auto shadow-acnh-sm">
+                      {searchResult.xpHistory && searchResult.xpHistory.length > 0 ? (
+                        searchResult.xpHistory.map((record, index) => (
+                          <div key={index} className="flex justify-between text-sm py-1">
+                            <span>{record.date} - {record.reason}</span>
+                            <span className="text-success font-bold">+{record.amount}</span>
+                          </div>
+                        ))
+                      ) : (
+                        <p className="text-textDisabled text-sm">暂无记录</p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="text-lg font-semibold mb-2 text-primary">积分兑换记录</h4>
+                    <div className="bg-white rounded-acnh p-4 max-h-40 overflow-y-auto shadow-acnh-sm">
+                      {searchResult.redeemHistory && searchResult.redeemHistory.length > 0 ? (
+                        searchResult.redeemHistory.map((record, index) => (
+                          <div key={index} className="flex justify-between text-sm py-1">
+                            <span>{record.date} - {record.item}</span>
+                            <span className="text-error font-bold">-{record.points}</span>
+                          </div>
+                        ))
+                      ) : (
+                        <p className="text-textDisabled text-sm">暂无兑换记录</p>
+                      )}
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           )}
         </div>
