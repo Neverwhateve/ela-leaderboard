@@ -966,5 +966,21 @@
       }
     ],
     "redeemHistory": []
+  },
+  {
+    "id": "user_54",
+    "name": "Sally",
+    "displayName": "最好的地方II有我一票",
+    "title": "",
+    "xp": 10,
+    "points": 0,
+    "xpHistory": [
+      {
+        "date": "2026-04-21",
+        "reason": "Outing 九宫图",
+        "amount": 10
+      }
+    ],
+    "redeemHistory": []
   }
 ]
