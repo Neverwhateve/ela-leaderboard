@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Time, Cursor, Modal, Footer, Divider, Button, Typewriter as AnimalTypewriter, Collapse } from 'animal-island-ui';
 import 'animal-island-ui/style';
 import { announcementConfig } from './announcementConfig';
+import LaborDayEvent from './LaborDayEvent';
 
 import usersData from './data.json';
 
@@ -32,8 +33,9 @@ function App() {
   const [searchResult, setSearchResult] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showAnnouncement, setShowAnnouncement] = useState(false);
-  const [leaderboardType, setLeaderboardType] = useState('total'); // total, month, week
-  const [expandedUsers, setExpandedUsers] = useState({}); // 追踪展开的用户
+  const [leaderboardType, setLeaderboardType] = useState('total');
+  const [currentPage, setCurrentPage] = useState('home'); // total, month, week
+  const [expandedUsers, setExpandedUsers] = useState({});
 
   // 处理折叠面板展开/收起
   const toggleUserExpand = (userId) => {
@@ -95,6 +97,9 @@ function App() {
 
   return (
     <Cursor>
+      {currentPage === 'laborDay' ? (
+        <LaborDayEvent onBack={() => setCurrentPage('home')} />
+      ) : (
       <div className="min-h-screen p-4 md:p-8 bg-bg font-acnh text-text">
         {/* 头部 */}
         <div className="text-center mb-8">
@@ -102,6 +107,16 @@ function App() {
           <div className="flex justify-center mb-4">
             <Time />
           </div>
+          <button
+            onClick={() => setCurrentPage('laborDay')}
+            className="mb-4 transform hover:scale-105 transition-transform duration-200"
+          >
+            <img 
+              src="/Apple-5.1.png" 
+              alt="五一活动" 
+              className="h-16 md:h-20 w-auto object-contain"
+            />
+          </button>
           <div className="mb-6">
             <AnimalTypewriter speed={100}>
               <div className="text-lg text-textSecondary font-medium">你好，欢迎来到丰富人生学院！</div>
@@ -402,6 +417,7 @@ function App() {
           </div>
         </div>
       </div>
+      )}
     </Cursor>
   );
 }

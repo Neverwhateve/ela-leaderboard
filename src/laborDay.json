@@ -1,0 +1,282 @@
+{
+  "eventName": "五一劳动节特别活动",
+  "eventDateRange": "2026-05-01 至 2026-05-05",
+  "eventDescription": "五一假期期间的特殊活动积分，不计入总积分，单独计算排名！",
+  "participants": [
+    {
+      "id": "user_1",
+      "displayName": "冃半",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_2",
+      "displayName": "扭啊扭",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_3",
+      "displayName": "没奶油的奥利奥",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_4",
+      "displayName": "Siyue",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_5",
+      "displayName": "Flash",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_6",
+      "displayName": "幼儿园高材生",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_7",
+      "displayName": "Candy",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_8",
+      "displayName": "Carmen",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_9",
+      "displayName": "宫西西",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_10",
+      "displayName": "机智的小胖哥",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_11",
+      "displayName": "川川",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_12",
+      "displayName": "漫野雏菊",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_13",
+      "displayName": "宇宙当红炸子鸡😎",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_14",
+      "displayName": "无锡荠菜馄饨",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_15",
+      "displayName": "déjà vu",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_16",
+      "displayName": "时间管理大师",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_17",
+      "displayName": "千万别声张先生",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_18",
+      "displayName": "金佰利",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_19",
+      "displayName": "Grace",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_20",
+      "displayName": "Heidi",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_21",
+      "displayName": "羊没吐气",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_22",
+      "displayName": "森森",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_23",
+      "displayName": "二朵龙",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_24",
+      "displayName": "阿油几亩菜",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_25",
+      "displayName": "陶瓷女工",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_26",
+      "displayName": "すみません",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_27",
+      "displayName": "小黄努力减肥",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_28",
+      "displayName": "爆炸瓜",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_29",
+      "displayName": "Lily",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_30",
+      "displayName": "黎晚",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_31",
+      "displayName": "马化藤",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_32",
+      "displayName": "Mediha",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_33",
+      "displayName": "花果山小母猴",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_34",
+      "displayName": "QQ少爷",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_35",
+      "displayName": "一团儿",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_36",
+      "displayName": "不是艺术家",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_37",
+      "displayName": "满山猴子我腚最红",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_38",
+      "displayName": "Rik",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_39",
+      "displayName": "陶喆演唱会抢票超人",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_40",
+      "displayName": "艺臻",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_41",
+      "displayName": "七七",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_42",
+      "displayName": "于适的老公",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_43",
+      "displayName": "大顺",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_44",
+      "displayName": "山竹",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_45",
+      "displayName": "皮卡丨皮卡",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_46",
+      "displayName": "Vincent",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_47",
+      "displayName": "月野子",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_48",
+      "displayName": "ya",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_49",
+      "displayName": "3199",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_50",
+      "displayName": "YOYO",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_51",
+      "displayName": "毛腿吴彦祖",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_52",
+      "displayName": "周芳菲",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_53",
+      "displayName": "Zoey",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_54",
+      "displayName": "最好的地方II有我一票",
+      "laborDayXP": 0
+    },
+    {
+      "id": "user_55",
+      "displayName": "Daddy",
+      "laborDayXP": 0
+    }
+  ]
+}
