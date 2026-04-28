@@ -100,10 +100,22 @@ function App() {
       {currentPage === 'laborDay' ? (
         <LaborDayEvent onBack={() => setCurrentPage('home')} />
       ) : (
-      <div className="min-h-screen p-4 md:p-8 bg-bg font-acnh text-text">
+      <div className="min-h-screen p-4 md:p-8 font-acnh text-text relative">
         {/* 头部 */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-primary mb-2 animate-float">ELA 积分榜</h1>
+          <h1
+            className="mb-2 animate-float"
+            style={{
+              fontFamily: "Nunito, 'Zen Maru Gothic', -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif",
+              fontSize: 'clamp(2.5rem, 5vw, 60px)',
+              fontWeight: 800,
+              lineHeight: 1.1,
+              color: '#FFF9E6',
+              textShadow: '0px 4px 1px rgba(0, 0, 0, 0.4)',
+            }}
+          >
+            ELA 积分榜
+          </h1>
           <div className="flex justify-center mb-4">
             <Time />
           </div>
@@ -119,15 +131,37 @@ function App() {
           </button>
           <div className="mb-6">
             <AnimalTypewriter speed={100}>
-              <div className="text-lg text-textSecondary font-medium">你好，欢迎来到丰富人生学院！</div>
-              <div className="text-lg text-textSecondary font-medium">今天的天气真不错呢～</div>
+              <div style={{
+                fontFamily: "Nunito, 'Zen Maru Gothic', -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif",
+                fontSize: '17px',
+                fontWeight: 500,
+                color: '#7c5734',
+                lineHeight: 1.7,
+                margin: 0,
+              }}>你好，欢迎来到丰富人生学院！</div>
+              <div style={{
+                fontFamily: "Nunito, 'Zen Maru Gothic', -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif",
+                fontSize: '17px',
+                fontWeight: 500,
+                color: '#7c5734',
+                lineHeight: 1.7,
+                margin: 0,
+              }}>今天的天气真不错呢～</div>
             </AnimalTypewriter>
           </div>
 
           {/* 公告栏折叠面板 */}
           <div className="max-w-4xl mx-auto mb-6">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-lg font-semibold text-primary">{announcementConfig.title}</h3>
+              <h3 style={{
+                fontFamily: "Nunito, 'Zen Maru Gothic', -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif",
+                fontSize: '24px',
+                fontWeight: 700,
+                color: '#725d42',
+                margin: 0,
+                marginBottom: '8px',
+                textAlign: 'center',
+              }}>{announcementConfig.title}</h3>
               <button
                 onClick={() => {
                   const phoneNumber = '18626053382';
@@ -186,8 +220,15 @@ function App() {
         <Divider type="wave-yellow" className="my-6" />
 
         {/* 个人查询 */}
-        <div className="max-w-2xl mx-auto mb-8 bg-white rounded-acnh p-6 shadow-acnh">
-          <h2 className="text-2xl font-semibold text-primary mb-4">个人查询</h2>
+        <div className="max-w-2xl mx-auto mb-8 rounded-acnh p-6 shadow-acnh" style={{ backgroundColor: '#f7f3df' }}>
+          <h2 style={{
+            fontFamily: "Nunito, 'Zen Maru Gothic', -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif",
+            fontSize: '24px',
+            fontWeight: 700,
+            color: '#725d42',
+            margin: 0,
+            marginBottom: '8px',
+          }}>个人查询</h2>
           <div className="flex flex-col md:flex-row gap-4">
             <input
               type="text"
@@ -210,7 +251,8 @@ function App() {
                     {searchResult.matches.map((user, index) => (
                       <div
                         key={index}
-                        className="bg-white p-3 rounded-acnh cursor-pointer hover:bg-primaryBg transition-colors shadow-acnh-sm"
+                        className="p-3 rounded-acnh cursor-pointer hover:bg-primaryBg transition-colors shadow-acnh-sm"
+                        style={{ backgroundColor: '#f7f3df' }}
                         onClick={() => setSearchResult(user)}
                       >
                         <span className="text-lg text-primary font-medium">{user.displayName}</span>
@@ -223,12 +265,12 @@ function App() {
                 <>
                   <h3 className="text-xl font-semibold mb-3 text-primary">{searchResult.displayName}</h3>
                   <div className="grid grid-cols-2 gap-4 mb-4">
-                    <div className="bg-white p-4 rounded-acnh shadow-acnh-sm">
+                    <div className="p-4 rounded-acnh shadow-acnh-sm" style={{ backgroundColor: '#f7f3df' }}>
                       <p className="text-textSecondary">经验值 (XP)</p>
                       <p className="text-2xl font-bold text-primary">{searchResult.xp}</p>
                       <p className="text-sm text-textSecondary">{searchResult.title || '无称号'}</p>
                     </div>
-                    <div className="bg-white p-4 rounded-acnh shadow-acnh-sm">
+                    <div className="p-4 rounded-acnh shadow-acnh-sm" style={{ backgroundColor: '#f7f3df' }}>
                       <p className="text-textSecondary">可用积分</p>
                       <p className="text-2xl font-bold text-warning">{searchResult.xp - (searchResult.points || 0)}</p>
                     </div>
@@ -236,7 +278,7 @@ function App() {
 
                   <div className="mb-4">
                     <h4 className="text-lg font-semibold mb-2 text-primary">经验值记录</h4>
-                    <div className="bg-white rounded-acnh p-4 max-h-40 overflow-y-auto shadow-acnh-sm">
+                    <div className="rounded-acnh p-4 max-h-40 overflow-y-auto shadow-acnh-sm" style={{ backgroundColor: '#f7f3df' }}>
                       {searchResult.xpHistory && searchResult.xpHistory.length > 0 ? (
                         searchResult.xpHistory.map((record, index) => (
                           <div key={index} className="flex justify-between text-sm py-1">
@@ -252,7 +294,7 @@ function App() {
 
                   <div>
                     <h4 className="text-lg font-semibold mb-2 text-primary">积分兑换记录</h4>
-                    <div className="bg-white rounded-acnh p-4 max-h-40 overflow-y-auto shadow-acnh-sm">
+                    <div className="rounded-acnh p-4 max-h-40 overflow-y-auto shadow-acnh-sm" style={{ backgroundColor: '#f7f3df' }}>
                       {searchResult.redeemHistory && searchResult.redeemHistory.length > 0 ? (
                         searchResult.redeemHistory.map((record, index) => (
                           <div key={index} className="flex justify-between text-sm py-1">
@@ -272,9 +314,16 @@ function App() {
         </div>
 
         {/* 排行榜 */}
-        <div className="max-w-4xl mx-auto bg-white rounded-acnh p-6 shadow-acnh mb-8">
+        <div className="max-w-4xl mx-auto rounded-acnh p-6 shadow-acnh mb-8" style={{ backgroundColor: '#f7f3df' }}>
           <div className="flex flex-col md:flex-row justify-between items-center mb-6">
-            <h2 className="text-2xl font-semibold text-primary mb-4 md:mb-0">排行榜</h2>
+            <h2 style={{
+              fontFamily: "Nunito, 'Zen Maru Gothic', -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif",
+              fontSize: '24px',
+              fontWeight: 700,
+              color: '#725d42',
+              margin: 0,
+              marginBottom: '8px',
+            }}>排行榜</h2>
             <div className="flex gap-2">
               <Button 
                 type={leaderboardType === 'total' ? 'primary' : 'default'} 
@@ -359,7 +408,7 @@ function App() {
                       {user.rank <= 3 && expandedUsers[user.id] && (
                         <tr key={`${user.id}-expanded`}>
                           <td colSpan="4" className="p-2 bg-primaryBg">
-                            <div className="bg-white rounded-acnh overflow-hidden">
+                            <div className="rounded-acnh overflow-hidden" style={{ backgroundColor: '#f7f3df' }}>
                               <div 
                                 className="p-3 cursor-pointer flex justify-between items-center"
                                 onClick={() => toggleUserExpand(user.id)}

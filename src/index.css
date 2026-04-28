@@ -49,11 +49,19 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background: var(--animal-bg-color);
   font-family: 'M PLUS Rounded 1c', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: var(--animal-text-color);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: url('/home_bg.webp') 0 0 / auto repeat, #7DC395;
+  animation: bgScroll 80s linear infinite;
+  position: relative;
+  overflow-x: hidden;
+}
+
+@keyframes bgScroll {
+  0% { background-position: 100% 0%; }
+  100% { background-position: 0% 100%; }
 }
 
 .glassmorphism {
@@ -77,4 +85,6 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
+  z-index: 1;
 }
