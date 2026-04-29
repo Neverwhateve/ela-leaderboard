@@ -16,8 +16,9 @@ export const announcementConfig = {
     {
       "title": "特殊活动",
       "content": [
-        "Outing 九宫图：上传分享 +10积分",
-        "截止日期：2026-04-30"
+        "Outing 九宫图：上传分享 +10积分。截止日期：2026-04-30",
+        "观看 Town Hall 视频：+5积分",
+        "藏宝图：Forum 硬盘 - 丰富人生学院 里有三份秘籍，修炼有成 +20积分"
       ]
     },
     {
