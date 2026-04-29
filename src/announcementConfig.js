@@ -24,7 +24,8 @@ export const announcementConfig = {
     {
       "title": "悬赏任务",
       "content": [
-        "家人共享与儿童账户：整理并分享知识 +20积分"
+        "家人共享与儿童账户：整理并分享知识 +20积分",
+        "Creator Studio 演示与分享：每个 app +10积分",
         
       ]
     }

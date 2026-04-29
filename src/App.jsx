@@ -3,8 +3,9 @@ import { Time, Cursor, Modal, Footer, Divider, Button, Typewriter as AnimalTypew
 import 'animal-island-ui/style';
 import { announcementConfig } from './announcementConfig';
 import LaborDayEvent from './LaborDayEvent';
+import Danmaku from './components/Danmaku';
 
-import usersData from './data.json';
+import data from './data.json';
 
 const calculateLevel = (xp) => {
   if (xp >= 300) return 'Lv3';
@@ -36,6 +37,13 @@ function App() {
   const [leaderboardType, setLeaderboardType] = useState('total');
   const [currentPage, setCurrentPage] = useState('home'); // total, month, week
   const [expandedUsers, setExpandedUsers] = useState({});
+  const [latestRecords, setLatestRecords] = useState([]);
+  const [playDanmaku, setPlayDanmaku] = useState(false);
+
+  const handlePlayDanmaku = () => {
+    setPlayDanmaku(false);
+    setTimeout(() => setPlayDanmaku(true), 100);
+  };
 
   // 处理折叠面板展开/收起
   const toggleUserExpand = (userId) => {
@@ -46,7 +54,8 @@ function App() {
   };
 
   useEffect(() => {
-    setUsers(usersData);
+    setUsers(data.users);
+    setLatestRecords(data.latestRecords || []);
     setLoading(false);
   }, []);
 
@@ -101,6 +110,7 @@ function App() {
         <LaborDayEvent onBack={() => setCurrentPage('home')} />
       ) : (
       <div className="min-h-screen p-4 md:p-8 font-acnh text-text relative">
+        <Danmaku records={latestRecords} play={playDanmaku} />
         {/* 头部 */}
         <div className="text-center mb-8">
           <h1
@@ -316,14 +326,27 @@ function App() {
         {/* 排行榜 */}
         <div className="max-w-4xl mx-auto rounded-acnh p-6 shadow-acnh mb-8" style={{ backgroundColor: '#f7f3df' }}>
           <div className="flex flex-col md:flex-row justify-between items-center mb-6">
-            <h2 style={{
-              fontFamily: "Nunito, 'Zen Maru Gothic', -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif",
-              fontSize: '24px',
-              fontWeight: 700,
-              color: '#725d42',
-              margin: 0,
-              marginBottom: '8px',
-            }}>排行榜</h2>
+            <div className="flex items-center justify-center gap-2 mb-4 md:mb-0">
+              <h2 
+                className="md:translate-x-0"
+                style={{
+                  fontFamily: "Nunito, 'Zen Maru Gothic', -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif",
+                  fontSize: '24px',
+                  fontWeight: 700,
+                  color: '#725d42',
+                  margin: 0,
+                  transform: 'translateX(7px)',
+                }}
+              >排行榜</h2>
+              <span 
+                onClick={handlePlayDanmaku}
+                className="text-2xl cursor-pointer hover:scale-125 transition-transform duration-200 md:translate-x-0"
+                title="点击播放弹幕"
+                style={{ transform: 'translateX(5px)' }}
+              >
+                🎉
+              </span>
+            </div>
             <div className="flex gap-2">
               <Button 
                 type={leaderboardType === 'total' ? 'primary' : 'default'} 

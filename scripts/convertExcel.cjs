@@ -86,8 +86,32 @@ if (redeemSheet) {
   });
 }
 
+let latestRecords = [];
+if (historySheet) {
+  const historyData = XLSX.utils.sheet_to_json(historySheet);
+  const last10Records = historyData.slice(-10);
+  
+  last10Records.forEach(record => {
+    const userName = record['姓名'];
+    const user = users.find(u => u.name === userName || u.displayName === userName);
+    
+    if (user) {
+      latestRecords.push({
+        displayName: user.displayName,
+        date: excelDateToString(record['日期']),
+        reason: record['原因'] || '',
+        amount: parseInt(record['经验值变化']) || 0
+      });
+    }
+  });
+}
+
 const outputPath = path.join(__dirname, '../src/data.json');
-fs.writeFileSync(outputPath, JSON.stringify(users, null, 2), 'utf-8');
+const outputData = {
+  users,
+  latestRecords
+};
+fs.writeFileSync(outputPath, JSON.stringify(outputData, null, 2), 'utf-8');
 
 console.log(`✅ Excel转换完成，生成了 ${users.length} 条记录`);
 console.log(`📊 数据统计：`);
