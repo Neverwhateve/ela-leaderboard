@@ -129,16 +129,6 @@ function App() {
           <div className="flex justify-center mb-4">
             <Time />
           </div>
-          <button
-            onClick={() => setCurrentPage('laborDay')}
-            className="mb-4 transform hover:scale-105 transition-transform duration-200"
-          >
-            <img 
-              src="/Apple-5.1.png" 
-              alt="五一活动" 
-              className="h-16 md:h-20 w-auto object-contain"
-            />
-          </button>
           <div className="mb-6">
             <AnimalTypewriter speed={100}>
               <div style={{
@@ -194,11 +184,46 @@ function App() {
                   answer={
                     <div className="text-text text-left">
                       {section.content && (
-                        <ul className="list-disc pl-5 space-y-2 text-left">
-                          {section.content.map((item, idx) => (
-                            <li key={idx} className="text-left">{item}</li>
-                          ))}
-                        </ul>
+                        <div className="space-y-2 text-left">
+                          {section.content.map((item, idx) => {
+                            // 判断是否是标题行（以 emoji 开头或空行）
+                            const isTitle = item.startsWith('🎉') || item.startsWith('🎊') || item.startsWith('📢') || item.startsWith('📈') || item.trim() === '';
+                            const isNumbered = /^\d+\./.test(item.trim());
+                            const isDivider = item.trim() === '---';
+                            
+                            if (item.trim() === '') {
+                              return <div key={idx} className="h-2"></div>;
+                            }
+                            
+                            if (isDivider) {
+                              return (
+                                <div key={idx} className="border-t border-warning/30 my-3"></div>
+                              );
+                            }
+                            
+                            if (isTitle) {
+                              return (
+                                <div key={idx} className="font-bold text-lg text-primary mb-2 mt-1">
+                                  {item}
+                                </div>
+                              );
+                            }
+                            
+                            if (isNumbered) {
+                              return (
+                                <div key={idx} className="pl-2">
+                                  {item}
+                                </div>
+                              );
+                            }
+                            
+                            return (
+                              <div key={idx} className="list-disc pl-5">
+                                {item}
+                              </div>
+                            );
+                          })}
+                        </div>
                       )}
                       {section.events && (
                         <div className="space-y-3">
