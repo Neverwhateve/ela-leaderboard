@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Time, Cursor, Modal, Footer, Divider, Button, Typewriter as AnimalTypewriter, Collapse } from 'animal-island-ui';
 import 'animal-island-ui/style';
-import { announcementConfig } from './announcementConfig';
+import { announcementConfig, getPointOptions } from './announcementConfig';
 import LaborDayEvent from './LaborDayEvent';
 import Danmaku from './components/Danmaku';
+import Guestbook from './components/Guestbook';
 
 import data from './data.json';
 
@@ -43,6 +44,9 @@ function App() {
   const [expandedUsers, setExpandedUsers] = useState({});
   const [latestRecords, setLatestRecords] = useState([]);
   const [playDanmaku, setPlayDanmaku] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedReason, setSelectedReason] = useState('');
+  const [customReason, setCustomReason] = useState('');
 
   const handlePlayDanmaku = () => {
     setPlayDanmaku(false);
@@ -464,16 +468,12 @@ function App() {
                               <div className="px-3 pb-3">
                                 <div className="border-t-2 border-primaryBg pt-2">
                                   <h4 className="text-sm font-semibold text-primary mb-2">
-                                    {leaderboardType === 'total' ? '总' : leaderboardType === 'month' ? '月' : '周'}经验值记录
+                                    最近经验值记录
                                   </h4>
                                   {user.xpHistory && user.xpHistory.length > 0 ? (
                                     <div className="space-y-1">
-                                      {user.xpHistory
-                                        .filter(record => {
-                                          if (leaderboardType === 'total') return true;
-                                          const { start } = getDateRange(leaderboardType);
-                                          return new Date(record.date) >= start;
-                                        })
+                                      {[...user.xpHistory]
+                                        .reverse()
                                         .slice(0, 5)
                                         .map((record, idx) => (
                                           <div key={idx} className="flex justify-between text-sm">
@@ -497,6 +497,9 @@ function App() {
             </table>
           </div>
         </div>
+
+        {/* 留言板 */}
+        <Guestbook />
 
         {/* 底部 */}
         <div className="mt-12">
@@ -527,10 +530,14 @@ function App() {
               zIndex: 1000,
             }}
             onClick={() => {
-              setShowSubmitModal(false);
-              setSubmitName('');
-              setSubmitReason('');
-              setSubmitMessage('');
+              if (!isSubmitting) {
+                setShowSubmitModal(false);
+                setSubmitName('');
+                setSubmitReason('');
+                setSubmitMessage('');
+                setSelectedReason('');
+                setCustomReason('');
+              }
             }}
           >
             <div 
@@ -552,6 +559,7 @@ function App() {
                   value={submitName}
                   onChange={(e) => setSubmitName(e.target.value)}
                   placeholder="请输入你的名字或昵称"
+                  disabled={isSubmitting}
                   style={{
                     width: '100%',
                     padding: '8px 12px',
@@ -560,16 +568,17 @@ function App() {
                     fontSize: '14px',
                     outline: 'none',
                     boxSizing: 'border-box',
+                    backgroundColor: isSubmitting ? '#f5f5f5' : 'white',
+                    color: isSubmitting ? '#999' : '#333',
                   }}
                 />
               </div>
               <div style={{ marginBottom: '12px' }}>
                 <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#333' }}>因为：</label>
-                <textarea
-                  value={submitReason}
-                  onChange={(e) => setSubmitReason(e.target.value)}
-                  placeholder="请描述你获得积分的原因..."
-                  rows={3}
+                <select
+                  value={selectedReason}
+                  onChange={(e) => setSelectedReason(e.target.value)}
+                  disabled={isSubmitting}
                   style={{
                     width: '100%',
                     padding: '8px 12px',
@@ -577,10 +586,39 @@ function App() {
                     borderRadius: '8px',
                     fontSize: '14px',
                     outline: 'none',
-                    resize: 'none',
                     boxSizing: 'border-box',
+                    backgroundColor: isSubmitting ? '#f5f5f5' : 'white',
+                    color: isSubmitting ? '#999' : '#333',
+                    marginBottom: '8px',
                   }}
-                />
+                >
+                  <option value="">请选择加分项目</option>
+                  {getPointOptions().map((option, index) => (
+                    <option key={index} value={option}>{option}</option>
+                  ))}
+                  <option value="其他">其他（请在下方填写）</option>
+                </select>
+                {selectedReason === '其他' && (
+                  <textarea
+                    value={customReason}
+                    onChange={(e) => setCustomReason(e.target.value)}
+                    placeholder="请描述你获得积分的原因..."
+                    rows={2}
+                    disabled={isSubmitting}
+                    style={{
+                      width: '100%',
+                      padding: '8px 12px',
+                      border: '1px solid #ddd',
+                      borderRadius: '8px',
+                      fontSize: '14px',
+                      outline: 'none',
+                      resize: 'none',
+                      boxSizing: 'border-box',
+                      backgroundColor: isSubmitting ? '#f5f5f5' : 'white',
+                      color: isSubmitting ? '#999' : '#333',
+                    }}
+                  />
+                )}
               </div>
               {submitMessage && (
                 <div style={{
@@ -597,37 +635,49 @@ function App() {
               <div style={{ display: 'flex', gap: '12px' }}>
                 <button
                   onClick={() => {
-                    setShowSubmitModal(false);
-                    setSubmitName('');
-                    setSubmitReason('');
-                    setSubmitMessage('');
+                    if (!isSubmitting) {
+                      setShowSubmitModal(false);
+                      setSubmitName('');
+                      setSubmitReason('');
+                      setSubmitMessage('');
+                      setSelectedReason('');
+                      setCustomReason('');
+                    }
                   }}
+                  disabled={isSubmitting}
                   style={{
                     flex: 1,
                     padding: '10px',
                     border: '1px solid #ddd',
                     borderRadius: '8px',
-                    backgroundColor: '#f5f5f5',
-                    cursor: 'pointer',
+                    backgroundColor: isSubmitting ? '#e0e0e0' : '#f5f5f5',
+                    cursor: isSubmitting ? 'not-allowed' : 'pointer',
                     fontSize: '14px',
+                    color: isSubmitting ? '#9e9e9e' : '#333',
                   }}
                 >
                   取消
                 </button>
                 <button
                   onClick={async () => {
-                    if (!submitName.trim() || !submitReason.trim()) {
+                    if (!submitName.trim() || !selectedReason) {
                       setSubmitMessage('请填写完整信息');
                       return;
                     }
+                    if (selectedReason === '其他' && !customReason.trim()) {
+                      setSubmitMessage('请填写具体原因');
+                      return;
+                    }
+                    setIsSubmitting(true);
                     const today = new Date().toISOString().split('T')[0];
+                    const finalReason = selectedReason === '其他' ? customReason.trim() : selectedReason;
                     try {
                       const response = await fetch('/api/submit', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                           name: submitName.trim(),
-                          reason: submitReason.trim(),
+                          reason: finalReason,
                           date: today
                         })
                       });
@@ -639,24 +689,29 @@ function App() {
                           setSubmitName('');
                           setSubmitReason('');
                           setSubmitMessage('');
-                        }, 1500);
+                          setSelectedReason('');
+                          setCustomReason('');
+                        }, 2000);
                       }
                     } catch (error) {
                       setSubmitMessage('提交失败，请稍后重试');
+                    } finally {
+                      setIsSubmitting(false);
                     }
                   }}
+                  disabled={isSubmitting}
                   style={{
                     flex: 1,
                     padding: '10px',
                     border: 'none',
                     borderRadius: '8px',
-                    backgroundColor: '#4CAF50',
+                    backgroundColor: isSubmitting ? '#9E9E9E' : '#4CAF50',
                     color: 'white',
-                    cursor: 'pointer',
+                    cursor: isSubmitting ? 'not-allowed' : 'pointer',
                     fontSize: '14px',
                   }}
                 >
-                  提交
+                  {isSubmitting ? '提交中...' : '提交'}
                 </button>
               </div>
             </div>

@@ -17,6 +17,7 @@
     "@fontsource/m-plus-rounded-1c": "^5.2.10",
     "@fontsource/nunito": "^5.2.7",
     "@fontsource/zen-maru-gothic": "^5.2.8",
+    "@supabase/supabase-js": "^2.42.0",
     "animal-island-ui": "^0.7.0",
     "firebase": "^12.12.0",
     "react": "^19.2.4",

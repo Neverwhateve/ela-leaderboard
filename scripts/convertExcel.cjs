@@ -13,6 +13,46 @@ function excelDateToString(serial) {
   return String(serial);
 }
 
+// 智能匹配用户函数
+function findUserByName(users, inputName) {
+  if (!inputName) return null;
+  
+  const searchName = String(inputName).trim().toLowerCase();
+  
+  // 精确匹配（不区分大小写）
+  let match = users.find(u => 
+    (u.name && u.name.toLowerCase() === searchName) ||
+    (u.displayName && u.displayName.toLowerCase() === searchName)
+  );
+  if (match) return match;
+  
+  // 包含匹配（不区分大小写）
+  match = users.find(u => 
+    (u.name && u.name.toLowerCase().includes(searchName)) ||
+    (u.displayName && u.displayName.toLowerCase().includes(searchName))
+  );
+  if (match) return match;
+  
+  // 反过来匹配（输入的名称包含在用户信息里）
+  match = users.find(u => 
+    (u.name && searchName.includes(u.name.toLowerCase())) ||
+    (u.displayName && searchName.includes(u.displayName.toLowerCase()))
+  );
+  if (match) return match;
+  
+  // 部分匹配（去掉空格和特殊字符）
+  const cleanSearch = searchName.replace(/[\s\-_\.]+/g, '');
+  match = users.find(u => {
+    const cleanName = (u.name || '').toLowerCase().replace(/[\s\-_\.]+/g, '');
+    const cleanDisplayName = (u.displayName || '').toLowerCase().replace(/[\s\-_\.]+/g, '');
+    return cleanName === cleanSearch || cleanDisplayName === cleanSearch ||
+           cleanName.includes(cleanSearch) || cleanDisplayName.includes(cleanSearch);
+  });
+  if (match) return match;
+  
+  return null;
+}
+
 let usersSheet = null;
 let historySheet = null;
 let redeemSheet = null;
@@ -48,12 +88,14 @@ usersData.forEach((row, index) => {
   });
 });
 
+const unmatchedRecords = [];
+
 if (historySheet) {
   const historyData = XLSX.utils.sheet_to_json(historySheet);
   
   historyData.forEach(record => {
     const userName = record['姓名'];
-    const user = users.find(u => u.name === userName || u.displayName === userName);
+    const user = findUserByName(users, userName);
     
     if (user) {
       const amount = parseInt(record['经验值变化']) || 0;
@@ -63,6 +105,8 @@ if (historySheet) {
         reason: record['原因'] || '',
         amount: amount
       });
+    } else {
+      unmatchedRecords.push({ type: '经验值', name: userName, record });
     }
   });
 }
@@ -72,7 +116,7 @@ if (redeemSheet) {
   
   redeemData.forEach(record => {
     const userName = record['姓名'];
-    const user = users.find(u => u.name === userName || u.displayName === userName);
+    const user = findUserByName(users, userName);
     
     if (user) {
       const points = parseInt(record['消耗积分']) || 0;
@@ -82,6 +126,8 @@ if (redeemSheet) {
         item: record['兑换物品'] || '',
         points: points
       });
+    } else {
+      unmatchedRecords.push({ type: '兑换', name: userName, record });
     }
   });
 }
@@ -93,7 +139,7 @@ if (historySheet) {
   
   last10Records.forEach(record => {
     const userName = record['姓名'];
-    const user = users.find(u => u.name === userName || u.displayName === userName);
+    const user = findUserByName(users, userName);
     
     if (user) {
       latestRecords.push({
@@ -121,3 +167,14 @@ users.forEach(user => {
     console.log(`   ${user.displayName}: 总积分${user.xp}, 可用${availablePoints}, 已兑换${user.points}`);
   }
 });
+
+if (unmatchedRecords.length > 0) {
+  console.log(`\n⚠️  未匹配到用户的记录 (${unmatchedRecords.length}条)：`);
+  unmatchedRecords.forEach((item, index) => {
+    console.log(`   ${index + 1}. [${item.type}] "${item.name}"`);
+  });
+  console.log(`\n提示：请检查"同事信息"表中是否有该用户，或姓名/昵称是否正确`);
+  console.log(`支持的匹配方式：英文名、昵称、部分匹配（不区分大小写）`);
+} else {
+  console.log(`\n✅ 所有记录都成功匹配！`);
+}

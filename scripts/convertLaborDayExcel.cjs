@@ -34,22 +34,45 @@ workbook.SheetNames.forEach(sheetName => {
 const dataPath = path.join(__dirname, '../src/data.json');
 const data = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
 
-const usersMap = {};
-const displayNameMap = {};
-data.users.forEach(user => {
-  usersMap[user.name] = user;
-  displayNameMap[user.displayName] = user;
-});
-
 let laborDayParticipants = {};
 
-function findUserByName(name) {
-  if (usersMap[name]) {
-    return usersMap[name];
-  }
-  if (displayNameMap[name]) {
-    return displayNameMap[name];
-  }
+// 智能匹配用户函数
+function findUserByName(inputName) {
+  if (!inputName) return null;
+  
+  const searchName = String(inputName).trim().toLowerCase();
+  
+  // 精确匹配（不区分大小写）
+  let match = data.users.find(u => 
+    (u.name && u.name.toLowerCase() === searchName) ||
+    (u.displayName && u.displayName.toLowerCase() === searchName)
+  );
+  if (match) return match;
+  
+  // 包含匹配（不区分大小写）
+  match = data.users.find(u => 
+    (u.name && u.name.toLowerCase().includes(searchName)) ||
+    (u.displayName && u.displayName.toLowerCase().includes(searchName))
+  );
+  if (match) return match;
+  
+  // 反过来匹配（输入的名称包含在用户信息里）
+  match = data.users.find(u => 
+    (u.name && searchName.includes(u.name.toLowerCase())) ||
+    (u.displayName && searchName.includes(u.displayName.toLowerCase()))
+  );
+  if (match) return match;
+  
+  // 部分匹配（去掉空格和特殊字符）
+  const cleanSearch = searchName.replace(/[\s\-_\.]+/g, '');
+  match = data.users.find(u => {
+    const cleanName = (u.name || '').toLowerCase().replace(/[\s\-_\.]+/g, '');
+    const cleanDisplayName = (u.displayName || '').toLowerCase().replace(/[\s\-_\.]+/g, '');
+    return cleanName === cleanSearch || cleanDisplayName === cleanSearch ||
+           cleanName.includes(cleanSearch) || cleanDisplayName.includes(cleanSearch);
+  });
+  if (match) return match;
+  
   return null;
 }
 

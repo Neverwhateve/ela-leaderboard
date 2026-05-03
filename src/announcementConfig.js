@@ -5,10 +5,11 @@ export const announcementConfig = {
     {
       "title": "常规积分规则",
       "content": [
-        "完成每月学习任务：+20积分",
-        "Kahoot 优胜：+10积分",
-        "分享知识（ DD,huddle 等）：+20积分",
         "专业解答 & 资讯分享：+5积分",
+        "Kahoot 优胜：+10积分",
+        "Peer Tips：+15积分",
+        "分享知识（ DD,huddle,邮件 等）：+15积分",
+        
         "---",
         "50积分可兑换限时礼物🎁",
         "100积分可兑换1个扭蛋币",
@@ -46,3 +47,37 @@ export const announcementConfig = {
     }
   ]
 };
+
+// 从公告板提取加分选项
+export function getPointOptions() {
+  const options = [];
+  
+  announcementConfig.sections.forEach(section => {
+    section.content.forEach(line => {
+      // 跳过分隔线、空行和兑换信息
+      if (line === "---" || line.trim() === "" || line.includes("兑换")) {
+        return;
+      }
+      
+      // 匹配包含积分的行，提取项目名称
+      const match = line.match(/^(.*?)(：|:)\s*\+\d+积分/);
+      if (match) {
+        const name = match[1].trim();
+        if (name && !options.includes(name)) {
+          options.push(name);
+        }
+      } else if (line.includes("+") && !line.includes("升级条件")) {
+        // 处理没有冒号的情况
+        const plusIndex = line.lastIndexOf("+");
+        if (plusIndex > 0) {
+          const name = line.substring(0, plusIndex).trim();
+          if (name && !options.includes(name)) {
+            options.push(name);
+          }
+        }
+      }
+    });
+  });
+  
+  return options;
+}

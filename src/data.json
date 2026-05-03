@@ -19,9 +19,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_2",
@@ -42,9 +40,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_3",
@@ -60,9 +56,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_4",
@@ -83,9 +77,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_5",
@@ -101,16 +93,14 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_6",
       "name": "Bryan",
       "displayName": "幼儿园高材生",
       "title": "",
-      "xp": 105,
+      "xp": 120,
       "points": 0,
       "xpHistory": [
         {
@@ -137,11 +127,14 @@
           "date": "2026-04-29",
           "reason": "认真学习 Town Hall",
           "amount": 5
+        },
+        {
+          "date": "2026-05-02",
+          "reason": "Acc 邮件分享",
+          "amount": 15
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 20,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_7",
@@ -167,9 +160,7 @@
           "amount": 20
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_8",
@@ -185,9 +176,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_9",
@@ -203,9 +192,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_10",
@@ -221,9 +208,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_11",
@@ -244,9 +229,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_12",
@@ -272,9 +255,7 @@
           "amount": 5
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_13",
@@ -295,9 +276,7 @@
           "amount": 5
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_14",
@@ -313,9 +292,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_15",
@@ -331,27 +308,28 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_16",
       "name": "Dobby",
       "displayName": "时间管理大师",
       "title": "",
-      "xp": 10,
+      "xp": 25,
       "points": 0,
       "xpHistory": [
         {
           "date": "2026-04-21",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-02",
+          "reason": "Peer Tips",
+          "amount": 15
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_17",
@@ -367,9 +345,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_18",
@@ -390,9 +366,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_19",
@@ -408,9 +382,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_20",
@@ -426,9 +398,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_21",
@@ -449,9 +419,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_22",
@@ -472,9 +440,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_23",
@@ -495,9 +461,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_24",
@@ -513,9 +477,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_25",
@@ -536,9 +498,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_26",
@@ -554,9 +514,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_27",
@@ -577,9 +535,7 @@
           "amount": 15
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_28",
@@ -605,9 +561,7 @@
           "amount": 15
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_29",
@@ -623,9 +577,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_30",
@@ -641,9 +593,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_31",
@@ -659,9 +609,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_32",
@@ -677,9 +625,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_33",
@@ -705,9 +651,7 @@
           "amount": 20
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 35,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_34",
@@ -723,9 +667,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_35",
@@ -746,9 +688,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_36",
@@ -779,9 +719,7 @@
           "amount": 5
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_37",
@@ -797,9 +735,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_38",
@@ -820,9 +756,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_39",
@@ -838,16 +772,14 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_40",
       "name": "Serena",
       "displayName": "艺臻",
       "title": "",
-      "xp": 20,
+      "xp": 40,
       "points": 0,
       "xpHistory": [
         {
@@ -859,11 +791,19 @@
           "date": "2026-04-22",
           "reason": "Outing 九宫图",
           "amount": 10
+        },
+        {
+          "date": "2026-05-02",
+          "reason": "认真学习 Town Hall",
+          "amount": 5
+        },
+        {
+          "date": "2026-05-02",
+          "reason": "Peer Tips",
+          "amount": 15
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_41",
@@ -879,16 +819,14 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_42",
       "name": "Strange",
       "displayName": "于适的老公",
       "title": "",
-      "xp": 25,
+      "xp": 40,
       "points": 0,
       "xpHistory": [
         {
@@ -905,11 +843,14 @@
           "date": "2026-04-29",
           "reason": "认真学习 Town Hall",
           "amount": 5
+        },
+        {
+          "date": "2026-05-02",
+          "reason": "Peer Tips",
+          "amount": 15
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_43",
@@ -925,9 +866,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_44",
@@ -943,9 +882,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_45",
@@ -961,9 +898,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_46",
@@ -979,9 +914,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_47",
@@ -1017,9 +950,7 @@
           "amount": 5
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_48",
@@ -1040,9 +971,7 @@
           "amount": 15
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 15,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_49",
@@ -1058,9 +987,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_50",
@@ -1081,9 +1008,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_51",
@@ -1104,9 +1029,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_52",
@@ -1137,9 +1060,7 @@
           "amount": 15
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_53",
@@ -1155,9 +1076,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_54",
@@ -1178,9 +1097,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_55",
@@ -1206,9 +1123,7 @@
           "amount": 5
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_56",
@@ -1229,9 +1144,7 @@
           "amount": 5
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 20,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_57",
@@ -1252,9 +1165,7 @@
           "amount": 10
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_58",
@@ -1285,27 +1196,28 @@
           "amount": 15
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 25,
-      "laborDayRedeemed": 20
+      "redeemHistory": []
     },
     {
       "id": "user_59",
       "name": "Alicia",
       "displayName": "你算哪头朱",
       "title": "",
-      "xp": 10,
+      "xp": 15,
       "points": 0,
       "xpHistory": [
         {
           "date": "2026-04-29",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-02",
+          "reason": "认真学习 Town Hall",
+          "amount": 5
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 0,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     },
     {
       "id": "user_60",
@@ -1331,9 +1243,7 @@
           "amount": 40
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 15,
-      "laborDayRedeemed": 10
+      "redeemHistory": []
     },
     {
       "id": "user_61",
@@ -1354,48 +1264,10 @@
           "amount": 15
         }
       ],
-      "redeemHistory": [],
-      "laborDayXP": 20,
-      "laborDayRedeemed": 0
+      "redeemHistory": []
     }
   ],
   "latestRecords": [
-    {
-      "displayName": "8low8lowme",
-      "date": "2026-04-29",
-      "reason": "认真学习 Town Hall",
-      "amount": 5
-    },
-    {
-      "displayName": "泡泡",
-      "date": "2026-04-29",
-      "reason": "新用户注册",
-      "amount": 10
-    },
-    {
-      "displayName": "泡泡",
-      "date": "2026-04-29",
-      "reason": "Good Idea",
-      "amount": 15
-    },
-    {
-      "displayName": "ya",
-      "date": "2026-04-29",
-      "reason": "Peer Tips",
-      "amount": 15
-    },
-    {
-      "displayName": "煮鱼",
-      "date": "2026-04-29",
-      "reason": "Good Idea",
-      "amount": 15
-    },
-    {
-      "displayName": "煮鱼",
-      "date": "2026-04-30",
-      "reason": "认真学习 Town Hall",
-      "amount": 5
-    },
     {
       "displayName": "外国公主",
       "date": "2026-04-30",
@@ -1417,6 +1289,42 @@
     {
       "displayName": "月野子",
       "date": "2026-04-30",
+      "reason": "认真学习 Town Hall",
+      "amount": 5
+    },
+    {
+      "displayName": "艺臻",
+      "date": "2026-05-02",
+      "reason": "认真学习 Town Hall",
+      "amount": 5
+    },
+    {
+      "displayName": "艺臻",
+      "date": "2026-05-02",
+      "reason": "Peer Tips",
+      "amount": 15
+    },
+    {
+      "displayName": "于适的老公",
+      "date": "2026-05-02",
+      "reason": "Peer Tips",
+      "amount": 15
+    },
+    {
+      "displayName": "时间管理大师",
+      "date": "2026-05-02",
+      "reason": "Peer Tips",
+      "amount": 15
+    },
+    {
+      "displayName": "幼儿园高材生",
+      "date": "2026-05-02",
+      "reason": "Acc 邮件分享",
+      "amount": 15
+    },
+    {
+      "displayName": "你算哪头朱",
+      "date": "2026-05-02",
       "reason": "认真学习 Town Hall",
       "amount": 5
     }
