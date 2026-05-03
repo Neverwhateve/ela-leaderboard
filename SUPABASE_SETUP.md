@@ -38,12 +38,15 @@
 
 1. 打开你的 Vercel 项目
 2. 点击 **Settings** -> **Environment Variables**
-3. 添加两个环境变量：
+3. 添加三个环境变量：
    - **Name**: `SUPABASE_URL`
    - **Value**: 刚才复制的 Project URL
    
    - **Name**: `SUPABASE_SERVICE_ROLE_KEY`
    - **Value**: 刚才复制的 service_role 密钥
+   
+   - **Name**: `DELETE_PASSWORD`
+   - **Value**: 设置一个删除密码（比如你喜欢的密码）
 4. 点击 **Save**
 
 ## 步骤 5：配置数据库权限（重要！）

@@ -2,6 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const deletePassword = process.env.DELETE_PASSWORD;
 
 if (!supabaseUrl || !supabaseKey) {
   console.error('Missing Supabase environment variables');
@@ -55,10 +56,19 @@ export default async function handler(req, res) {
 
     if (req.method === 'DELETE') {
       // 删除留言
-      const { id } = req.body;
+      const { id, password } = req.body;
       
       if (!id) {
         return res.status(400).json({ error: '留言 ID 不能为空' });
+      }
+      
+      // 验证密码
+      if (!deletePassword) {
+        return res.status(500).json({ error: '服务器未配置删除密码' });
+      }
+      
+      if (password !== deletePassword) {
+        return res.status(403).json({ error: '密码错误' });
       }
 
       const { error } = await supabase

@@ -7,6 +7,9 @@ const Guestbook = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
+  const [deletePassword, setDeletePassword] = useState('');
 
   // 从 API 加载留言
   const fetchMessages = async () => {
@@ -69,25 +72,38 @@ const Guestbook = () => {
     }
   };
 
-  // 删除留言
-  const deleteMessage = async (id) => {
-    if (!window.confirm('确定要删除这条留言吗？')) {
+  // 点击删除按钮
+  const handleDeleteClick = (id) => {
+    setDeleteId(id);
+    setDeletePassword('');
+    setShowDeleteModal(true);
+  };
+
+  // 确认删除
+  const confirmDelete = async () => {
+    if (!deletePassword.trim()) {
+      setError('请输入删除密码');
       return;
     }
 
     try {
       setError('');
+      setIsSubmitting(true);
       const response = await fetch('/api/guestbook', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id }),
+        body: JSON.stringify({ 
+          id: deleteId, 
+          password: deletePassword 
+        }),
       });
 
       const data = await response.json();
 
       if (data.success) {
+        setShowDeleteModal(false);
         await fetchMessages(); // 重新获取留言列表
       } else {
         setError(data.error || '删除失败，请重试');
@@ -95,7 +111,16 @@ const Guestbook = () => {
     } catch (err) {
       console.error('Failed to delete message:', err);
       setError('删除失败，请检查网络连接');
+    } finally {
+      setIsSubmitting(false);
     }
+  };
+
+  // 取消删除
+  const cancelDelete = () => {
+    setShowDeleteModal(false);
+    setDeleteId(null);
+    setDeletePassword('');
   };
 
   return (
@@ -227,7 +252,7 @@ const Guestbook = () => {
                     </span>
                   </div>
                   <button
-                    onClick={() => deleteMessage(item.id)}
+                    onClick={() => handleDeleteClick(item.id)}
                     style={{
                       background: 'none',
                       border: 'none',
@@ -250,6 +275,102 @@ const Guestbook = () => {
           )}
         </div>
       </div>
+      
+      {/* 删除密码弹窗 */}
+      {showDeleteModal && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+          }}
+          onClick={cancelDelete}
+        >
+          <div
+            style={{
+              backgroundColor: 'white',
+              borderRadius: '12px',
+              padding: '24px',
+              width: '90%',
+              maxWidth: '350px',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 style={{ margin: '0 0 16px 0', fontSize: '18px', fontWeight: 'bold', textAlign: 'center' }}>
+              🔒 删除留言
+            </h3>
+            <p style={{ margin: '0 0 12px 0', fontSize: '14px', color: '#666' }}>
+              请输入删除密码
+            </p>
+            <input
+              type="password"
+              value={deletePassword}
+              onChange={(e) => setDeletePassword(e.target.value)}
+              placeholder="输入密码..."
+              disabled={isSubmitting}
+              style={{
+                width: '100%',
+                padding: '10px 12px',
+                border: '2px solid #ddd',
+                borderRadius: '8px',
+                fontSize: '14px',
+                outline: 'none',
+                boxSizing: 'border-box',
+                backgroundColor: isSubmitting ? '#f5f5f5' : 'white',
+                marginBottom: '16px',
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  confirmDelete();
+                }
+              }}
+            />
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <button
+                onClick={cancelDelete}
+                disabled={isSubmitting}
+                style={{
+                  flex: 1,
+                  padding: '10px',
+                  border: '1px solid #ddd',
+                  borderRadius: '8px',
+                  backgroundColor: isSubmitting ? '#e0e0e0' : '#f5f5f5',
+                  cursor: isSubmitting ? 'not-allowed' : 'pointer',
+                  fontSize: '14px',
+                  color: isSubmitting ? '#999' : '#333',
+                }}
+              >
+                取消
+              </button>
+              <button
+                onClick={confirmDelete}
+                disabled={isSubmitting}
+                style={{
+                  flex: 1,
+                  padding: '10px',
+                  border: 'none',
+                  borderRadius: '8px',
+                  backgroundColor: isSubmitting ? '#9E9E9E' : '#e74c3c',
+                  color: 'white',
+                  cursor: isSubmitting ? 'not-allowed' : 'pointer',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                }}
+              >
+                {isSubmitting ? '删除中...' : '确认删除'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
