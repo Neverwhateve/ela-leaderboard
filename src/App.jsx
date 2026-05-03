@@ -30,12 +30,16 @@ const getDateRange = (type) => {
 
 function App() {
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [searchName, setSearchName] = useState('');
   const [searchResult, setSearchResult] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState('home');
+  const [showSubmitModal, setShowSubmitModal] = useState(false);
+  const [submitName, setSubmitName] = useState('');
+  const [submitReason, setSubmitReason] = useState('');
+  const [submitMessage, setSubmitMessage] = useState('');
   const [showAnnouncement, setShowAnnouncement] = useState(false);
   const [leaderboardType, setLeaderboardType] = useState('total');
-  const [currentPage, setCurrentPage] = useState('home'); // total, month, week
   const [expandedUsers, setExpandedUsers] = useState({});
   const [latestRecords, setLatestRecords] = useState([]);
   const [playDanmaku, setPlayDanmaku] = useState(false);
@@ -54,7 +58,7 @@ function App() {
   };
 
   useEffect(() => {
-    setUsers(data.users);
+    setUsers(data.users || []);
     setLatestRecords(data.latestRecords || []);
     setLoading(false);
   }, []);
@@ -163,14 +167,7 @@ function App() {
                 textAlign: 'center',
               }}>{announcementConfig.title}</h3>
               <button
-                onClick={() => {
-                  const phoneNumber = '18626053382';
-                  const today = new Date();
-                  const date = today.toISOString().split('T')[0];
-                  const message = `提交积分！\n日期：${date}\n我是：\n因为：`;
-                  const smsUrl = `sms:${phoneNumber}?body=${encodeURIComponent(message)}`;
-                  window.location.href = smsUrl;
-                }}
+                onClick={() => setShowSubmitModal(true)}
                 className="px-6 py-3 bg-primary text-white rounded-acnh hover:bg-primaryHover transition-colors font-medium shadow-acnh animate-bounce-slow"
               >
                 📝 提交积分
@@ -513,6 +510,158 @@ function App() {
             </a>
           </div>
         </div>
+
+        {/* 提交积分模态框 */}
+        {showSubmitModal && (
+          <div 
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0,0,0,0.5)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 1000,
+            }}
+            onClick={() => {
+              setShowSubmitModal(false);
+              setSubmitName('');
+              setSubmitReason('');
+              setSubmitMessage('');
+            }}
+          >
+            <div 
+              style={{
+                backgroundColor: 'white',
+                borderRadius: '12px',
+                padding: '24px',
+                width: '90%',
+                maxWidth: '400px',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3 style={{ margin: '0 0 16px 0', fontSize: '18px', fontWeight: 'bold', textAlign: 'center' }}>📝 提交积分</h3>
+              <div style={{ marginBottom: '12px' }}>
+                <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#333' }}>我是：</label>
+                <input
+                  type="text"
+                  value={submitName}
+                  onChange={(e) => setSubmitName(e.target.value)}
+                  placeholder="请输入你的名字或昵称"
+                  style={{
+                    width: '100%',
+                    padding: '8px 12px',
+                    border: '1px solid #ddd',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    outline: 'none',
+                    boxSizing: 'border-box',
+                  }}
+                />
+              </div>
+              <div style={{ marginBottom: '12px' }}>
+                <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#333' }}>因为：</label>
+                <textarea
+                  value={submitReason}
+                  onChange={(e) => setSubmitReason(e.target.value)}
+                  placeholder="请描述你获得积分的原因..."
+                  rows={3}
+                  style={{
+                    width: '100%',
+                    padding: '8px 12px',
+                    border: '1px solid #ddd',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    outline: 'none',
+                    resize: 'none',
+                    boxSizing: 'border-box',
+                  }}
+                />
+              </div>
+              {submitMessage && (
+                <div style={{
+                  padding: '10px',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  marginBottom: '12px',
+                  backgroundColor: submitMessage.includes('成功') ? '#d4edda' : '#f8d7da',
+                  color: submitMessage.includes('成功') ? '#155724' : '#721c24',
+                }}>
+                  {submitMessage}
+                </div>
+              )}
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <button
+                  onClick={() => {
+                    setShowSubmitModal(false);
+                    setSubmitName('');
+                    setSubmitReason('');
+                    setSubmitMessage('');
+                  }}
+                  style={{
+                    flex: 1,
+                    padding: '10px',
+                    border: '1px solid #ddd',
+                    borderRadius: '8px',
+                    backgroundColor: '#f5f5f5',
+                    cursor: 'pointer',
+                    fontSize: '14px',
+                  }}
+                >
+                  取消
+                </button>
+                <button
+                  onClick={async () => {
+                    if (!submitName.trim() || !submitReason.trim()) {
+                      setSubmitMessage('请填写完整信息');
+                      return;
+                    }
+                    const today = new Date().toISOString().split('T')[0];
+                    try {
+                      const response = await fetch('/api/submit', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                          name: submitName.trim(),
+                          reason: submitReason.trim(),
+                          date: today
+                        })
+                      });
+                      const result = await response.json();
+                      setSubmitMessage(result.message || result.error);
+                      if (result.success) {
+                        setTimeout(() => {
+                          setShowSubmitModal(false);
+                          setSubmitName('');
+                          setSubmitReason('');
+                          setSubmitMessage('');
+                        }, 1500);
+                      }
+                    } catch (error) {
+                      setSubmitMessage('提交失败，请稍后重试');
+                    }
+                  }}
+                  style={{
+                    flex: 1,
+                    padding: '10px',
+                    border: 'none',
+                    borderRadius: '8px',
+                    backgroundColor: '#4CAF50',
+                    color: 'white',
+                    cursor: 'pointer',
+                    fontSize: '14px',
+                  }}
+                >
+                  提交
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
       )}
     </Cursor>
