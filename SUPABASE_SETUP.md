@@ -42,7 +42,7 @@
    - **Name**: `SUPABASE_URL`
    - **Value**: 刚才复制的 Project URL
    
-   - **Name**: `SUPABASE_SERVICE_KEY`
+   - **Name**: `SUPABASE_SERVICE_ROLE_KEY`
    - **Value**: 刚才复制的 service_role 密钥
 4. 点击 **Save**
 
