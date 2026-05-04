@@ -242,101 +242,86 @@ const Guestbook = () => {
             {new Date(item.created_at).toLocaleDateString('zh-CN')} {new Date(item.created_at).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}
           </span>
         </div>
-        <div className="flex gap-1 items-center">
+        <div className="flex gap-2 items-center">
           {/* 点赞按钮 */}
           <button
             onClick={() => handleLike(item)}
             style={{
-              background: '#fff',
-              border: '1px solid #e0e0e0',
-              color: '#e91e63',
+              background: 'none',
+              border: 'none',
               cursor: 'pointer',
-              fontSize: '13px',
-              padding: '6px 12px',
-              borderRadius: '8px',
+              padding: '4px',
+              borderRadius: '6px',
               display: 'flex',
               alignItems: 'center',
-              gap: '6px',
+              gap: '4px',
               transition: 'all 0.2s ease'
             }}
             title="点赞"
             onMouseEnter={(e) => {
-              e.target.style.background = '#fff0f4';
-              e.target.style.borderColor = '#e91e63';
+              e.target.style.background = 'rgba(233,30,99,0.1)';
             }}
             onMouseLeave={(e) => {
-              e.target.style.background = '#fff';
-              e.target.style.borderColor = '#e0e0e0';
+              e.target.style.background = 'none';
             }}
           >
-            <img src="/icons/heart.png" alt="点赞" style={{ width: '16px', height: '16px' }} />
-            {item.likes || 0}
+            <img src="/icons/heart.png" alt="点赞" style={{ width: '20px', height: '20px' }} />
+            {item.likes > 0 && <span style={{ fontSize: '13px', color: '#e91e63', fontWeight: '600' }}>{item.likes}</span>}
           </button>
           
           <button
             onClick={() => handleReplyClick(item)}
             disabled={isSubmitting}
             style={{
-              background: '#fff',
-              border: '1px solid #e0e0e0',
-              color: '#2196F3',
+              background: 'none',
+              border: 'none',
               cursor: isSubmitting ? 'not-allowed' : 'pointer',
-              fontSize: '13px',
-              padding: '6px 12px',
-              borderRadius: '8px',
+              padding: '4px',
+              borderRadius: '6px',
               display: 'flex',
               alignItems: 'center',
-              gap: '4px',
               transition: 'all 0.2s ease',
               opacity: isSubmitting ? '0.5' : '1'
             }}
             title="回复留言"
             onMouseEnter={(e) => {
               if (!isSubmitting) {
-                e.target.style.background = '#e3f2fd';
-                e.target.style.borderColor = '#2196F3';
+                e.target.style.background = 'rgba(33,150,243,0.1)';
               }
             }}
             onMouseLeave={(e) => {
-              e.target.style.background = '#fff';
-              e.target.style.borderColor = '#e0e0e0';
+              e.target.style.background = 'none';
             }}
           >
-            <img src="/icons/message.png" alt="回复" style={{ width: '16px', height: '16px' }} />
-            回复
+            <img src="/icons/message.png" alt="回复" style={{ width: '20px', height: '20px' }} />
           </button>
           
           <button
             onClick={() => handleDeleteClick(item.id)}
             disabled={isSubmitting}
             style={{
-              background: '#fff',
-              border: '1px solid #e0e0e0',
-              color: '#e74c3c',
+              background: 'none',
+              border: 'none',
               cursor: isSubmitting ? 'not-allowed' : 'pointer',
-              width: '32px',
-              height: '32px',
-              borderRadius: '8px',
+              padding: '4px',
+              borderRadius: '6px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              padding: 0,
               transition: 'all 0.2s ease',
               opacity: isSubmitting ? '0.5' : '1'
             }}
             title="删除留言"
             onMouseEnter={(e) => {
               if (!isSubmitting) {
-                e.target.style.background = '#fee';
-                e.target.style.borderColor = '#e74c3c';
+                e.target.style.background = 'rgba(231,76,60,0.1)';
               }
             }}
             onMouseLeave={(e) => {
-              e.target.style.background = '#fff';
-              e.target.style.borderColor = '#e0e0e0';
+              e.target.style.background = 'none';
             }}
           >
-            <img src="/icons/delete.png" alt="删除" style={{ width: '18px', height: '18px' }} />
+            <img src="/icons/delete.png" alt="删除" style={{ width: '20px', height: '20px' }} />
           </button>
         </div>
       </div>
