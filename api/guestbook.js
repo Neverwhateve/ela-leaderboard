@@ -13,7 +13,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 export default async function handler(req, res) {
   // 设置 CORS 头
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') {
@@ -30,15 +30,7 @@ export default async function handler(req, res) {
 
       if (error) throw error;
       
-      // 构建树形结构
       const messages = data || [];
-      const rootMessages = messages.filter(m => !m.parent_id);
-      const replies = messages.filter(m => m.parent_id);
-      
-      // 调试信息
-      console.log('All messages:', messages);
-      console.log('Root messages:', rootMessages);
-      console.log('Replies:', replies);
       
       // 递归构建树形结构（支持无限嵌套）
       function buildTree(parentId = null) {
@@ -56,9 +48,6 @@ export default async function handler(req, res) {
       }
       
       const messagesWithReplies = buildTree();
-      console.log('Final nested tree:', messagesWithReplies);
-      
-      console.log('Final messages with replies:', messagesWithReplies);
       
       // 按时间倒序排列
       messagesWithReplies.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
@@ -76,7 +65,8 @@ export default async function handler(req, res) {
 
       const insertData = {
         name: name.trim(),
-        message: message.trim()
+        message: message.trim(),
+        likes: 0 // 初始化点赞为0
       };
       
       if (parent_id) {
@@ -89,6 +79,37 @@ export default async function handler(req, res) {
         .select();
 
       if (error) throw error;
+      return res.status(200).json({ success: true, message: data[0] });
+    }
+    
+    if (req.method === 'PUT') {
+      // 点赞功能
+      const { id } = req.body;
+      
+      if (!id) {
+        return res.status(400).json({ error: '留言ID不能为空' });
+      }
+      
+      // 先获取当前点赞数
+      const { data: currentData, error: fetchError } = await supabase
+        .from('guestbook')
+        .select('likes')
+        .eq('id', id)
+        .single();
+        
+      if (fetchError) throw fetchError;
+      
+      const currentLikes = currentData?.likes || 0;
+      
+      // 更新点赞数 +1
+      const { data, error } = await supabase
+        .from('guestbook')
+        .update({ likes: currentLikes + 1 })
+        .eq('id', id)
+        .select();
+        
+      if (error) throw error;
+      
       return res.status(200).json({ success: true, message: data[0] });
     }
 

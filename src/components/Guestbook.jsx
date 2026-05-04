@@ -14,6 +14,22 @@ const Guestbook = () => {
   const [replyName, setReplyName] = useState('');
   const [replyMessage, setReplyMessage] = useState('');
 
+  // 从 localStorage 加载昵称
+  useEffect(() => {
+    const savedName = localStorage.getItem('guestbook_name');
+    if (savedName) {
+      setName(savedName);
+      setReplyName(savedName);
+    }
+  }, []);
+
+  // 保存昵称到 localStorage
+  const saveNameToStorage = (newName) => {
+    if (newName && newName.trim()) {
+      localStorage.setItem('guestbook_name', newName.trim());
+    }
+  };
+
   // 从 API 加载留言
   const fetchMessages = async () => {
     try {
@@ -43,6 +59,9 @@ const Guestbook = () => {
       return;
     }
 
+    // 保存昵称
+    saveNameToStorage(name);
+
     setIsSubmitting(true);
     setError('');
 
@@ -61,9 +80,8 @@ const Guestbook = () => {
       const data = await response.json();
 
       if (data.success) {
-        setName('');
         setMessage('');
-        await fetchMessages(); // 重新获取留言列表
+        await fetchMessages();
       } else {
         setError(data.error || '发送失败，请重试');
       }
@@ -81,6 +99,9 @@ const Guestbook = () => {
     if (!replyName.trim() || !replyMessage.trim()) {
       return;
     }
+
+    // 保存昵称
+    saveNameToStorage(replyName);
 
     setIsSubmitting(true);
     setError('');
@@ -101,10 +122,9 @@ const Guestbook = () => {
       const data = await response.json();
 
       if (data.success) {
-        setReplyName('');
         setReplyMessage('');
         setReplyingTo(null);
-        await fetchMessages(); // 重新获取留言列表
+        await fetchMessages();
       } else {
         setError(data.error || '发送失败，请重试');
       }
@@ -138,9 +158,9 @@ const Guestbook = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
-          id: deleteId, 
-          password: deletePassword 
+        body: JSON.stringify({
+          id: deleteId,
+          password: deletePassword
         }),
       });
 
@@ -148,7 +168,7 @@ const Guestbook = () => {
 
       if (data.success) {
         setShowDeleteModal(false);
-        await fetchMessages(); // 重新获取留言列表
+        await fetchMessages();
       } else {
         setError(data.error || '删除失败，请重试');
       }
@@ -170,7 +190,11 @@ const Guestbook = () => {
   // 点击回复按钮
   const handleReplyClick = (item) => {
     setReplyingTo(item);
-    setReplyName('');
+    // 如果有保存的昵称，直接使用
+    const savedName = localStorage.getItem('guestbook_name');
+    if (savedName) {
+      setReplyName(savedName);
+    }
     setReplyMessage('');
   };
 
@@ -179,6 +203,27 @@ const Guestbook = () => {
     setReplyingTo(null);
     setReplyName('');
     setReplyMessage('');
+  };
+
+  // 点赞功能
+  const handleLike = async (item) => {
+    try {
+      const response = await fetch('/api/guestbook', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: item.id }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        await fetchMessages();
+      }
+    } catch (err) {
+      console.error('Failed to like:', err);
+    }
   };
 
   // 渲染单个留言和它的回复
@@ -197,7 +242,27 @@ const Guestbook = () => {
             {new Date(item.created_at).toLocaleDateString('zh-CN')} {new Date(item.created_at).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}
           </span>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-center">
+          {/* 点赞按钮 */}
+          <button
+            onClick={() => handleLike(item)}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#e91e63',
+              cursor: 'pointer',
+              fontSize: '14px',
+              padding: '4px 8px',
+              borderRadius: '6px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px'
+            }}
+            title="点赞"
+          >
+            ❤️ {item.likes || 0}
+          </button>
+          
           <button
             onClick={() => handleReplyClick(item)}
             disabled={isSubmitting}
@@ -214,27 +279,28 @@ const Guestbook = () => {
           >
             💬 回复
           </button>
+          
           <button
-              onClick={() => handleDeleteClick(item.id)}
-              disabled={isSubmitting}
-              style={{
-                background: '#6c757d',
-                border: 'none',
-                color: 'white',
-                cursor: isSubmitting ? 'not-allowed' : 'pointer',
-                fontSize: '12px',
-                width: '20px',
-                height: '20px',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: 0
-              }}
-              title="删除留言"
-            >
-              ✕
-            </button>
+            onClick={() => handleDeleteClick(item.id)}
+            disabled={isSubmitting}
+            style={{
+              background: '#6c757d',
+              border: 'none',
+              color: 'white',
+              cursor: isSubmitting ? 'not-allowed' : 'pointer',
+              fontSize: '12px',
+              width: '20px',
+              height: '20px',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 0
+            }}
+            title="删除留言"
+          >
+            ✕
+          </button>
         </div>
       </div>
       <p className="text-text" style={{ fontSize: '14px', lineHeight: '1.6', margin: 0 }}>
@@ -317,7 +383,7 @@ const Guestbook = () => {
                 padding: '10px',
                 border: 'none',
                 borderRadius: '8px',
-                backgroundColor: (isSubmitting || !replyName.trim() || !replyMessage.trim()) ? '#9E9E9E' : '#2196F3',
+                backgroundColor: (isSubmitting || !replyName.trim() || !replyMessage.trim()) ? '#9e9e9e' : '#2196f3',
                 color: 'white',
                 cursor: (isSubmitting || !replyName.trim() || !replyMessage.trim()) ? 'not-allowed' : 'pointer',
                 fontSize: '14px',
@@ -345,7 +411,7 @@ const Guestbook = () => {
         <h2 style={{
           fontFamily: "Nunito, 'Zen Maru Gothic', -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif",
           fontSize: '24px',
-          fontWeight: 700,
+          fontWeight: '700',
           color: '#725d42',
           margin: 0,
           marginBottom: '20px',
@@ -358,7 +424,7 @@ const Guestbook = () => {
         <form onSubmit={handleSubmit} className="mb-8">
           <div style={{ marginBottom: '12px' }}>
             <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#725d42' }}>
-              昵称
+              昵称 {name && <span style={{ color: '#6c757d', fontSize: '12px' }}>(已自动保存)</span>}
             </label>
             <input
               type="text"
@@ -411,7 +477,7 @@ const Guestbook = () => {
               padding: '12px',
               border: 'none',
               borderRadius: '12px',
-              backgroundColor: (isSubmitting || !name.trim() || !message.trim()) ? '#9E9E9E' : '#4CAF50',
+              backgroundColor: (isSubmitting || !name.trim() || !message.trim()) ? '#9e9e9e' : '#4caf50',
               color: 'white',
               cursor: (isSubmitting || !name.trim() || !message.trim()) ? 'not-allowed' : 'pointer',
               fontSize: '16px',
@@ -470,7 +536,7 @@ const Guestbook = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            zIndex: 1000,
+            zIndex: '1000',
           }}
           onClick={cancelDelete}
         >
@@ -539,7 +605,7 @@ const Guestbook = () => {
                   padding: '10px',
                   border: 'none',
                   borderRadius: '8px',
-                  backgroundColor: isSubmitting ? '#9E9E9E' : '#e74c3c',
+                  backgroundColor: isSubmitting ? '#9e9e9e' : '#e74c3c',
                   color: 'white',
                   cursor: isSubmitting ? 'not-allowed' : 'pointer',
                   fontSize: '14px',
