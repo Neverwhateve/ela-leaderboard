@@ -35,10 +35,10 @@ export default async function handler(req, res) {
       const rootMessages = messages.filter(m => !m.parent_id);
       const replies = messages.filter(m => m.parent_id);
       
-      // 构建回复关系
+      // 构建回复关系（确保id类型一致）
       const messagesWithReplies = rootMessages.map(root => ({
         ...root,
-        replies: replies.filter(r => r.parent_id === root.id)
+        replies: replies.filter(r => String(r.parent_id) === String(root.id))
       }));
       
       // 按时间倒序排列
