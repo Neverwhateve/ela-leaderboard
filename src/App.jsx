@@ -47,6 +47,12 @@ function App() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedReason, setSelectedReason] = useState('');
   const [customReason, setCustomReason] = useState('');
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [registerEnglishName, setRegisterEnglishName] = useState('');
+  const [registerNickname, setRegisterNickname] = useState('');
+  const [registerReferrer, setRegisterReferrer] = useState('');
+  const [registerMessage, setRegisterMessage] = useState('');
+  const [isRegistering, setIsRegistering] = useState(false);
 
   const handlePlayDanmaku = () => {
     setPlayDanmaku(false);
@@ -170,12 +176,20 @@ function App() {
                 marginBottom: '8px',
                 textAlign: 'center',
               }}>{announcementConfig.title}</h3>
-              <button
-                onClick={() => setShowSubmitModal(true)}
-                className="px-6 py-3 bg-primary text-white rounded-acnh hover:bg-primaryHover transition-colors font-medium shadow-acnh animate-bounce-slow"
-              >
-                📝 提交积分
-              </button>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowRegisterModal(true)}
+                  className="px-6 py-3 bg-primary text-white rounded-acnh hover:bg-primaryHover transition-colors font-medium shadow-acnh"
+                >
+                  📋 注册
+                </button>
+                <button
+                  onClick={() => setShowSubmitModal(true)}
+                  className="px-6 py-3 bg-primary text-white rounded-acnh hover:bg-primaryHover transition-colors font-medium shadow-acnh animate-bounce-slow"
+                >
+                  📝 提交积分
+                </button>
+              </div>
             </div>
             <div className="space-y-2">
               {announcementConfig.sections.map((section, index) => (
@@ -712,6 +726,196 @@ function App() {
                   }}
                 >
                   {isSubmitting ? '提交中...' : '提交'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 注册模态框 */}
+        {showRegisterModal && (
+          <div 
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0,0,0,0.5)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 1000,
+            }}
+            onClick={() => {
+              if (!isRegistering) {
+                setShowRegisterModal(false);
+                setRegisterEnglishName('');
+                setRegisterNickname('');
+                setRegisterReferrer('');
+                setRegisterMessage('');
+              }
+            }}
+          >
+            <div 
+              style={{
+                backgroundColor: 'white',
+                borderRadius: '12px',
+                padding: '24px',
+                width: '90%',
+                maxWidth: '400px',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3 style={{ margin: '0 0 16px 0', fontSize: '18px', fontWeight: 'bold', textAlign: 'center' }}>📋 注册</h3>
+              <div style={{ marginBottom: '12px' }}>
+                <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#333' }}>我是谁（英文名）：</label>
+                <input
+                  type="text"
+                  value={registerEnglishName}
+                  onChange={(e) => setRegisterEnglishName(e.target.value)}
+                  placeholder="请输入你的英文名"
+                  disabled={isRegistering}
+                  style={{
+                    width: '100%',
+                    padding: '8px 12px',
+                    border: '1px solid #ddd',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    outline: 'none',
+                    boxSizing: 'border-box',
+                    backgroundColor: isRegistering ? '#f5f5f5' : 'white',
+                    color: isRegistering ? '#999' : '#333',
+                  }}
+                />
+              </div>
+              <div style={{ marginBottom: '12px' }}>
+                <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#333' }}>昵称是什么：</label>
+                <input
+                  type="text"
+                  value={registerNickname}
+                  onChange={(e) => setRegisterNickname(e.target.value)}
+                  placeholder="请输入你的昵称"
+                  disabled={isRegistering}
+                  style={{
+                    width: '100%',
+                    padding: '8px 12px',
+                    border: '1px solid #ddd',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    outline: 'none',
+                    boxSizing: 'border-box',
+                    backgroundColor: isRegistering ? '#f5f5f5' : 'white',
+                    color: isRegistering ? '#999' : '#333',
+                  }}
+                />
+              </div>
+              <div style={{ marginBottom: '12px' }}>
+                <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#333' }}>推荐人是谁（选填）：</label>
+                <input
+                  type="text"
+                  value={registerReferrer}
+                  onChange={(e) => setRegisterReferrer(e.target.value)}
+                  placeholder="请输入推荐人的名字（可选）"
+                  disabled={isRegistering}
+                  style={{
+                    width: '100%',
+                    padding: '8px 12px',
+                    border: '1px solid #ddd',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    outline: 'none',
+                    boxSizing: 'border-box',
+                    backgroundColor: isRegistering ? '#f5f5f5' : 'white',
+                    color: isRegistering ? '#999' : '#333',
+                  }}
+                />
+              </div>
+              {registerMessage && (
+                <div style={{
+                  padding: '10px',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  marginBottom: '12px',
+                  backgroundColor: registerMessage.includes('成功') ? '#d4edda' : '#f8d7da',
+                  color: registerMessage.includes('成功') ? '#155724' : '#721c24',
+                }}>
+                  {registerMessage}
+                </div>
+              )}
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <button
+                  onClick={() => {
+                    if (!isRegistering) {
+                      setShowRegisterModal(false);
+                      setRegisterEnglishName('');
+                      setRegisterNickname('');
+                      setRegisterReferrer('');
+                      setRegisterMessage('');
+                    }
+                  }}
+                  disabled={isRegistering}
+                  style={{
+                    flex: 1,
+                    padding: '10px',
+                    border: '1px solid #ddd',
+                    borderRadius: '8px',
+                    backgroundColor: isRegistering ? '#e0e0e0' : '#f5f5f5',
+                    cursor: isRegistering ? 'not-allowed' : 'pointer',
+                    fontSize: '14px',
+                    color: isRegistering ? '#9e9e9e' : '#333',
+                  }}
+                >
+                  取消
+                </button>
+                <button
+                  onClick={async () => {
+                    if (!registerEnglishName.trim() || !registerNickname.trim()) {
+                      setRegisterMessage('请填写完整信息');
+                      return;
+                    }
+                    setIsRegistering(true);
+                    try {
+                      const response = await fetch('/api/register', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                          englishName: registerEnglishName.trim(),
+                          nickname: registerNickname.trim(),
+                          referrer: registerReferrer.trim(),
+                        })
+                      });
+                      const result = await response.json();
+                      setRegisterMessage(result.message || result.error);
+                      if (result.success) {
+                        setTimeout(() => {
+                          setShowRegisterModal(false);
+                          setRegisterEnglishName('');
+                          setRegisterNickname('');
+                          setRegisterReferrer('');
+                          setRegisterMessage('');
+                        }, 2000);
+                      }
+                    } catch (error) {
+                      setRegisterMessage('注册失败，请稍后重试');
+                    } finally {
+                      setIsRegistering(false);
+                    }
+                  }}
+                  disabled={isRegistering}
+                  style={{
+                    flex: 1,
+                    padding: '10px',
+                    border: 'none',
+                    borderRadius: '8px',
+                    backgroundColor: isRegistering ? '#9E9E9E' : '#FF9800',
+                    color: 'white',
+                    cursor: isRegistering ? 'not-allowed' : 'pointer',
+                    fontSize: '14px',
+                  }}
+                >
+                  {isRegistering ? '注册中...' : '注册'}
                 </button>
               </div>
             </div>
