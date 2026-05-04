@@ -220,17 +220,22 @@ const Guestbook = () => {
               onClick={() => handleDeleteClick(item.id)}
               disabled={isSubmitting}
               style={{
-                background: 'none',
-                border: '1px solid #e74c3c',
-                color: '#e74c3c',
+                background: '#e74c3c',
+                border: 'none',
+                color: 'white',
                 cursor: isSubmitting ? 'not-allowed' : 'pointer',
-                fontSize: '12px',
-                padding: '4px 12px',
-                borderRadius: '6px'
+                fontSize: '14px',
+                width: '24px',
+                height: '24px',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: 0
               }}
               title="删除留言"
             >
-              删除
+              ✕
             </button>
         </div>
       </div>
