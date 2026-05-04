@@ -339,7 +339,13 @@ const Guestbook = () => {
           </button>
         </div>
       </div>
-      <p className="text-text" style={{ fontSize: '14px', lineHeight: '1.6', margin: 0 }}>
+      <p className="text-text" style={{
+        fontSize: '14px',
+        lineHeight: '1.8',
+        margin: 0,
+        whiteSpace: 'pre-wrap',
+        wordWrap: 'break-word'
+      }}>
         {item.message}
       </p>
       
