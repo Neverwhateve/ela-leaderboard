@@ -269,7 +269,8 @@ const Guestbook = () => {
               e.target.style.borderColor = '#e0e0e0';
             }}
           >
-            ❤️ {item.likes || 0}
+            <img src="/icons/heart.png" alt="点赞" style={{ width: '16px', height: '16px' }} />
+            {item.likes || 0}
           </button>
           
           <button
@@ -301,7 +302,8 @@ const Guestbook = () => {
               e.target.style.borderColor = '#e0e0e0';
             }}
           >
-            💬 回复
+            <img src="/icons/message.png" alt="回复" style={{ width: '16px', height: '16px' }} />
+            回复
           </button>
           
           <button
@@ -312,7 +314,6 @@ const Guestbook = () => {
               border: '1px solid #e0e0e0',
               color: '#e74c3c',
               cursor: isSubmitting ? 'not-allowed' : 'pointer',
-              fontSize: '18px',
               width: '32px',
               height: '32px',
               borderRadius: '8px',
@@ -335,7 +336,7 @@ const Guestbook = () => {
               e.target.style.borderColor = '#e0e0e0';
             }}
           >
-            ✕
+            <img src="/icons/delete.png" alt="删除" style={{ width: '18px', height: '18px' }} />
           </button>
         </div>
       </div>
