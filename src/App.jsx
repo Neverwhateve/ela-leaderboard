@@ -179,7 +179,7 @@ function App() {
               <div className="flex gap-3">
                 <button
                   onClick={() => setShowRegisterModal(true)}
-                  className="px-6 py-3 bg-primary text-white rounded-acnh hover:bg-primaryHover transition-colors font-medium shadow-acnh"
+                  className="px-6 py-3 bg-primary text-white rounded-acnh hover:bg-primaryHover transition-colors font-medium shadow-acnh animate-bounce-slow"
                 >
                   📋 注册
                 </button>
