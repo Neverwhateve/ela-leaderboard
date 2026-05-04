@@ -35,11 +35,30 @@ export default async function handler(req, res) {
       const rootMessages = messages.filter(m => !m.parent_id);
       const replies = messages.filter(m => m.parent_id);
       
-      // 构建回复关系（确保id类型一致）
-      const messagesWithReplies = rootMessages.map(root => ({
-        ...root,
-        replies: replies.filter(r => String(r.parent_id) === String(root.id))
-      }));
+      // 调试信息
+      console.log('All messages:', messages);
+      console.log('Root messages:', rootMessages);
+      console.log('Replies:', replies);
+      
+      // 构建树形结构（兼容不同类型）
+      const messagesWithReplies = rootMessages.map(root => {
+        // 确保类型正确
+        const rootId = String(root.id);
+        const matchingReplies = replies.filter(r => {
+          const replyParentId = String(r.parent_id);
+          const match = replyParentId === rootId;
+          if (match) {
+            console.log('Match found:', { reply: r.message, parentId: replyParentId, rootId });
+          }
+          return match;
+        });
+        return {
+          ...root,
+          replies: matchingReplies
+        };
+      });
+      
+      console.log('Final messages with replies:', messagesWithReplies);
       
       // 按时间倒序排列
       messagesWithReplies.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
