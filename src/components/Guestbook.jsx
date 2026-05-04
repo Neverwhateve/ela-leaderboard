@@ -220,13 +220,13 @@ const Guestbook = () => {
               onClick={() => handleDeleteClick(item.id)}
               disabled={isSubmitting}
               style={{
-                background: '#e74c3c',
+                background: '#6c757d',
                 border: 'none',
                 color: 'white',
                 cursor: isSubmitting ? 'not-allowed' : 'pointer',
-                fontSize: '14px',
-                width: '24px',
-                height: '24px',
+                fontSize: '12px',
+                width: '20px',
+                height: '20px',
                 borderRadius: '50%',
                 display: 'flex',
                 alignItems: 'center',
