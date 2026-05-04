@@ -198,24 +198,22 @@ const Guestbook = () => {
           </span>
         </div>
         <div className="flex gap-2">
-          {!isReply && (
-            <button
-              onClick={() => handleReplyClick(item)}
-              disabled={isSubmitting}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: '#2196F3',
-                cursor: isSubmitting ? 'not-allowed' : 'pointer',
-                fontSize: '14px',
-                padding: '4px 8px',
-                borderRadius: '6px'
-              }}
-              title="回复留言"
-            >
-              💬 回复
-            </button>
-          )}
+          <button
+            onClick={() => handleReplyClick(item)}
+            disabled={isSubmitting}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#2196F3',
+              cursor: isSubmitting ? 'not-allowed' : 'pointer',
+              fontSize: '14px',
+              padding: '4px 8px',
+              borderRadius: '6px'
+            }}
+            title="回复留言"
+          >
+            💬 回复
+          </button>
           <button
               onClick={() => handleDeleteClick(item.id)}
               disabled={isSubmitting}
@@ -332,9 +330,9 @@ const Guestbook = () => {
         </form>
       )}
 
-      {/* 渲染回复 */}
+      {/* 渲染回复（支持无限嵌套） */}
       {item.replies && item.replies.length > 0 && (
-        <div className="mt-4 space-y-3">
+        <div style={{ marginTop: '12px', paddingLeft: isReply ? '24px' : '0' }}>
           {item.replies.map(reply => renderMessage(reply, true))}
         </div>
       )}

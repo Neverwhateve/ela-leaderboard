@@ -40,23 +40,23 @@ export default async function handler(req, res) {
       console.log('Root messages:', rootMessages);
       console.log('Replies:', replies);
       
-      // 构建树形结构（兼容不同类型）
-      const messagesWithReplies = rootMessages.map(root => {
-        // 确保类型正确
-        const rootId = String(root.id);
-        const matchingReplies = replies.filter(r => {
-          const replyParentId = String(r.parent_id);
-          const match = replyParentId === rootId;
-          if (match) {
-            console.log('Match found:', { reply: r.message, parentId: replyParentId, rootId });
-          }
-          return match;
-        });
-        return {
-          ...root,
-          replies: matchingReplies
-        };
-      });
+      // 递归构建树形结构（支持无限嵌套）
+      function buildTree(parentId = null) {
+        return messages
+          .filter(m => {
+            if (parentId === null) {
+              return !m.parent_id;
+            }
+            return String(m.parent_id) === String(parentId);
+          })
+          .map(m => ({
+            ...m,
+            replies: buildTree(m.id)
+          }));
+      }
+      
+      const messagesWithReplies = buildTree();
+      console.log('Final nested tree:', messagesWithReplies);
       
       console.log('Final messages with replies:', messagesWithReplies);
       
