@@ -5,7 +5,7 @@
       "name": "Ada",
       "displayName": "冃半",
       "title": "",
-      "xp": 20,
+      "xp": 40,
       "points": 0,
       "xpHistory": [
         {
@@ -17,6 +17,11 @@
           "date": "2026-04-21",
           "reason": "Outing 九宫图",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -26,7 +31,7 @@
       "name": "Amelia",
       "displayName": "扭啊扭",
       "title": "",
-      "xp": 20,
+      "xp": 40,
       "points": 0,
       "xpHistory": [
         {
@@ -38,6 +43,11 @@
           "date": "2026-04-21",
           "reason": "Outing 九宫图",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -47,13 +57,18 @@
       "name": "Angela",
       "displayName": "没奶油的奥利奥",
       "title": "",
-      "xp": 10,
+      "xp": 30,
       "points": 0,
       "xpHistory": [
         {
           "date": "2026-04-21",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -63,7 +78,7 @@
       "name": "April",
       "displayName": "Siyue",
       "title": "",
-      "xp": 30,
+      "xp": 50,
       "points": 0,
       "xpHistory": [
         {
@@ -75,6 +90,11 @@
           "date": "2026-04-27",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -84,13 +104,18 @@
       "name": "Barry",
       "displayName": "Flash",
       "title": "",
-      "xp": 10,
+      "xp": 30,
       "points": 0,
       "xpHistory": [
         {
           "date": "2026-04-21",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -100,7 +125,7 @@
       "name": "Bryan",
       "displayName": "幼儿园高材生",
       "title": "",
-      "xp": 120,
+      "xp": 140,
       "points": 0,
       "xpHistory": [
         {
@@ -132,6 +157,11 @@
           "date": "2026-05-02",
           "reason": "Acc 邮件分享",
           "amount": 15
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -141,7 +171,7 @@
       "name": "Candy",
       "displayName": "Candy",
       "title": "",
-      "xp": 40,
+      "xp": 60,
       "points": 0,
       "xpHistory": [
         {
@@ -158,6 +188,11 @@
           "date": "2026-04-24",
           "reason": "DD 分享",
           "amount": 20
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -167,13 +202,18 @@
       "name": "Carmen",
       "displayName": "Carmen",
       "title": "",
-      "xp": 10,
+      "xp": 30,
       "points": 0,
       "xpHistory": [
         {
           "date": "2026-04-27",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -183,13 +223,18 @@
       "name": "CC",
       "displayName": "宫西西",
       "title": "",
-      "xp": 10,
+      "xp": 30,
       "points": 0,
       "xpHistory": [
         {
           "date": "2026-04-21",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -199,13 +244,18 @@
       "name": "Changliang",
       "displayName": "机智的小胖哥",
       "title": "",
-      "xp": 10,
+      "xp": 30,
       "points": 0,
       "xpHistory": [
         {
           "date": "2026-04-21",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -215,7 +265,7 @@
       "name": "Cody",
       "displayName": "川川",
       "title": "",
-      "xp": 30,
+      "xp": 50,
       "points": 0,
       "xpHistory": [
         {
@@ -227,6 +277,11 @@
           "date": "2026-04-21",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -236,7 +291,7 @@
       "name": "Daisy Lu",
       "displayName": "漫野雏菊",
       "title": "",
-      "xp": 25,
+      "xp": 45,
       "points": 0,
       "xpHistory": [
         {
@@ -253,6 +308,11 @@
           "date": "2026-04-29",
           "reason": "认真学习 Town Hall",
           "amount": 5
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -262,7 +322,7 @@
       "name": "Danni",
       "displayName": "宇宙当红炸子鸡😎",
       "title": "",
-      "xp": 15,
+      "xp": 35,
       "points": 0,
       "xpHistory": [
         {
@@ -274,6 +334,11 @@
           "date": "2026-04-29",
           "reason": "认真学习 Town Hall",
           "amount": 5
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -290,6 +355,11 @@
           "date": "2026-04-27",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "undefined",
+          "reason": "",
+          "amount": 0
         }
       ],
       "redeemHistory": []
@@ -299,13 +369,18 @@
       "name": "DJ",
       "displayName": "déjà vu",
       "title": "",
-      "xp": 10,
+      "xp": 30,
       "points": 0,
       "xpHistory": [
         {
           "date": "2026-04-21",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -315,7 +390,7 @@
       "name": "Dobby",
       "displayName": "时间管理大师",
       "title": "",
-      "xp": 25,
+      "xp": 45,
       "points": 0,
       "xpHistory": [
         {
@@ -327,6 +402,11 @@
           "date": "2026-05-02",
           "reason": "Peer Tips",
           "amount": 15
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -336,13 +416,18 @@
       "name": "Edward",
       "displayName": "千万别声张先生",
       "title": "",
-      "xp": 10,
+      "xp": 30,
       "points": 0,
       "xpHistory": [
         {
           "date": "2026-04-27",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -352,7 +437,7 @@
       "name": "Gina",
       "displayName": "金佰利",
       "title": "",
-      "xp": 20,
+      "xp": 40,
       "points": 0,
       "xpHistory": [
         {
@@ -364,6 +449,11 @@
           "date": "2026-04-21",
           "reason": "Outing 九宫图",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -373,13 +463,18 @@
       "name": "Grace",
       "displayName": "Grace",
       "title": "",
-      "xp": 10,
+      "xp": 30,
       "points": 0,
       "xpHistory": [
         {
           "date": "2026-04-21",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -389,13 +484,18 @@
       "name": "Heidi",
       "displayName": "Heidi",
       "title": "",
-      "xp": 10,
+      "xp": 30,
       "points": 0,
       "xpHistory": [
         {
           "date": "2026-04-27",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -405,7 +505,7 @@
       "name": "Iris",
       "displayName": "羊没吐气",
       "title": "",
-      "xp": 20,
+      "xp": 40,
       "points": 0,
       "xpHistory": [
         {
@@ -417,6 +517,11 @@
           "date": "2026-04-21",
           "reason": "Outing 九宫图",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -426,7 +531,7 @@
       "name": "Jason",
       "displayName": "森森",
       "title": "",
-      "xp": 20,
+      "xp": 40,
       "points": 0,
       "xpHistory": [
         {
@@ -438,6 +543,11 @@
           "date": "2026-04-21",
           "reason": "Outing 九宫图",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -447,7 +557,7 @@
       "name": "Jesse",
       "displayName": "二朵龙",
       "title": "",
-      "xp": 20,
+      "xp": 40,
       "points": 0,
       "xpHistory": [
         {
@@ -459,6 +569,11 @@
           "date": "2026-04-22",
           "reason": "Outing 九宫图",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -468,13 +583,18 @@
       "name": "Jim",
       "displayName": "阿油几亩菜",
       "title": "",
-      "xp": 10,
+      "xp": 30,
       "points": 0,
       "xpHistory": [
         {
           "date": "2026-04-21",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -484,7 +604,7 @@
       "name": "Joy",
       "displayName": "陶瓷女工",
       "title": "",
-      "xp": 20,
+      "xp": 40,
       "points": 0,
       "xpHistory": [
         {
@@ -496,6 +616,11 @@
           "date": "2026-04-21",
           "reason": "Outing 九宫图",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -505,13 +630,18 @@
       "name": "Kevin",
       "displayName": "すみません",
       "title": "",
-      "xp": 10,
+      "xp": 30,
       "points": 0,
       "xpHistory": [
         {
           "date": "2026-04-27",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -521,7 +651,7 @@
       "name": "Krystal",
       "displayName": "小黄努力减肥",
       "title": "",
-      "xp": 25,
+      "xp": 45,
       "points": 0,
       "xpHistory": [
         {
@@ -533,6 +663,11 @@
           "date": "2026-04-29",
           "reason": "One Day Eexperience Sharing",
           "amount": 15
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -542,7 +677,7 @@
       "name": "Laughing",
       "displayName": "爆炸瓜",
       "title": "",
-      "xp": 30,
+      "xp": 50,
       "points": 0,
       "xpHistory": [
         {
@@ -559,6 +694,11 @@
           "date": "2026-04-29",
           "reason": "One Day Eexperience Sharing",
           "amount": 15
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -568,13 +708,18 @@
       "name": "Lily",
       "displayName": "Lily",
       "title": "",
-      "xp": 10,
+      "xp": 30,
       "points": 0,
       "xpHistory": [
         {
           "date": "2026-04-27",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -584,13 +729,18 @@
       "name": "Lori",
       "displayName": "黎晚",
       "title": "",
-      "xp": 10,
+      "xp": 30,
       "points": 0,
       "xpHistory": [
         {
           "date": "2026-04-21",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -600,13 +750,18 @@
       "name": "Max",
       "displayName": "马化藤",
       "title": "",
-      "xp": 10,
+      "xp": 30,
       "points": 0,
       "xpHistory": [
         {
           "date": "2026-04-27",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -616,13 +771,18 @@
       "name": "Mediha",
       "displayName": "Mediha",
       "title": "",
-      "xp": 10,
+      "xp": 30,
       "points": 0,
       "xpHistory": [
         {
           "date": "2026-04-21",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -632,7 +792,7 @@
       "name": "Moon",
       "displayName": "花果山小母猴",
       "title": "",
-      "xp": 40,
+      "xp": 60,
       "points": 0,
       "xpHistory": [
         {
@@ -649,6 +809,11 @@
           "date": "2026-04-29",
           "reason": "Shortcuts 入门",
           "amount": 20
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -658,13 +823,18 @@
       "name": "Nanyi",
       "displayName": "QQ少爷",
       "title": "",
-      "xp": 10,
+      "xp": 30,
       "points": 0,
       "xpHistory": [
         {
           "date": "2026-04-21",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -674,7 +844,7 @@
       "name": "Olivia",
       "displayName": "一团儿",
       "title": "",
-      "xp": 30,
+      "xp": 50,
       "points": 0,
       "xpHistory": [
         {
@@ -686,6 +856,11 @@
           "date": "2026-04-21",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -695,7 +870,7 @@
       "name": "Oscar",
       "displayName": "不是艺术家",
       "title": "",
-      "xp": 45,
+      "xp": 65,
       "points": 0,
       "xpHistory": [
         {
@@ -717,6 +892,11 @@
           "date": "2026-04-25",
           "reason": " 资讯分享",
           "amount": 5
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -726,13 +906,18 @@
       "name": "Patrick",
       "displayName": "满山猴子我腚最红",
       "title": "",
-      "xp": 10,
+      "xp": 30,
       "points": 0,
       "xpHistory": [
         {
           "date": "2026-04-21",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -742,7 +927,7 @@
       "name": "Rik",
       "displayName": "Rik",
       "title": "",
-      "xp": 30,
+      "xp": 50,
       "points": 0,
       "xpHistory": [
         {
@@ -754,6 +939,11 @@
           "date": "2026-04-21",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -763,13 +953,18 @@
       "name": "Rita",
       "displayName": "陶喆演唱会抢票超人",
       "title": "",
-      "xp": 10,
+      "xp": 30,
       "points": 0,
       "xpHistory": [
         {
           "date": "2026-04-21",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -779,7 +974,7 @@
       "name": "Serena",
       "displayName": "艺臻",
       "title": "",
-      "xp": 40,
+      "xp": 60,
       "points": 0,
       "xpHistory": [
         {
@@ -801,6 +996,11 @@
           "date": "2026-05-02",
           "reason": "Peer Tips",
           "amount": 15
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -810,13 +1010,18 @@
       "name": "Seven",
       "displayName": "七七",
       "title": "",
-      "xp": 10,
+      "xp": 30,
       "points": 0,
       "xpHistory": [
         {
           "date": "2026-04-21",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -826,7 +1031,7 @@
       "name": "Strange",
       "displayName": "于适的老公",
       "title": "",
-      "xp": 40,
+      "xp": 60,
       "points": 0,
       "xpHistory": [
         {
@@ -848,6 +1053,11 @@
           "date": "2026-05-02",
           "reason": "Peer Tips",
           "amount": 15
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -857,13 +1067,18 @@
       "name": "Tina",
       "displayName": "大顺",
       "title": "",
-      "xp": 10,
+      "xp": 30,
       "points": 0,
       "xpHistory": [
         {
           "date": "2026-04-27",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -873,13 +1088,18 @@
       "name": "Vicky",
       "displayName": "山竹",
       "title": "",
-      "xp": 10,
+      "xp": 30,
       "points": 0,
       "xpHistory": [
         {
           "date": "2026-04-21",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -889,13 +1109,18 @@
       "name": "Victor",
       "displayName": "皮卡丨皮卡",
       "title": "",
-      "xp": 10,
+      "xp": 30,
       "points": 0,
       "xpHistory": [
         {
           "date": "2026-04-21",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -905,13 +1130,18 @@
       "name": "Vincent",
       "displayName": "Vincent",
       "title": "",
-      "xp": 10,
+      "xp": 30,
       "points": 0,
       "xpHistory": [
         {
           "date": "2026-04-21",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -921,7 +1151,7 @@
       "name": "Xiaolan",
       "displayName": "月野子",
       "title": "",
-      "xp": 55,
+      "xp": 75,
       "points": 0,
       "xpHistory": [
         {
@@ -948,6 +1178,11 @@
           "date": "2026-04-30",
           "reason": "认真学习 Town Hall",
           "amount": 5
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -957,7 +1192,7 @@
       "name": "Ya",
       "displayName": "ya",
       "title": "",
-      "xp": 25,
+      "xp": 45,
       "points": 0,
       "xpHistory": [
         {
@@ -969,6 +1204,11 @@
           "date": "2026-04-29",
           "reason": "Peer Tips",
           "amount": 15
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -978,13 +1218,18 @@
       "name": "Yolanda",
       "displayName": "3199",
       "title": "",
-      "xp": 10,
+      "xp": 30,
       "points": 0,
       "xpHistory": [
         {
           "date": "2026-04-21",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -994,7 +1239,7 @@
       "name": "Yoyo",
       "displayName": "YOYO",
       "title": "",
-      "xp": 20,
+      "xp": 40,
       "points": 0,
       "xpHistory": [
         {
@@ -1006,6 +1251,11 @@
           "date": "2026-04-27",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -1015,7 +1265,7 @@
       "name": "Yulong",
       "displayName": "毛腿吴彦祖",
       "title": "",
-      "xp": 30,
+      "xp": 50,
       "points": 0,
       "xpHistory": [
         {
@@ -1027,6 +1277,11 @@
           "date": "2026-04-21",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -1036,7 +1291,7 @@
       "name": "Zoe",
       "displayName": "周芳菲",
       "title": "",
-      "xp": 35,
+      "xp": 55,
       "points": 0,
       "xpHistory": [
         {
@@ -1058,6 +1313,11 @@
           "date": "2026-04-29",
           "reason": "Peer Tips",
           "amount": 15
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -1074,6 +1334,11 @@
           "date": "2026-04-27",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "undefined",
+          "reason": "",
+          "amount": 0
         }
       ],
       "redeemHistory": []
@@ -1083,7 +1348,7 @@
       "name": "Sally",
       "displayName": "最好的地方II有我一票",
       "title": "",
-      "xp": 20,
+      "xp": 40,
       "points": 0,
       "xpHistory": [
         {
@@ -1095,6 +1360,11 @@
           "date": "2026-04-27",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -1104,7 +1374,7 @@
       "name": "Xiaoxiao",
       "displayName": "Daddy",
       "title": "",
-      "xp": 25,
+      "xp": 45,
       "points": 0,
       "xpHistory": [
         {
@@ -1121,6 +1391,11 @@
           "date": "2026-04-29",
           "reason": "认真学习 Town Hall",
           "amount": 5
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -1130,7 +1405,7 @@
       "name": "Julia",
       "displayName": "8low8lowme",
       "title": "",
-      "xp": 15,
+      "xp": 35,
       "points": 0,
       "xpHistory": [
         {
@@ -1142,6 +1417,11 @@
           "date": "2026-04-29",
           "reason": "认真学习 Town Hall",
           "amount": 5
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -1151,7 +1431,7 @@
       "name": "Vika",
       "displayName": "正正",
       "title": "",
-      "xp": 20,
+      "xp": 40,
       "points": 0,
       "xpHistory": [
         {
@@ -1163,6 +1443,11 @@
           "date": "2026-04-29",
           "reason": "新用户注册",
           "amount": 10
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -1172,8 +1457,8 @@
       "name": "Alvin",
       "displayName": "煮鱼",
       "title": "",
-      "xp": 45,
-      "points": 0,
+      "xp": 65,
+      "points": 50,
       "xpHistory": [
         {
           "date": "2026-04-29",
@@ -1194,16 +1479,27 @@
           "date": "2026-04-30",
           "reason": "Peer Tips",
           "amount": 15
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
-      "redeemHistory": []
+      "redeemHistory": [
+        {
+          "date": "2026-05-04",
+          "item": "小礼物",
+          "points": 50
+        }
+      ]
     },
     {
       "id": "user_59",
       "name": "Alicia",
       "displayName": "你算哪头朱",
       "title": "",
-      "xp": 15,
+      "xp": 50,
       "points": 0,
       "xpHistory": [
         {
@@ -1215,6 +1511,16 @@
           "date": "2026-05-02",
           "reason": "认真学习 Town Hall",
           "amount": 5
+        },
+        {
+          "date": "2026-05-02",
+          "reason": "Good Idea",
+          "amount": 15
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -1224,7 +1530,7 @@
       "name": "Tracy",
       "displayName": "外国公主",
       "title": "",
-      "xp": 55,
+      "xp": 75,
       "points": 0,
       "xpHistory": [
         {
@@ -1241,6 +1547,11 @@
           "date": "2026-04-30",
           "reason": "发起 Peer Tips*8",
           "amount": 40
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -1250,7 +1561,7 @@
       "name": "Lucia",
       "displayName": "泡泡",
       "title": "",
-      "xp": 25,
+      "xp": 45,
       "points": 0,
       "xpHistory": [
         {
@@ -1262,6 +1573,11 @@
           "date": "2026-04-29",
           "reason": "Good Idea",
           "amount": 15
+        },
+        {
+          "date": "2026-05-04",
+          "reason": "4月 Training 已完成",
+          "amount": 20
         }
       ],
       "redeemHistory": []
@@ -1269,64 +1585,52 @@
   ],
   "latestRecords": [
     {
-      "displayName": "外国公主",
-      "date": "2026-04-30",
-      "reason": "认真学习 Town Hall",
-      "amount": 5
+      "displayName": "Daddy",
+      "date": "2026-05-04",
+      "reason": "4月 Training 已完成",
+      "amount": 20
     },
     {
-      "displayName": "外国公主",
-      "date": "2026-04-30",
-      "reason": "发起 Peer Tips*8",
-      "amount": 40
+      "displayName": "ya",
+      "date": "2026-05-04",
+      "reason": "4月 Training 已完成",
+      "amount": 20
     },
     {
-      "displayName": "煮鱼",
-      "date": "2026-04-30",
-      "reason": "Peer Tips",
-      "amount": 15
+      "displayName": "ya",
+      "date": "2026-05-04",
+      "reason": "4月 Training 已完成",
+      "amount": 20
     },
     {
-      "displayName": "月野子",
-      "date": "2026-04-30",
-      "reason": "认真学习 Town Hall",
-      "amount": 5
+      "displayName": "3199",
+      "date": "2026-05-04",
+      "reason": "4月 Training 已完成",
+      "amount": 20
     },
     {
-      "displayName": "艺臻",
-      "date": "2026-05-02",
-      "reason": "认真学习 Town Hall",
-      "amount": 5
+      "displayName": "YOYO",
+      "date": "2026-05-04",
+      "reason": "4月 Training 已完成",
+      "amount": 20
     },
     {
-      "displayName": "艺臻",
-      "date": "2026-05-02",
-      "reason": "Peer Tips",
-      "amount": 15
+      "displayName": "毛腿吴彦祖",
+      "date": "2026-05-04",
+      "reason": "4月 Training 已完成",
+      "amount": 20
     },
     {
-      "displayName": "于适的老公",
-      "date": "2026-05-02",
-      "reason": "Peer Tips",
-      "amount": 15
+      "displayName": "周芳菲",
+      "date": "2026-05-04",
+      "reason": "4月 Training 已完成",
+      "amount": 20
     },
     {
-      "displayName": "时间管理大师",
-      "date": "2026-05-02",
-      "reason": "Peer Tips",
-      "amount": 15
-    },
-    {
-      "displayName": "幼儿园高材生",
-      "date": "2026-05-02",
-      "reason": "Acc 邮件分享",
-      "amount": 15
-    },
-    {
-      "displayName": "你算哪头朱",
-      "date": "2026-05-02",
-      "reason": "认真学习 Town Hall",
-      "amount": 5
+      "displayName": "Zoey",
+      "date": "undefined",
+      "reason": "",
+      "amount": 0
     }
   ]
 }
