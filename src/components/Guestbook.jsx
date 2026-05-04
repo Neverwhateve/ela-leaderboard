@@ -10,6 +10,9 @@ const Guestbook = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [deletePassword, setDeletePassword] = useState('');
+  const [replyingTo, setReplyingTo] = useState(null);
+  const [replyName, setReplyName] = useState('');
+  const [replyMessage, setReplyMessage] = useState('');
 
   // 从 API 加载留言
   const fetchMessages = async () => {
@@ -72,6 +75,47 @@ const Guestbook = () => {
     }
   };
 
+  // 提交回复
+  const handleReplySubmit = async (e) => {
+    e.preventDefault();
+    if (!replyName.trim() || !replyMessage.trim()) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    setError('');
+
+    try {
+      const response = await fetch('/api/guestbook', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: replyName.trim(),
+          message: replyMessage.trim(),
+          parent_id: replyingTo.id,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setReplyName('');
+        setReplyMessage('');
+        setReplyingTo(null);
+        await fetchMessages(); // 重新获取留言列表
+      } else {
+        setError(data.error || '发送失败，请重试');
+      }
+    } catch (err) {
+      console.error('Failed to submit reply:', err);
+      setError('发送失败，请检查网络连接');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   // 点击删除按钮
   const handleDeleteClick = (id) => {
     setDeleteId(id);
@@ -122,6 +166,175 @@ const Guestbook = () => {
     setDeleteId(null);
     setDeletePassword('');
   };
+
+  // 点击回复按钮
+  const handleReplyClick = (item) => {
+    setReplyingTo(item);
+    setReplyName('');
+    setReplyMessage('');
+  };
+
+  // 取消回复
+  const cancelReply = () => {
+    setReplyingTo(null);
+    setReplyName('');
+    setReplyMessage('');
+  };
+
+  // 渲染单个留言和它的回复
+  const renderMessage = (item, isReply = false) => (
+    <div
+      key={item.id}
+      className={`rounded-acnh p-4 shadow-acnh-sm ${isReply ? 'ml-8 border-l-4 border-primary' : ''}`}
+      style={{ backgroundColor: isReply ? '#fff3cd' : '#fff9e6' }}
+    >
+      <div className="flex justify-between items-start mb-2">
+        <div>
+          <span className="font-semibold text-primary" style={{ fontSize: '16px' }}>
+            {isReply ? '↳ ' : ''}{item.name}
+          </span>
+          <span className="text-textSecondary ml-2" style={{ fontSize: '12px' }}>
+            {new Date(item.created_at).toLocaleDateString('zh-CN')} {new Date(item.created_at).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}
+          </span>
+        </div>
+        <div className="flex gap-2">
+          {!isReply && (
+            <button
+              onClick={() => handleReplyClick(item)}
+              disabled={isSubmitting}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#2196F3',
+                cursor: isSubmitting ? 'not-allowed' : 'pointer',
+                fontSize: '14px',
+                padding: '4px 8px',
+                borderRadius: '6px'
+              }}
+              title="回复留言"
+            >
+              💬 回复
+            </button>
+          )}
+          <button
+              onClick={() => handleDeleteClick(item.id)}
+              disabled={isSubmitting}
+              style={{
+                background: 'none',
+                border: '1px solid #e74c3c',
+                color: '#e74c3c',
+                cursor: isSubmitting ? 'not-allowed' : 'pointer',
+                fontSize: '12px',
+                padding: '4px 12px',
+                borderRadius: '6px'
+              }}
+              title="删除留言"
+            >
+              删除
+            </button>
+        </div>
+      </div>
+      <p className="text-text" style={{ fontSize: '14px', lineHeight: '1.6', margin: 0 }}>
+        {item.message}
+      </p>
+      
+      {/* 回复表单 */}
+      {replyingTo && replyingTo.id === item.id && (
+        <form onSubmit={handleReplySubmit} className="mt-4">
+          <div style={{ marginBottom: '12px' }}>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#725d42' }}>
+              回复 {item.name} - 你的昵称
+            </label>
+            <input
+              type="text"
+              value={replyName}
+              onChange={(e) => setReplyName(e.target.value)}
+              placeholder="你的昵称..."
+              disabled={isSubmitting}
+              style={{
+                width: '100%',
+                padding: '8px 12px',
+                border: '2px solid #ddd',
+                borderRadius: '8px',
+                fontSize: '14px',
+                outline: 'none',
+                boxSizing: 'border-box',
+                backgroundColor: isSubmitting ? '#f5f5f5' : 'white',
+                color: isSubmitting ? '#999' : '#333'
+              }}
+            />
+          </div>
+          <div style={{ marginBottom: '12px' }}>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#725d42' }}>
+              回复内容
+            </label>
+            <textarea
+              value={replyMessage}
+              onChange={(e) => setReplyMessage(e.target.value)}
+              placeholder="说点什么吧..."
+              rows={2}
+              disabled={isSubmitting}
+              style={{
+                width: '100%',
+                padding: '8px 12px',
+                border: '2px solid #ddd',
+                borderRadius: '8px',
+                fontSize: '14px',
+                outline: 'none',
+                resize: 'none',
+                boxSizing: 'border-box',
+                backgroundColor: isSubmitting ? '#f5f5f5' : 'white',
+                color: isSubmitting ? '#999' : '#333'
+              }}
+            />
+          </div>
+          <div style={{ display: 'flex', gap: '12px' }}>
+            <button
+              type="button"
+              onClick={cancelReply}
+              disabled={isSubmitting}
+              style={{
+                flex: 1,
+                padding: '10px',
+                border: '1px solid #ddd',
+                borderRadius: '8px',
+                backgroundColor: isSubmitting ? '#e0e0e0' : '#f5f5f5',
+                cursor: isSubmitting ? 'not-allowed' : 'pointer',
+                fontSize: '14px',
+                color: isSubmitting ? '#999' : '#333',
+              }}
+            >
+              取消
+            </button>
+            <button
+              type="submit"
+              disabled={isSubmitting || !replyName.trim() || !replyMessage.trim()}
+              style={{
+                flex: 1,
+                padding: '10px',
+                border: 'none',
+                borderRadius: '8px',
+                backgroundColor: (isSubmitting || !replyName.trim() || !replyMessage.trim()) ? '#9E9E9E' : '#2196F3',
+                color: 'white',
+                cursor: (isSubmitting || !replyName.trim() || !replyMessage.trim()) ? 'not-allowed' : 'pointer',
+                fontSize: '14px',
+                fontWeight: '600'
+              }}
+            >
+              {isSubmitting ? '发送中...' : '发送回复'}
+            </button>
+          </div>
+        </form>
+      )}
+
+      {/* 渲染回复 */}
+      {item.replies && item.replies.length > 0 && (
+        <div className="mt-4 space-y-3">
+          {item.replies.map(reply => renderMessage(reply, true))}
+        </div>
+      )}
+    </div>
+  );
 
   return (
     <div className="max-w-4xl mx-auto mt-8 mb-8">
@@ -236,42 +449,7 @@ const Guestbook = () => {
               </p>
             </div>
           ) : (
-            messages.map((item) => (
-              <div
-                key={item.id}
-                className="bg-primaryBg rounded-acnh p-4 shadow-acnh-sm"
-                style={{ backgroundColor: '#fff9e6' }}
-              >
-                <div className="flex justify-between items-start mb-2">
-                  <div>
-                    <span className="font-semibold text-primary" style={{ fontSize: '16px' }}>
-                      {item.name}
-                    </span>
-                    <span className="text-textSecondary ml-2" style={{ fontSize: '12px' }}>
-                      {new Date(item.created_at).toLocaleDateString('zh-CN')} {new Date(item.created_at).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}
-                    </span>
-                  </div>
-                  <button
-                    onClick={() => handleDeleteClick(item.id)}
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      color: '#e74c3c',
-                      cursor: 'pointer',
-                      fontSize: '14px',
-                      padding: '4px 8px',
-                      borderRadius: '6px'
-                    }}
-                    title="删除留言"
-                  >
-                    🗑️
-                  </button>
-                </div>
-                <p className="text-text" style={{ fontSize: '14px', lineHeight: '1.6', margin: 0 }}>
-                  {item.message}
-                </p>
-              </div>
-            ))
+            messages.map((item) => renderMessage(item))
           )}
         </div>
       </div>

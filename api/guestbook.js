@@ -22,32 +22,51 @@ export default async function handler(req, res) {
 
   try {
     if (req.method === 'GET') {
-      // 获取留言列表
+      // 获取留言列表（包括回复）
       const { data, error } = await supabase
         .from('guestbook')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: true });
 
       if (error) throw error;
-      return res.status(200).json({ messages: data || [] });
+      
+      // 构建树形结构
+      const messages = data || [];
+      const rootMessages = messages.filter(m => !m.parent_id);
+      const replies = messages.filter(m => m.parent_id);
+      
+      // 构建回复关系
+      const messagesWithReplies = rootMessages.map(root => ({
+        ...root,
+        replies: replies.filter(r => r.parent_id === root.id)
+      }));
+      
+      // 按时间倒序排列
+      messagesWithReplies.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      
+      return res.status(200).json({ messages: messagesWithReplies });
     }
 
     if (req.method === 'POST') {
-      // 添加新留言
-      const { name, message } = req.body;
+      // 添加新留言或回复
+      const { name, message, parent_id } = req.body;
       
       if (!name || !message) {
         return res.status(400).json({ error: '昵称和留言内容不能为空' });
       }
 
+      const insertData = {
+        name: name.trim(),
+        message: message.trim()
+      };
+      
+      if (parent_id) {
+        insertData.parent_id = parent_id;
+      }
+
       const { data, error } = await supabase
         .from('guestbook')
-        .insert([
-          {
-            name: name.trim(),
-            message: message.trim()
-          }
-        ])
+        .insert([insertData])
         .select();
 
       if (error) throw error;
@@ -55,7 +74,7 @@ export default async function handler(req, res) {
     }
 
     if (req.method === 'DELETE') {
-      // 删除留言
+      // 删除留言（包括删除回复）
       const { id, password } = req.body;
       
       if (!id) {
@@ -71,6 +90,22 @@ export default async function handler(req, res) {
         return res.status(403).json({ error: '密码错误' });
       }
 
+      // 首先检查是否有子回复
+      const { data: replies } = await supabase
+        .from('guestbook')
+        .select('id')
+        .eq('parent_id', id);
+      
+      // 删除所有子回复（如果有）
+      if (replies && replies.length > 0) {
+        const replyIds = replies.map(r => r.id);
+        await supabase
+          .from('guestbook')
+          .delete()
+          .in('id', replyIds);
+      }
+
+      // 删除主留言
       const { error } = await supabase
         .from('guestbook')
         .delete()
