@@ -242,23 +242,32 @@ const Guestbook = () => {
             {new Date(item.created_at).toLocaleDateString('zh-CN')} {new Date(item.created_at).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}
           </span>
         </div>
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-1 items-center">
           {/* 点赞按钮 */}
           <button
             onClick={() => handleLike(item)}
             style={{
-              background: 'none',
-              border: 'none',
+              background: '#fff',
+              border: '1px solid #e0e0e0',
               color: '#e91e63',
               cursor: 'pointer',
-              fontSize: '14px',
-              padding: '4px 8px',
-              borderRadius: '6px',
+              fontSize: '13px',
+              padding: '6px 12px',
+              borderRadius: '8px',
               display: 'flex',
               alignItems: 'center',
-              gap: '4px'
+              gap: '6px',
+              transition: 'all 0.2s ease'
             }}
             title="点赞"
+            onMouseEnter={(e) => {
+              e.target.style.background = '#fff0f4';
+              e.target.style.borderColor = '#e91e63';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.background = '#fff';
+              e.target.style.borderColor = '#e0e0e0';
+            }}
           >
             ❤️ {item.likes || 0}
           </button>
@@ -267,15 +276,30 @@ const Guestbook = () => {
             onClick={() => handleReplyClick(item)}
             disabled={isSubmitting}
             style={{
-              background: 'none',
-              border: 'none',
+              background: '#fff',
+              border: '1px solid #e0e0e0',
               color: '#2196F3',
               cursor: isSubmitting ? 'not-allowed' : 'pointer',
-              fontSize: '14px',
-              padding: '4px 8px',
-              borderRadius: '6px'
+              fontSize: '13px',
+              padding: '6px 12px',
+              borderRadius: '8px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+              transition: 'all 0.2s ease',
+              opacity: isSubmitting ? '0.5' : '1'
             }}
             title="回复留言"
+            onMouseEnter={(e) => {
+              if (!isSubmitting) {
+                e.target.style.background = '#e3f2fd';
+                e.target.style.borderColor = '#2196F3';
+              }
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.background = '#fff';
+              e.target.style.borderColor = '#e0e0e0';
+            }}
           >
             💬 回复
           </button>
@@ -284,20 +308,32 @@ const Guestbook = () => {
             onClick={() => handleDeleteClick(item.id)}
             disabled={isSubmitting}
             style={{
-              background: '#6c757d',
-              border: 'none',
-              color: 'white',
+              background: '#fff',
+              border: '1px solid #e0e0e0',
+              color: '#e74c3c',
               cursor: isSubmitting ? 'not-allowed' : 'pointer',
-              fontSize: '12px',
-              width: '20px',
-              height: '20px',
-              borderRadius: '50%',
+              fontSize: '18px',
+              width: '32px',
+              height: '32px',
+              borderRadius: '8px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              padding: 0
+              padding: 0,
+              transition: 'all 0.2s ease',
+              opacity: isSubmitting ? '0.5' : '1'
             }}
             title="删除留言"
+            onMouseEnter={(e) => {
+              if (!isSubmitting) {
+                e.target.style.background = '#fee';
+                e.target.style.borderColor = '#e74c3c';
+              }
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.background = '#fff';
+              e.target.style.borderColor = '#e0e0e0';
+            }}
           >
             ✕
           </button>
