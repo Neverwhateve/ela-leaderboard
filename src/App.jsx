@@ -58,6 +58,7 @@ function App() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedReason, setSelectedReason] = useState('');
   const [customReason, setCustomReason] = useState('');
+  const [customPoints, setCustomPoints] = useState('');
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [registerEnglishName, setRegisterEnglishName] = useState('');
   const [registerNickname, setRegisterNickname] = useState('');
@@ -540,13 +541,14 @@ function App() {
                                   </h4>
                                   {user.xpHistory && user.xpHistory.length > 0 ? (
                                     <div className="space-y-1">
-                                      {[...user.xpHistory]
-                                        .reverse()
+                                      {user.xpHistory
                                         .slice(0, 5)
                                         .map((record, idx) => (
                                           <div key={idx} className="flex justify-between text-sm">
                                             <span className="text-textSecondary">{formatDate(record.date)} - {record.reason}</span>
-                                            <span className="text-primary font-semibold">+{record.amount}</span>
+                                            <span className={record.amount >= 0 ? 'text-primary font-semibold' : 'text-red-500 font-semibold'}>
+                                              {record.amount >= 0 ? '+' : ''}{record.amount}
+                                            </span>
                                           </div>
                                         ))}
                                     </div>
@@ -669,25 +671,49 @@ function App() {
                   <option value="其他">其他（请在下方填写）</option>
                 </select>
                 {selectedReason === '其他' && (
-                  <textarea
-                    value={customReason}
-                    onChange={(e) => setCustomReason(e.target.value)}
-                    placeholder="请描述你获得积分的原因..."
-                    rows={2}
-                    disabled={isSubmitting}
-                    style={{
-                      width: '100%',
-                      padding: '8px 12px',
-                      border: '1px solid #ddd',
-                      borderRadius: '8px',
-                      fontSize: '14px',
-                      outline: 'none',
-                      resize: 'none',
-                      boxSizing: 'border-box',
-                      backgroundColor: isSubmitting ? '#f5f5f5' : 'white',
-                      color: isSubmitting ? '#999' : '#333',
-                    }}
-                  />
+                  <>
+                    <div style={{ marginBottom: '8px' }}>
+                      <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#333' }}>分数：</label>
+                      <input
+                        type="number"
+                        value={customPoints}
+                        onChange={(e) => setCustomPoints(e.target.value)}
+                        placeholder="请输入分数"
+                        min="1"
+                        disabled={isSubmitting}
+                        style={{
+                          width: '100%',
+                          padding: '8px 12px',
+                          border: '1px solid #ddd',
+                          borderRadius: '8px',
+                          fontSize: '14px',
+                          outline: 'none',
+                          boxSizing: 'border-box',
+                          backgroundColor: isSubmitting ? '#f5f5f5' : 'white',
+                          color: isSubmitting ? '#999' : '#333',
+                        }}
+                      />
+                    </div>
+                    <textarea
+                      value={customReason}
+                      onChange={(e) => setCustomReason(e.target.value)}
+                      placeholder="请描述你获得积分的原因..."
+                      rows={2}
+                      disabled={isSubmitting}
+                      style={{
+                        width: '100%',
+                        padding: '8px 12px',
+                        border: '1px solid #ddd',
+                        borderRadius: '8px',
+                        fontSize: '14px',
+                        outline: 'none',
+                        resize: 'none',
+                        boxSizing: 'border-box',
+                        backgroundColor: isSubmitting ? '#f5f5f5' : 'white',
+                        color: isSubmitting ? '#999' : '#333',
+                      }}
+                    />
+                  </>
                 )}
               </div>
               {submitMessage && (
@@ -712,6 +738,7 @@ function App() {
                       setSubmitMessage('');
                       setSelectedReason('');
                       setCustomReason('');
+                      setCustomPoints('');
                     }
                   }}
                   disabled={isSubmitting}
@@ -734,13 +761,24 @@ function App() {
                       setSubmitMessage('请填写完整信息');
                       return;
                     }
-                    if (selectedReason === '其他' && !customReason.trim()) {
-                      setSubmitMessage('请填写具体原因');
-                      return;
+                    if (selectedReason === '其他') {
+                      if (!customReason.trim()) {
+                        setSubmitMessage('请填写具体原因');
+                        return;
+                      }
+                      if (!customPoints || parseInt(customPoints) <= 0) {
+                        setSubmitMessage('请填写有效的分数');
+                        return;
+                      }
                     }
                     setIsSubmitting(true);
                     const finalReason = selectedReason === '其他' ? customReason.trim() : selectedReason;
-                    const points = pointMapping[finalReason] || 0;
+                    let points;
+                    if (selectedReason === '其他') {
+                      points = parseInt(customPoints);
+                    } else {
+                      points = pointMapping[finalReason] || 0;
+                    }
                     try {
                       const response = await fetch('/api/admin/apply', {
                         method: 'POST',
@@ -763,6 +801,7 @@ function App() {
                           setSubmitMessage('');
                           setSelectedReason('');
                           setCustomReason('');
+                          setCustomPoints('');
                         }, 2000);
                       }
                     } catch (error) {

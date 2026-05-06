@@ -123,7 +123,7 @@ export default async function handler(req, res) {
         await addUserXPAndPoints(
           approval.user_name,
           approval.points,
-          `积分申请：${approval.reason}`,
+          approval.reason,
           'auto_approved',
           admin_name
         );
