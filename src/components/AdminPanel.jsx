@@ -380,6 +380,77 @@ const AdminPanel = () => {
     }
   };
 
+  const handleDeleteTransaction = async (transactionId) => {
+    if (!confirm('确定要删除这条积分记录吗？')) return;
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/admin/review', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'delete_transaction',
+          id: transactionId,
+          admin_name: adminName,
+          admin_password: adminPassword
+        })
+      });
+      const data = await response.json();
+      if (data.success) {
+        showMessage('success', '积分记录已删除');
+        await handleSearchUser(selectedUser);
+        await loadUsers();
+        await loadLogs();
+      } else {
+        showMessage('error', data.error);
+      }
+    } catch (err) {
+      showMessage('error', '操作失败');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleEditTransaction = async (transaction) => {
+    const newAmount = prompt('请输入新的积分数量：', transaction.change_amount);
+    if (newAmount === null) return;
+    const amount = parseInt(newAmount);
+    if (isNaN(amount)) {
+      showMessage('error', '请输入正确的数字');
+      return;
+    }
+    const newReason = prompt('请输入新的原因：', transaction.reason);
+    if (newReason === null) return;
+
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/admin/review', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'update_transaction',
+          id: transaction.id,
+          points: amount,
+          reason: newReason,
+          admin_name: adminName,
+          admin_password: adminPassword
+        })
+      });
+      const data = await response.json();
+      if (data.success) {
+        showMessage('success', '积分记录已更新');
+        await handleSearchUser(selectedUser);
+        await loadUsers();
+        await loadLogs();
+      } else {
+        showMessage('error', data.error);
+      }
+    } catch (err) {
+      showMessage('error', '操作失败');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   if (!isLoggedIn) {
     return (
       <div className="max-w-md mx-auto mt-8 mb-8">
@@ -621,13 +692,25 @@ const AdminPanel = () => {
                       placeholder="积分数"
                       className="w-32 px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary"
                     />
-                    <input
-                      type="text"
+                    <select
                       value={operationReason}
                       onChange={(e) => setOperationReason(e.target.value)}
-                      placeholder="原因"
                       className="flex-1 px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary"
-                    />
+                    >
+                      <option value="">选择原因</option>
+                      <option value="新用户注册">新用户注册 (+10积分)</option>
+                      <option value="Outing 九宫图">Outing 九宫图 (+10积分)</option>
+                      <option value="DD 分享">DD 分享 (+20积分)</option>
+                      <option value="Kahoot 优胜">Kahoot 优胜 (+10积分)</option>
+                      <option value="Peer Tips">Peer Tips (+15积分)</option>
+                      <option value="专业解答 & 资讯分享">专业解答 & 资讯分享 (+5积分)</option>
+                      <option value="观看 Town Hall 视频">观看 Town Hall 视频 (+5积分)</option>
+                      <option value="4月 Training 已完成">4月 Training 已完成 (+20积分)</option>
+                      <option value="学习进度达标">学习进度达标 (+25积分)</option>
+                      <option value="完成隐藏任务">完成隐藏任务 (+40积分)</option>
+                      <option value="5月 Training 已完成">5月 Training 已完成 (+30积分)</option>
+                      <option value="管理员手动调整">管理员手动调整</option>
+                    </select>
                     <button
                       onClick={handleAddPoints}
                       disabled={isLoading}
@@ -635,14 +718,6 @@ const AdminPanel = () => {
                       style={{ backgroundColor: '#4caf50' }}
                     >
                       添加
-                    </button>
-                    <button
-                      onClick={handleDeductPoints}
-                      disabled={isLoading}
-                      className="px-4 py-2 rounded-lg text-white"
-                      style={{ backgroundColor: '#e74c3c' }}
-                    >
-                      扣除
                     </button>
                   </div>
 
@@ -659,6 +734,7 @@ const AdminPanel = () => {
                             <th className="pb-2">原因</th>
                             <th className="pb-2">余额</th>
                             <th className="pb-2">操作人</th>
+                            <th className="pb-2">操作</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -671,6 +747,20 @@ const AdminPanel = () => {
                               <td className="py-2">{t.reason}</td>
                               <td className="py-2">{t.balance_after}</td>
                               <td className="py-2">{t.created_by}</td>
+                              <td className="py-2">
+                                <button
+                                  onClick={() => handleEditTransaction(t)}
+                                  className="px-2 py-1 text-xs rounded bg-blue-500 text-white mr-1"
+                                >
+                                  编辑
+                                </button>
+                                <button
+                                  onClick={() => handleDeleteTransaction(t.id)}
+                                  className="px-2 py-1 text-xs rounded bg-red-500 text-white"
+                                >
+                                  删除
+                                </button>
+                              </td>
                             </tr>
                           ))}
                         </tbody>
@@ -741,7 +831,7 @@ const AdminPanel = () => {
                 </table>
               )}
             </div>
-          )}
+          </div>
         )}
 
         {activeTab === 'announcement' && (

@@ -271,17 +271,104 @@ export default async function handler(req, res) {
           history: history.data || []
         });
 
-      case 'get_approval_history':
-        const approvalHistory = await supabase
-          .from('pending_approvals')
+      case 'get_redemption_history':
+        const history = await supabase
+          .from('redemption_requests')
           .select('*')
           .order('created_at', { ascending: false })
           .limit(50);
 
         return res.status(200).json({
           success: true,
-          history: approvalHistory.data || []
+          history: history.data || []
         });
+
+      case 'delete_transaction':
+        const { data: transactionToDelete, error: deleteTxError } = await supabase
+          .from('point_transactions')
+          .select('*')
+          .eq('id', id)
+          .single();
+
+        if (deleteTxError || !transactionToDelete) {
+          return res.status(404).json({ error: '积分记录不存在' });
+        }
+
+        await supabase
+          .from('xp_total')
+          .update({ total_xp: transactionToDelete.balance_after - transactionToDelete.change_amount })
+          .eq('name', transactionToDelete.user_name);
+
+        await supabase
+          .from('point_transactions')
+          .delete()
+          .eq('id', id);
+
+        await logAdminAction(admin_name, 'delete_transaction', transactionToDelete.user_name, `删除积分记录：${transactionToDelete.change_amount > 0 ? '+' : ''}${transactionToDelete.change_amount}积分，原因：${transactionToDelete.reason}`);
+
+        return res.status(200).json({ success: true, message: '积分记录已删除' });
+
+      case 'update_transaction':
+        const { data: transactionToUpdate, error: updateTxError } = await supabase
+          .from('point_transactions')
+          .select('*')
+          .eq('id', id)
+          .single();
+
+        if (updateTxError || !transactionToUpdate) {
+          return res.status(404).json({ error: '积分记录不存在' });
+        }
+
+        const oldAmount = transactionToUpdate.change_amount;
+        const newAmount = points;
+        const amountDiff = newAmount - oldAmount;
+        const newBalance = transactionToUpdate.balance_after + amountDiff;
+
+        await supabase
+          .from('point_transactions')
+          .update({
+            change_amount: newAmount,
+            balance_after: newBalance,
+            reason: reason || transactionToUpdate.reason
+          })
+          .eq('id', id);
+
+        await supabase
+          .from('xp_total')
+          .update({ total_xp: newBalance })
+          .eq('name', transactionToUpdate.user_name);
+
+        await logAdminAction(admin_name, 'update_transaction', transactionToUpdate.user_name, `修改积分记录：从${oldAmount}改为${newAmount}，原因：${reason || transactionToUpdate.reason}`);
+
+        return res.status(200).json({ success: true, message: '积分记录已更新' });
+
+      case 'add_transaction':
+        if (!user_name || !points) {
+          return res.status(400).json({ error: '需要填写用户名和积分数' });
+        }
+
+        const currentUserBalance = await getUserBalance(user_name);
+        const newUserBalance = currentUserBalance + points;
+
+        await supabase
+          .from('point_transactions')
+          .insert({
+            user_name,
+            change_amount: points,
+            balance_after: newUserBalance,
+            reason: reason || '管理员手动添加',
+            type: 'admin_add',
+            created_by: admin_name
+          });
+
+        await supabase
+          .from('xp_total')
+          .update({ total_xp: newUserBalance })
+          .eq('name', user_name);
+
+        await logAdminAction(admin_name, 'add_points', user_name, `手动添加积分记录：${points > 0 ? '+' : ''}${points}积分，原因：${reason || '管理员手动添加'}`);
+
+        return res.status(200).json({ success: true, message: '积分记录已添加' });
 
       default:
         return res.status(400).json({ error: '未知的操作' });
