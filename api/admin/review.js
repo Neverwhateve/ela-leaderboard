@@ -63,7 +63,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
-  const { action, admin_name, admin_password, id, user_name, points, reason, item_name, points_cost, reject_reason } = req.body;
+  const { action, admin_name, admin_password, id, user_name, points, reason, item_name, points_cost, reject_reason, created_at } = req.body;
 
   if (!admin_name || !admin_password) {
     return res.status(400).json({ error: '需要管理员身份验证' });

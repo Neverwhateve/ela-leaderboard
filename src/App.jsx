@@ -173,7 +173,7 @@ function App() {
       {currentPage === 'laborDay' ? (
         <LaborDayEvent onBack={() => setCurrentPage('home')} />
       ) : currentPage === 'admin' ? (
-        <AdminPanel />
+        <AdminPanel onBack={() => setCurrentPage('home')} />
       ) : (
       <div className="min-h-screen p-4 md:p-8 font-acnh text-text relative">
         <Danmaku records={latestRecords} play={playDanmaku} />
