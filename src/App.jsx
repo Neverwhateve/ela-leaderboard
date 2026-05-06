@@ -5,6 +5,7 @@ import { announcementConfig, getPointOptions } from './announcementConfig';
 import LaborDayEvent from './LaborDayEvent';
 import Danmaku from './components/Danmaku';
 import Guestbook from './components/Guestbook';
+import AdminPanel from './components/AdminPanel';
 
 import data from './data.json';
 
@@ -53,6 +54,11 @@ function App() {
   const [registerReferrer, setRegisterReferrer] = useState('');
   const [registerMessage, setRegisterMessage] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
+  const [showRedemptionModal, setShowRedemptionModal] = useState(false);
+  const [redemptionItem, setRedemptionItem] = useState('');
+  const [redemptionName, setRedemptionName] = useState('');
+  const [redemptionMessage, setRedemptionMessage] = useState('');
+  const [isRedeeming, setIsRedeeming] = useState(false);
 
   const handlePlayDanmaku = () => {
     setPlayDanmaku(false);
@@ -68,6 +74,10 @@ function App() {
   };
 
   useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('admin') === 'true') {
+      setCurrentPage('admin');
+    }
     setUsers(data.users || []);
     setLatestRecords(data.latestRecords || []);
     setLoading(false);
@@ -122,6 +132,8 @@ function App() {
     <Cursor>
       {currentPage === 'laborDay' ? (
         <LaborDayEvent onBack={() => setCurrentPage('home')} />
+      ) : currentPage === 'admin' ? (
+        <AdminPanel />
       ) : (
       <div className="min-h-screen p-4 md:p-8 font-acnh text-text relative">
         <Danmaku records={latestRecords} play={playDanmaku} />
@@ -177,6 +189,12 @@ function App() {
                 textAlign: 'center',
               }}>{announcementConfig.title}</h3>
               <div className="flex gap-3">
+                <button
+                  onClick={() => setShowRedemptionModal(true)}
+                  className="px-6 py-3 bg-warning text-white rounded-acnh hover:bg-warningHover transition-colors font-medium shadow-acnh animate-bounce-slow"
+                >
+                  🎁 兑换
+                </button>
                 <button
                   onClick={() => setShowRegisterModal(true)}
                   className="px-6 py-3 bg-primary text-white rounded-acnh hover:bg-primaryHover transition-colors font-medium shadow-acnh animate-bounce-slow"
@@ -686,13 +704,15 @@ function App() {
                     const today = new Date().toISOString().split('T')[0];
                     const finalReason = selectedReason === '其他' ? customReason.trim() : selectedReason;
                     try {
-                      const response = await fetch('/api/submit', {
+                      const response = await fetch('/api/admin/apply', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                          name: submitName.trim(),
+                          type: 'points',
+                          user_name: submitName.trim(),
+                          user_nickname: '',
                           reason: finalReason,
-                          date: today
+                          points: 0
                         })
                       });
                       const result = await response.json();
@@ -734,7 +754,7 @@ function App() {
 
         {/* 注册模态框 */}
         {showRegisterModal && (
-          <div 
+          <div
             style={{
               position: 'fixed',
               top: 0,
@@ -757,7 +777,7 @@ function App() {
               }
             }}
           >
-            <div 
+            <div
               style={{
                 backgroundColor: 'white',
                 borderRadius: '12px',
@@ -877,13 +897,14 @@ function App() {
                     }
                     setIsRegistering(true);
                     try {
-                      const response = await fetch('/api/register', {
+                      const response = await fetch('/api/admin/apply', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                          englishName: registerEnglishName.trim(),
-                          nickname: registerNickname.trim(),
-                          referrer: registerReferrer.trim(),
+                          type: 'register',
+                          user_name: registerEnglishName.trim(),
+                          user_nickname: registerNickname.trim(),
+                          reason: registerReferrer.trim()
                         })
                       });
                       const result = await response.json();
@@ -916,6 +937,177 @@ function App() {
                   }}
                 >
                   {isRegistering ? '注册中...' : '注册'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 兑换申请模态框 */}
+        {showRedemptionModal && (
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0,0,0,0.5)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 1000,
+            }}
+            onClick={() => {
+              if (!isRedeeming) {
+                setShowRedemptionModal(false);
+                setRedemptionName('');
+                setRedemptionItem('');
+                setRedemptionMessage('');
+              }
+            }}
+          >
+            <div
+              style={{
+                backgroundColor: 'white',
+                borderRadius: '12px',
+                padding: '24px',
+                width: '90%',
+                maxWidth: '400px',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3 style={{ margin: '0 0 16px 0', fontSize: '18px', fontWeight: 'bold', textAlign: 'center' }}>🎁 积分兑换</h3>
+              <div style={{ marginBottom: '12px' }}>
+                <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#333' }}>我是：</label>
+                <input
+                  type="text"
+                  value={redemptionName}
+                  onChange={(e) => setRedemptionName(e.target.value)}
+                  placeholder="请输入你的名字"
+                  disabled={isRedeeming}
+                  style={{
+                    width: '100%',
+                    padding: '8px 12px',
+                    border: '1px solid #ddd',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    outline: 'none',
+                    boxSizing: 'border-box',
+                    backgroundColor: isRedeeming ? '#f5f5f5' : 'white',
+                    color: isRedeeming ? '#999' : '#333',
+                  }}
+                />
+              </div>
+              <div style={{ marginBottom: '12px' }}>
+                <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#333' }}>兑换物品：</label>
+                <select
+                  value={redemptionItem}
+                  onChange={(e) => setRedemptionItem(e.target.value)}
+                  disabled={isRedeeming}
+                  style={{
+                    width: '100%',
+                    padding: '8px 12px',
+                    border: '1px solid #ddd',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    outline: 'none',
+                    boxSizing: 'border-box',
+                    backgroundColor: isRedeeming ? '#f5f5f5' : 'white',
+                    color: isRedeeming ? '#999' : '#333',
+                  }}
+                >
+                  <option value="">请选择兑换物品</option>
+                  <option value="50积分兑换礼物">50积分 - 兑换礼物</option>
+                  <option value="100积分兑换礼物">100积分 - 兑换礼物</option>
+                </select>
+              </div>
+              {redemptionMessage && (
+                <div style={{
+                  padding: '10px',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  marginBottom: '12px',
+                  backgroundColor: redemptionMessage.includes('成功') ? '#d4edda' : '#f8d7da',
+                  color: redemptionMessage.includes('成功') ? '#155724' : '#721c24',
+                }}>
+                  {redemptionMessage}
+                </div>
+              )}
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <button
+                  onClick={() => {
+                    if (!isRedeeming) {
+                      setShowRedemptionModal(false);
+                      setRedemptionName('');
+                      setRedemptionItem('');
+                      setRedemptionMessage('');
+                    }
+                  }}
+                  disabled={isRedeeming}
+                  style={{
+                    flex: 1,
+                    padding: '10px',
+                    border: '1px solid #ddd',
+                    borderRadius: '8px',
+                    backgroundColor: isRedeeming ? '#e0e0e0' : '#f5f5f5',
+                    cursor: isRedeeming ? 'not-allowed' : 'pointer',
+                    fontSize: '14px',
+                    color: isRedeeming ? '#9e9e9e' : '#333',
+                  }}
+                >
+                  取消
+                </button>
+                <button
+                  onClick={async () => {
+                    if (!redemptionName.trim() || !redemptionItem) {
+                      setRedemptionMessage('请填写完整信息');
+                      return;
+                    }
+                    setIsRedeeming(true);
+                    try {
+                      const pointsCost = redemptionItem.startsWith('50') ? 50 : 100;
+                      const response = await fetch('/api/admin/apply', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                          type: 'redemption',
+                          user_name: redemptionName.trim(),
+                          user_nickname: '',
+                          item_name: redemptionItem,
+                          points_cost: pointsCost
+                        })
+                      });
+                      const result = await response.json();
+                      setRedemptionMessage(result.message || result.error);
+                      if (result.success) {
+                        setTimeout(() => {
+                          setShowRedemptionModal(false);
+                          setRedemptionName('');
+                          setRedemptionItem('');
+                          setRedemptionMessage('');
+                        }, 2000);
+                      }
+                    } catch (error) {
+                      setRedemptionMessage('提交失败，请稍后重试');
+                    } finally {
+                      setIsRedeeming(false);
+                    }
+                  }}
+                  disabled={isRedeeming}
+                  style={{
+                    flex: 1,
+                    padding: '10px',
+                    border: 'none',
+                    borderRadius: '8px',
+                    backgroundColor: isRedeeming ? '#9E9E9E' : '#FF9800',
+                    color: 'white',
+                    cursor: isRedeeming ? 'not-allowed' : 'pointer',
+                    fontSize: '14px',
+                  }}
+                >
+                  {isRedeeming ? '提交中...' : '提交'}
                 </button>
               </div>
             </div>
