@@ -219,32 +219,32 @@ function App() {
 
           {/* 公告栏折叠面板 */}
           <div className="max-w-4xl mx-auto mb-6">
-            <div className="flex items-center justify-between mb-3">
+            <div className="mb-3">
               <h3 style={{
                 fontFamily: "Nunito, 'Zen Maru Gothic', -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif",
                 fontSize: '24px',
                 fontWeight: 700,
                 color: '#725d42',
                 margin: 0,
-                marginBottom: '8px',
+                marginBottom: '16px',
                 textAlign: 'center',
               }}>{announcementConfig.title}</h3>
-              <div className="flex gap-3">
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <button
                   onClick={() => setShowRedemptionModal(true)}
-                  className="px-6 py-3 bg-warning text-white rounded-acnh hover:bg-warningHover transition-colors font-medium shadow-acnh animate-bounce-slow"
+                  className="px-4 py-3 bg-warning text-white rounded-acnh hover:bg-warningHover transition-colors font-medium shadow-acnh"
                 >
                   🎁 兑换
                 </button>
                 <button
                   onClick={() => setShowRegisterModal(true)}
-                  className="px-6 py-3 bg-primary text-white rounded-acnh hover:bg-primaryHover transition-colors font-medium shadow-acnh animate-bounce-slow"
+                  className="px-4 py-3 bg-primary text-white rounded-acnh hover:bg-primaryHover transition-colors font-medium shadow-acnh"
                 >
                   📋 注册
                 </button>
                 <button
                   onClick={() => setShowSubmitModal(true)}
-                  className="px-6 py-3 bg-primary text-white rounded-acnh hover:bg-primaryHover transition-colors font-medium shadow-acnh animate-bounce-slow"
+                  className="px-4 py-3 bg-primary text-white rounded-acnh hover:bg-primaryHover transition-colors font-medium shadow-acnh"
                 >
                   📝 提交积分
                 </button>

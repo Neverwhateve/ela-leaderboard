@@ -540,23 +540,23 @@ const AdminPanel = ({ onBack }) => {
 
   if (!isLoggedIn) {
     return (
-      <div className="max-w-md mx-auto mt-8 mb-8">
+      <div className="max-w-md mx-auto mt-4 mb-8 px-4">
         <div className="rounded-acnh p-6 shadow-acnh" style={{ backgroundColor: '#f7f3df' }}>
-          <div className="flex items-center mb-4">
+          <div className="flex items-center mb-6">
             <button
               onClick={onBack}
-              className="px-3 py-1 rounded-lg text-white text-sm flex items-center gap-1"
+              className="px-4 py-2 rounded-lg text-white flex items-center gap-2 text-base"
               style={{ backgroundColor: '#725d42' }}
             >
               ← 返回
             </button>
           </div>
-          <h2 className="text-2xl font-bold text-center mb-6" style={{ color: '#725d42' }}>
+          <h2 className="text-2xl font-bold text-center mb-8" style={{ color: '#725d42' }}>
             🔐 管理员登录
           </h2>
           <form onSubmit={handleLogin}>
-            <div className="mb-4">
-              <label className="block mb-2 text-sm font-medium" style={{ color: '#725d42' }}>
+            <div className="mb-6">
+              <label className="block mb-3 text-base font-medium" style={{ color: '#725d42' }}>
                 管理员名称
               </label>
               <input
@@ -564,12 +564,12 @@ const AdminPanel = ({ onBack }) => {
                 value={adminName}
                 onChange={(e) => setAdminName(e.target.value)}
                 placeholder="请输入管理员名称"
-                className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary"
+                className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary"
                 required
               />
             </div>
-            <div className="mb-6">
-              <label className="block mb-2 text-sm font-medium" style={{ color: '#725d42' }}>
+            <div className="mb-8">
+              <label className="block mb-3 text-base font-medium" style={{ color: '#725d42' }}>
                 密码
               </label>
               <input
@@ -577,21 +577,21 @@ const AdminPanel = ({ onBack }) => {
                 value={adminPassword}
                 onChange={(e) => setAdminPassword(e.target.value)}
                 placeholder="请输入密码"
-                className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary"
+                className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary"
                 required
               />
             </div>
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 rounded-lg text-white font-semibold transition-colors"
+              className="w-full py-4 rounded-lg text-white text-lg font-semibold transition-colors"
               style={{ backgroundColor: isLoading ? '#9e9e9e' : '#4caf50' }}
             >
               {isLoading ? '登录中...' : '登录'}
             </button>
           </form>
           {message.text && (
-            <div className={`mt-4 p-3 rounded-lg text-center ${message.type === 'error' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
+            <div className={`mt-6 p-4 rounded-lg text-center text-base ${message.type === 'error' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
               {message.text}
             </div>
           )}
@@ -601,24 +601,24 @@ const AdminPanel = ({ onBack }) => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto mt-8 mb-8">
-      <div className="rounded-acnh p-6 shadow-acnh" style={{ backgroundColor: '#f7f3df' }}>
-        <div className="flex justify-between items-center mb-6">
+    <div className="max-w-6xl mx-auto mt-4 mb-8 px-4">
+      <div className="rounded-acnh p-4 sm:p-6 shadow-acnh" style={{ backgroundColor: '#f7f3df' }}>
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
           <div className="flex items-center gap-4">
             <button
               onClick={onBack}
-              className="px-3 py-1 rounded-lg text-white text-sm flex items-center gap-1"
+              className="px-4 py-2 rounded-lg text-white flex items-center gap-2 text-base"
               style={{ backgroundColor: '#725d42' }}
             >
               ← 返回
             </button>
-            <h2 className="text-2xl font-bold" style={{ color: '#725d42' }}>
+            <h2 className="text-xl sm:text-2xl font-bold" style={{ color: '#725d42' }}>
               ⚙️ 管理员后台
             </h2>
           </div>
           <button
             onClick={() => setIsLoggedIn(false)}
-            className="px-4 py-2 rounded-lg text-white text-sm"
+            className="px-4 py-2 rounded-lg text-white text-base"
             style={{ backgroundColor: '#e74c3c' }}
           >
             退出登录
@@ -626,17 +626,17 @@ const AdminPanel = ({ onBack }) => {
         </div>
 
         {message.text && (
-          <div className={`mb-4 p-3 rounded-lg text-center ${message.type === 'error' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
+          <div className={`mb-6 p-4 rounded-lg text-center text-base ${message.type === 'error' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
             {message.text}
           </div>
         )}
 
-        <div className="flex gap-2 mb-6 flex-wrap">
+        <div className="grid grid-cols-2 gap-3 mb-8">
           {['pending', 'users', 'logs', 'announcement'].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className="px-4 py-2 rounded-lg font-medium transition-colors"
+              className="px-4 py-3 text-base rounded-lg font-medium transition-colors"
               style={{
                 backgroundColor: activeTab === tab ? '#4caf50' : '#e0e0e0',
                 color: activeTab === tab ? 'white' : '#333'
@@ -652,33 +652,33 @@ const AdminPanel = ({ onBack }) => {
 
         {activeTab === 'pending' && (
           <div>
-            <h3 className="text-xl font-bold mb-4" style={{ color: '#725d42' }}>
+            <h3 className="text-xl sm:text-2xl font-bold mb-6" style={{ color: '#725d42' }}>
               积分申请 ({pendingApprovals.length})
             </h3>
             {pendingApprovals.length === 0 ? (
-              <p className="text-center text-gray-500 py-8">暂无待审核的积分申请</p>
+              <p className="text-center text-gray-500 py-8 text-base">暂无待审核的积分申请</p>
             ) : (
-              <div className="space-y-4 mb-8">
+              <div className="space-y-6 mb-10">
                 {pendingApprovals.map((item) => (
-                  <div key={item.id} className="p-4 rounded-lg bg-white shadow">
-                    <div className="flex justify-between items-start mb-2">
+                  <div key={item.id} className="p-5 rounded-lg bg-white shadow">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-4">
                       <div>
-                        <span className="font-bold">{item.user_name}</span>
-                        {item.user_nickname && <span className="text-gray-500 ml-2">({item.user_nickname})</span>}
+                        <span className="font-bold text-base">{item.user_name}</span>
+                        {item.user_nickname && <span className="text-gray-500 ml-2 text-sm">({item.user_nickname})</span>}
                       </div>
-                      <span className="px-3 py-1 rounded-full text-white text-sm" style={{ backgroundColor: '#2196F3' }}>
+                      <span className="px-4 py-2 rounded-full text-white text-base" style={{ backgroundColor: '#2196F3' }}>
                         +{item.points} 积分
                       </span>
                     </div>
-                    <p className="text-gray-600 mb-2">原因：{item.reason}</p>
-                    <p className="text-sm text-gray-400 mb-3">
+                    <p className="text-gray-600 mb-3 text-base">原因：{item.reason}</p>
+                    <p className="text-sm text-gray-400 mb-4">
                       申请时间：{formatDate(item.created_at)}
                     </p>
-                    <div className="flex gap-2">
+                    <div className="flex gap-3">
                       <button
                         onClick={() => handleApprovePoints(item.id)}
                         disabled={isLoading}
-                        className="px-4 py-2 rounded-lg text-white text-sm"
+                        className="flex-1 px-4 py-3 rounded-lg text-white text-base"
                         style={{ backgroundColor: isLoading ? '#9e9e9e' : '#4caf50' }}
                       >
                         ✅ 批准
@@ -692,7 +692,7 @@ const AdminPanel = ({ onBack }) => {
                           }
                         }}
                         disabled={isLoading}
-                        className="px-4 py-2 rounded-lg text-white text-sm"
+                        className="flex-1 px-4 py-3 rounded-lg text-white text-base"
                         style={{ backgroundColor: isLoading ? '#9e9e9e' : '#e74c3c' }}
                       >
                         ❌ 拒绝
@@ -703,33 +703,33 @@ const AdminPanel = ({ onBack }) => {
               </div>
             )}
 
-            <h3 className="text-xl font-bold mb-4" style={{ color: '#725d42' }}>
+            <h3 className="text-xl sm:text-2xl font-bold mb-6" style={{ color: '#725d42' }}>
               兑换申请 ({pendingRedemptions.length})
             </h3>
             {pendingRedemptions.length === 0 ? (
-              <p className="text-center text-gray-500 py-8">暂无待审核的兑换申请</p>
+              <p className="text-center text-gray-500 py-8 text-base">暂无待审核的兑换申请</p>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {pendingRedemptions.map((item) => (
-                  <div key={item.id} className="p-4 rounded-lg bg-white shadow">
-                    <div className="flex justify-between items-start mb-2">
+                  <div key={item.id} className="p-5 rounded-lg bg-white shadow">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-4">
                       <div>
-                        <span className="font-bold">{item.user_name}</span>
-                        {item.user_nickname && <span className="text-gray-500 ml-2">({item.user_nickname})</span>}
+                        <span className="font-bold text-base">{item.user_name}</span>
+                        {item.user_nickname && <span className="text-gray-500 ml-2 text-sm">({item.user_nickname})</span>}
                       </div>
-                      <span className="px-3 py-1 rounded-full text-white text-sm" style={{ backgroundColor: '#ff9800' }}>
+                      <span className="px-4 py-2 rounded-full text-white text-base" style={{ backgroundColor: '#ff9800' }}>
                         -{item.points_cost} 积分
                       </span>
                     </div>
-                    <p className="text-gray-600 mb-2">兑换物品：{item.item_name}</p>
-                    <p className="text-sm text-gray-400 mb-3">
+                    <p className="text-gray-600 mb-3 text-base">兑换物品：{item.item_name}</p>
+                    <p className="text-sm text-gray-400 mb-4">
                       申请时间：{formatDate(item.created_at)}
                     </p>
-                    <div className="flex gap-2">
+                    <div className="flex gap-3">
                       <button
                         onClick={() => handleApproveRedemption(item.id)}
                         disabled={isLoading}
-                        className="px-4 py-2 rounded-lg text-white text-sm"
+                        className="flex-1 px-4 py-3 rounded-lg text-white text-base"
                         style={{ backgroundColor: isLoading ? '#9e9e9e' : '#4caf50' }}
                       >
                         ✅ 批准
@@ -743,7 +743,7 @@ const AdminPanel = ({ onBack }) => {
                           }
                         }}
                         disabled={isLoading}
-                        className="px-4 py-2 rounded-lg text-white text-sm"
+                        className="flex-1 px-4 py-3 rounded-lg text-white text-base"
                         style={{ backgroundColor: isLoading ? '#9e9e9e' : '#e74c3c' }}
                       >
                         ❌ 拒绝
@@ -758,20 +758,20 @@ const AdminPanel = ({ onBack }) => {
 
         {activeTab === 'users' && (
           <div>
-            <h3 className="text-xl font-bold mb-4" style={{ color: '#725d42' }}>👥 用户积分管理</h3>
-            <div className="mb-6">
-              <div className="flex gap-2 mb-4">
+            <h3 className="text-xl sm:text-2xl font-bold mb-6" style={{ color: '#725d42' }}>👥 用户积分管理</h3>
+            <div className="mb-8">
+              <div className="flex flex-col sm:flex-row gap-3 mb-6">
                 <input
                   type="text"
                   value={searchUser}
                   onChange={(e) => setSearchUser(e.target.value)}
                   placeholder="输入用户名搜索..."
-                  className="flex-1 px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary"
+                  className="flex-1 px-5 py-4 text-base border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary"
                 />
                 <button
                   onClick={() => handleSearchUser(searchUser)}
                   disabled={isLoading}
-                  className="px-6 py-2 rounded-lg text-white"
+                  className="px-6 py-4 rounded-lg text-white text-base"
                   style={{ backgroundColor: '#4caf50' }}
                 >
                   搜索
@@ -779,8 +779,8 @@ const AdminPanel = ({ onBack }) => {
               </div>
 
               {selectedUser && (
-                <div className="p-4 rounded-lg bg-white shadow mb-4">
-                  <div className="flex justify-between items-center mb-4">
+                <div className="p-5 rounded-lg bg-white shadow mb-6">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-6">
                     <div>
                       <span className="font-bold text-xl">
                         {(() => {
@@ -792,114 +792,123 @@ const AdminPanel = ({ onBack }) => {
                         const u = allUsers.find(user => user.name === selectedUser);
                         return u?.nickname ? <span className="text-sm text-gray-500 ml-2">({selectedUser})</span> : null;
                       })()}
-                      <span className="ml-4 px-3 py-1 rounded-full text-white text-lg" style={{ backgroundColor: '#2196F3' }}>
-                        🎖️ {userBalance} 总经验
-                      </span>
-                      <span className="ml-2 px-3 py-1 rounded-full text-white text-lg" style={{ backgroundColor: '#FF9800' }}>
-                        🪙 {userPoints} 可用积分
-                      </span>
+                      <div className="flex flex-wrap gap-2 mt-3">
+                        <span className="px-4 py-2 rounded-full text-white text-base" style={{ backgroundColor: '#2196F3' }}>
+                          🎖️ {userBalance} 总经验
+                        </span>
+                        <span className="px-4 py-2 rounded-full text-white text-base" style={{ backgroundColor: '#FF9800' }}>
+                          🪙 {userPoints} 可用积分
+                        </span>
+                      </div>
                     </div>
                     <button
                       onClick={() => handleUpdateNickname(selectedUser)}
-                      className="px-3 py-1 text-sm rounded bg-blue-100 text-blue-700 hover:bg-blue-200"
+                      className="px-4 py-2 text-base rounded bg-blue-100 text-blue-700 hover:bg-blue-200"
                     >
                       ✏️ 编辑昵称
                     </button>
                   </div>
 
-                  <div className="flex gap-2 mb-4">
-                    <input
-                      type="number"
-                      value={operationAmount}
-                      onChange={(e) => setOperationAmount(e.target.value)}
-                      placeholder="积分数"
-                      className="w-32 px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary"
-                    />
-                    <select
-                      value={operationReason}
-                      onChange={(e) => setOperationReason(e.target.value)}
-                      className="flex-1 px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary"
-                    >
-                      <option value="">选择原因</option>
-                      <option value="新用户注册">新用户注册 (+10积分)</option>
-                      <option value="Outing 九宫图">Outing 九宫图 (+10积分)</option>
-                      <option value="DD 分享">DD 分享 (+20积分)</option>
-                      <option value="Kahoot 优胜">Kahoot 优胜 (+10积分)</option>
-                      <option value="Peer Tips">Peer Tips (+15积分)</option>
-                      <option value="专业解答 & 资讯分享">专业解答 & 资讯分享 (+5积分)</option>
-                      <option value="观看 Town Hall 视频">观看 Town Hall 视频 (+5积分)</option>
-                      <option value="4月 Training 已完成">4月 Training 已完成 (+20积分)</option>
-                      <option value="学习进度达标">学习进度达标 (+25积分)</option>
-                      <option value="完成隐藏任务">完成隐藏任务 (+40积分)</option>
-                      <option value="5月 Training 已完成">5月 Training 已完成 (+30积分)</option>
-                      <option value="管理员手动调整">管理员手动调整</option>
-                    </select>
-                    <button
-                      onClick={handleAddPoints}
-                      disabled={isLoading}
-                      className="px-4 py-2 rounded-lg text-white"
-                      style={{ backgroundColor: '#4caf50' }}
-                    >
-                      添加
-                    </button>
+                  <div className="flex flex-col gap-3 mb-6">
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <input
+                        type="number"
+                        value={operationAmount}
+                        onChange={(e) => setOperationAmount(e.target.value)}
+                        placeholder="积分数"
+                        className="w-full sm:w-32 px-5 py-4 text-base border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary"
+                      />
+                      <select
+                        value={operationReason}
+                        onChange={(e) => setOperationReason(e.target.value)}
+                        className="flex-1 px-5 py-4 text-base border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary"
+                      >
+                        <option value="">选择原因</option>
+                        <option value="新用户注册">新用户注册 (+10积分)</option>
+                        <option value="Outing 九宫图">Outing 九宫图 (+10积分)</option>
+                        <option value="DD 分享">DD 分享 (+20积分)</option>
+                        <option value="Kahoot 优胜">Kahoot 优胜 (+10积分)</option>
+                        <option value="Peer Tips">Peer Tips (+15积分)</option>
+                        <option value="专业解答 & 资讯分享">专业解答 & 资讯分享 (+5积分)</option>
+                        <option value="观看 Town Hall 视频">观看 Town Hall 视频 (+5积分)</option>
+                        <option value="4月 Training 已完成">4月 Training 已完成 (+20积分)</option>
+                        <option value="学习进度达标">学习进度达标 (+25积分)</option>
+                        <option value="完成隐藏任务">完成隐藏任务 (+40积分)</option>
+                        <option value="5月 Training 已完成">5月 Training 已完成 (+30积分)</option>
+                        <option value="管理员手动调整">管理员手动调整</option>
+                      </select>
+                    </div>
+                    <div className="flex gap-3">
+                      <button
+                        onClick={handleAddPoints}
+                        disabled={isLoading}
+                        className="flex-1 px-4 py-3 rounded-lg text-white text-base"
+                        style={{ backgroundColor: '#4caf50' }}
+                      >
+                        添加
+                      </button>
+                      <button
+                        onClick={handleDeductPoints}
+                        disabled={isLoading}
+                        className="flex-1 px-4 py-3 rounded-lg text-white text-base"
+                        style={{ backgroundColor: '#e74c3c' }}
+                      >
+                        扣除
+                      </button>
+                    </div>
                   </div>
 
-                  <h4 className="font-bold mb-2">积分变动记录</h4>
+                  <h4 className="font-bold mb-4 text-lg">积分变动记录</h4>
                   <div className="max-h-64 overflow-y-auto">
                     {userTransactions.length === 0 ? (
-                      <p className="text-gray-500">暂无记录</p>
+                      <p className="text-gray-500 py-6 text-base">暂无记录</p>
                     ) : (
-                      <table className="w-full text-sm">
-                        <thead>
-                          <tr className="text-left text-gray-500 border-b">
-                            <th className="pb-2">时间</th>
-                            <th className="pb-2">变动</th>
-                            <th className="pb-2">原因</th>
-                            <th className="pb-2">余额</th>
-                            <th className="pb-2">操作人</th>
-                            <th className="pb-2">操作</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {userTransactions.map((t, i) => (
-                            <tr key={i} className="border-b">
-                              <td className="py-2">{formatDate(t.created_at)}</td>
-                              <td className={`py-2 ${t.change_amount > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                {t.change_amount > 0 ? '+' : ''}{t.change_amount}
-                              </td>
-                              <td className="py-2">{t.reason}</td>
-                              <td className="py-2">{t.balance_after}</td>
-                              <td className="py-2">{t.created_by}</td>
-                              <td className="py-2">
-                                <button
-                                  onClick={() => handleEditTransaction(t)}
-                                  className="px-2 py-1 text-xs rounded bg-blue-500 text-white mr-1"
-                                >
-                                  编辑
-                                </button>
-                                <button
-                                  onClick={() => handleDeleteTransaction(t.id)}
-                                  className="px-2 py-1 text-xs rounded bg-red-500 text-white"
-                                >
-                                  删除
-                                </button>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                      <div className="space-y-3">
+                        {userTransactions.map((t, i) => (
+                          <div key={i} className="p-4 bg-gray-50 rounded-lg">
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-3">
+                              <div>
+                                <div className="text-gray-700 text-base">{formatDate(t.created_at)}</div>
+                                <div className="text-gray-500 text-base">{t.reason}</div>
+                              </div>
+                              <div className="flex items-center gap-3">
+                                <span className={`font-bold text-lg ${t.change_amount > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                  {t.change_amount > 0 ? '+' : ''}{t.change_amount}
+                                </span>
+                                <span className="text-sm text-gray-500">余额: {t.balance_after}</span>
+                              </div>
+                            </div>
+                            <div className="flex gap-2">
+                              <button
+                                onClick={() => handleEditTransaction(t)}
+                                disabled={isLoading}
+                                className="px-3 py-2 text-base rounded bg-blue-500 text-white"
+                              >
+                                编辑
+                              </button>
+                              <button
+                                onClick={() => handleDeleteTransaction(t.id)}
+                                disabled={isLoading}
+                                className="px-3 py-2 text-base rounded bg-red-500 text-white"
+                              >
+                                删除
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     )}
                   </div>
                 </div>
               )}
 
-              <h4 className="font-bold mb-2">所有用户</h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <h4 className="font-bold mb-4 text-lg">所有用户</h4>
+              <div className="grid gap-3">
                 {allUsers.map((user) => (
                   <div
                     key={user.name}
-                    className={`p-3 rounded-lg flex justify-between items-center ${
-                      selectedUser === user.name ? 'bg-primary/10 border-2 border-primary' : 'bg-white'
+                    className={`p-4 rounded-lg flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 ${
+                      selectedUser === user.name ? 'bg-green-100' : 'bg-white hover:bg-gray-100'
                     }`}
                   >
                     <button
@@ -909,13 +918,20 @@ const AdminPanel = ({ onBack }) => {
                       }}
                       className="text-left flex-1"
                     >
-                      <div className="font-medium">{user.nickname || user.name}</div>
-                      {user.nickname && <div className="text-xs text-gray-500">{user.name}</div>}
-                      <div className="text-sm text-gray-600">{user.total_xp} 积分</div>
+                      <div className="font-medium text-base">{user.nickname || user.name}</div>
+                      {user.nickname && <div className="text-sm text-gray-500">{user.name}</div>}
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        <span className="px-3 py-1 rounded-full text-white text-sm" style={{ backgroundColor: '#2196F3' }}>
+                          {user.total_xp} 总经验
+                        </span>
+                        <span className="px-3 py-1 rounded-full text-white text-sm" style={{ backgroundColor: '#FF9800' }}>
+                          {user.points} 可用积分
+                        </span>
+                      </div>
                     </button>
                     <button
                       onClick={() => handleUpdateNickname(user.name)}
-                      className="px-2 py-1 text-xs rounded bg-blue-100 text-blue-700 hover:bg-blue-200 ml-2"
+                      className="px-4 py-2 text-base rounded bg-blue-100 text-blue-700 hover:bg-blue-200"
                     >
                       ✏️ 昵称
                     </button>
@@ -928,43 +944,36 @@ const AdminPanel = ({ onBack }) => {
 
         {activeTab === 'logs' && (
           <div>
-            <h3 className="text-xl font-bold mb-4" style={{ color: '#725d42' }}>📊 操作日志</h3>
+            <h3 className="text-xl sm:text-2xl font-bold mb-6" style={{ color: '#725d42' }}>📊 操作日志</h3>
             <div className="max-h-96 overflow-y-auto">
               {logs.length === 0 ? (
-                <p className="text-center text-gray-500 py-8">暂无操作记录</p>
+                <p className="text-center text-gray-500 py-8 text-base">暂无操作记录</p>
               ) : (
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="text-left text-gray-500 border-b sticky top-0 bg-white">
-                      <th className="pb-2">时间</th>
-                      <th className="pb-2">管理员</th>
-                      <th className="pb-2">操作</th>
-                      <th className="pb-2">目标用户</th>
-                      <th className="pb-2">详情</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {logs.map((log) => (
-                      <tr key={log.id} className="border-b">
-                        <td className="py-2">{formatDate(log.created_at)}</td>
-                        <td className="py-2">{log.admin_name}</td>
-                        <td className="py-2">
-                          <span className={`px-2 py-1 rounded text-xs ${
-                            log.action === 'approve' ? 'bg-green-100 text-green-700' :
-                            log.action === 'reject' ? 'bg-red-100 text-red-700' :
-                            log.action === 'add_points' ? 'bg-blue-100 text-blue-700' :
-                            log.action === 'deduct_points' ? 'bg-orange-100 text-orange-700' :
-                            'bg-gray-100 text-gray-700'
-                          }`}>
-                            {log.action}
-                          </span>
-                        </td>
-                        <td className="py-2">{log.target_user || '-'}</td>
-                        <td className="py-2">{log.details}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                <div className="space-y-4">
+                  {logs.map((log) => (
+                    <div key={log.id} className="p-4 bg-white rounded-lg shadow">
+                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-3">
+                        <div>
+                          <div className="text-gray-700 text-base">{formatDate(log.created_at)}</div>
+                          <div className="text-gray-500 text-sm">管理员: {log.admin_name}</div>
+                        </div>
+                        <span className={`px-3 py-1 rounded text-base ${
+                          log.action === 'approve' ? 'bg-green-100 text-green-700' :
+                          log.action === 'reject' ? 'bg-red-100 text-red-700' :
+                          log.action === 'add_points' ? 'bg-blue-100 text-blue-700' :
+                          log.action === 'deduct_points' ? 'bg-orange-100 text-orange-700' :
+                          'bg-gray-100 text-gray-700'
+                        }`}>
+                          {log.action}
+                        </span>
+                      </div>
+                      <div className="text-gray-700 text-base">
+                        {log.target_user && <div>目标用户: {log.target_user}</div>}
+                        <div className="mt-1">{log.details}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               )}
             </div>
           </div>
@@ -972,22 +981,22 @@ const AdminPanel = ({ onBack }) => {
 
         {activeTab === 'announcement' && (
           <div>
-            <h3 className="text-xl font-bold mb-4" style={{ color: '#725d42' }}>📢 公告栏管理</h3>
-            <div className="mb-4">
-              <label className="block mb-2 text-sm font-medium" style={{ color: '#725d42' }}>
+            <h3 className="text-xl sm:text-2xl font-bold mb-6" style={{ color: '#725d42' }}>📢 公告栏管理</h3>
+            <div className="mb-6">
+              <label className="block mb-3 text-base font-medium" style={{ color: '#725d42' }}>
                 公告标题
               </label>
               <input
                 type="text"
                 value={announcementConfig.title || ''}
                 onChange={(e) => setAnnouncementConfig({ ...announcementConfig, title: e.target.value })}
-                className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary"
+                className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary"
               />
             </div>
 
-            <div className="mb-4">
-              <div className="flex justify-between items-center mb-2">
-                <label className="text-sm font-medium" style={{ color: '#725d42' }}>
+            <div className="mb-6">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4">
+                <label className="text-base font-medium" style={{ color: '#725d42' }}>
                   公告内容
                 </label>
                 <button
@@ -995,15 +1004,15 @@ const AdminPanel = ({ onBack }) => {
                     ...announcementConfig,
                     sections: [...announcementConfig.sections, { title: '新板块', content: [''] }]
                   })}
-                  className="px-3 py-1 bg-blue-500 text-white rounded text-sm"
+                  className="px-4 py-2 bg-blue-500 text-white rounded text-base"
                 >
                   + 添加板块
                 </button>
               </div>
 
               {announcementConfig.sections.map((section, sectionIndex) => (
-                <div key={sectionIndex} className="mb-4 p-4 bg-white rounded-lg shadow">
-                  <div className="flex gap-2 mb-2">
+                <div key={sectionIndex} className="mb-6 p-5 bg-white rounded-lg shadow">
+                  <div className="flex flex-col sm:flex-row gap-3 mb-4">
                     <input
                       type="text"
                       value={section.title}
@@ -1013,22 +1022,22 @@ const AdminPanel = ({ onBack }) => {
                         setAnnouncementConfig({ ...announcementConfig, sections: newSections });
                       }}
                       placeholder="板块标题"
-                      className="flex-1 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-primary"
+                      className="flex-1 px-4 py-3 text-base border border-gray-300 rounded focus:outline-none focus:border-primary"
                     />
                     <button
                       onClick={() => {
                         const newSections = announcementConfig.sections.filter((_, i) => i !== sectionIndex);
                         setAnnouncementConfig({ ...announcementConfig, sections: newSections });
                       }}
-                      className="px-3 py-2 bg-red-500 text-white rounded"
+                      className="px-4 py-3 bg-red-500 text-white rounded text-base"
                     >
                       删除
                     </button>
                   </div>
 
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     {section.content.map((line, lineIndex) => (
-                      <div key={lineIndex} className="flex gap-2">
+                      <div key={lineIndex} className="flex gap-3">
                         <input
                           type="text"
                           value={line}
@@ -1038,7 +1047,7 @@ const AdminPanel = ({ onBack }) => {
                             setAnnouncementConfig({ ...announcementConfig, sections: newSections });
                           }}
                           placeholder="内容行"
-                          className="flex-1 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-primary text-sm"
+                          className="flex-1 px-4 py-3 text-base border border-gray-300 rounded focus:outline-none focus:border-primary"
                         />
                         <button
                           onClick={() => {
@@ -1046,7 +1055,7 @@ const AdminPanel = ({ onBack }) => {
                             newSections[sectionIndex].content = newSections[sectionIndex].content.filter((_, i) => i !== lineIndex);
                             setAnnouncementConfig({ ...announcementConfig, sections: newSections });
                           }}
-                          className="px-2 py-2 bg-gray-200 rounded"
+                          className="px-4 py-3 bg-gray-200 rounded text-base"
                         >
                           ×
                         </button>
@@ -1060,7 +1069,7 @@ const AdminPanel = ({ onBack }) => {
                       newSections[sectionIndex].content.push('');
                       setAnnouncementConfig({ ...announcementConfig, sections: newSections });
                     }}
-                    className="mt-2 px-3 py-1 bg-gray-100 rounded text-sm"
+                    className="mt-3 px-4 py-2 bg-gray-100 rounded text-base"
                   >
                     + 添加内容行
                   </button>
@@ -1068,11 +1077,11 @@ const AdminPanel = ({ onBack }) => {
               ))}
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-3">
               <button
                 onClick={saveAnnouncementConfig}
                 disabled={isLoading}
-                className="px-6 py-2 rounded-lg text-white font-medium"
+                className="flex-1 px-6 py-3 rounded-lg text-white font-medium text-base"
                 style={{ backgroundColor: isLoading ? '#9e9e9e' : '#4caf50' }}
               >
                 {isLoading ? '保存中...' : '保存公告'}
@@ -1082,7 +1091,7 @@ const AdminPanel = ({ onBack }) => {
                   const jsonStr = JSON.stringify(announcementConfig, null, 2);
                   prompt('复制以下JSON配置:', jsonStr);
                 }}
-                className="px-6 py-2 rounded-lg bg-gray-200 text-gray-700"
+                className="flex-1 px-6 py-3 rounded-lg bg-gray-200 text-gray-700 text-base"
               >
                 导出JSON
               </button>
