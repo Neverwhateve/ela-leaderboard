@@ -30,10 +30,15 @@ export default async function handler(req, res) {
     }
 
     // 格式化数据为兼容 data.json 的格式
-    const users = (xpData || []).map(user => ({
+    const users = (xpData || []).map((user, index) => ({
+      id: `user_${index + 1}`,
       name: user.name,
-      nickname: user.name, // 暂时用 name 代替
+      displayName: user.name, // 暂时用 name 代替昵称
+      title: '',
       xp: user.total_xp,
+      points: 0,
+      xpHistory: [],
+      redeemHistory: [],
       weekly: 0, // 暂时没有周统计
       monthly: 0 // 暂时没有月统计
     }));
