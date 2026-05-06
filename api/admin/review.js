@@ -251,13 +251,41 @@ export default async function handler(req, res) {
       case 'get_all_users':
         const users = await supabase
           .from('xp_total')
-          .select('name, total_xp')
+          .select('name, nickname, total_xp')
           .order('total_xp', { ascending: false });
 
         return res.status(200).json({
           success: true,
           users: users.data || []
         });
+
+      case 'update_user_nickname':
+        const { userName, nickname } = req.body;
+
+        if (!userName) {
+          return res.status(400).json({ success: false, error: '用户名不能为空' });
+        }
+
+        const { error: nickError } = await supabase
+          .from('xp_total')
+          .update({ nickname })
+          .eq('name', userName);
+
+        if (nickError) {
+          console.error('更新昵称失败:', nickError);
+          return res.status(500).json({ success: false, error: '更新失败' });
+        }
+
+        // 记录操作日志
+        await supabase.from('admin_logs').insert([{
+          action: 'update_nickname',
+          admin_name: adminName,
+          target_user: userName,
+          reason: `设置昵称为 ${nickname || '(空)'}`,
+          created_at: new Date().toISOString()
+        }]);
+
+        return res.status(200).json({ success: true });
 
       case 'get_redemption_history':
         const history = await supabase

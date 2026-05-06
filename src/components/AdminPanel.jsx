@@ -461,6 +461,39 @@ const AdminPanel = () => {
     }
   };
 
+  const handleUpdateNickname = async (userName) => {
+    const currentUser = allUsers.find(u => u.name === userName);
+    const newNickname = prompt('请输入新的昵称：', currentUser?.nickname || '');
+    if (newNickname === null) return;
+
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/admin/review', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'update_user_nickname',
+          userName: userName,
+          nickname: newNickname.trim(),
+          admin_name: adminName,
+          admin_password: adminPassword
+        })
+      });
+      const data = await response.json();
+      if (data.success) {
+        showMessage('success', '昵称已更新');
+        await loadUsers();
+        await loadLogs();
+      } else {
+        showMessage('error', data.error);
+      }
+    } catch (err) {
+      showMessage('error', '操作失败');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   if (!isLoggedIn) {
     return (
       <div className="max-w-md mx-auto mt-8 mb-8">
@@ -687,11 +720,26 @@ const AdminPanel = () => {
                 <div className="p-4 rounded-lg bg-white shadow mb-4">
                   <div className="flex justify-between items-center mb-4">
                     <div>
-                      <span className="font-bold text-xl">{selectedUser}</span>
+                      <span className="font-bold text-xl">
+                        {(() => {
+                          const u = allUsers.find(user => user.name === selectedUser);
+                          return u?.nickname || selectedUser;
+                        })()}
+                      </span>
+                      {(() => {
+                        const u = allUsers.find(user => user.name === selectedUser);
+                        return u?.nickname ? <span className="text-sm text-gray-500 ml-2">({selectedUser})</span> : null;
+                      })()}
                       <span className="ml-4 px-4 py-1 rounded-full text-white text-lg" style={{ backgroundColor: '#2196F3' }}>
                         {userBalance} 积分
                       </span>
                     </div>
+                    <button
+                      onClick={() => handleUpdateNickname(selectedUser)}
+                      className="px-3 py-1 text-sm rounded bg-blue-100 text-blue-700 hover:bg-blue-200"
+                    >
+                      ✏️ 编辑昵称
+                    </button>
                   </div>
 
                   <div className="flex gap-2 mb-4">
@@ -781,19 +829,32 @@ const AdminPanel = () => {
               )}
 
               <h4 className="font-bold mb-2">所有用户</h4>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {allUsers.map((user) => (
-                  <button
+                  <div
                     key={user.name}
-                    onClick={() => {
-                      setSearchUser(user.name);
-                      handleSearchUser(user.name);
-                    }}
-                    className="p-2 rounded-lg bg-white shadow text-left hover:bg-gray-50"
+                    className={`p-3 rounded-lg flex justify-between items-center ${
+                      selectedUser === user.name ? 'bg-primary/10 border-2 border-primary' : 'bg-white'
+                    }`}
                   >
-                    <div className="font-medium">{user.name}</div>
-                    <div className="text-sm text-blue-600">{user.total_xp} 积分</div>
-                  </button>
+                    <button
+                      onClick={() => {
+                        setSearchUser(user.name);
+                        handleSearchUser(user.name);
+                      }}
+                      className="text-left flex-1"
+                    >
+                      <div className="font-medium">{user.nickname || user.name}</div>
+                      {user.nickname && <div className="text-xs text-gray-500">{user.name}</div>}
+                      <div className="text-sm text-gray-600">{user.total_xp} 积分</div>
+                    </button>
+                    <button
+                      onClick={() => handleUpdateNickname(user.name)}
+                      className="px-2 py-1 text-xs rounded bg-blue-100 text-blue-700 hover:bg-blue-200 ml-2"
+                    >
+                      ✏️ 昵称
+                    </button>
+                  </div>
                 ))}
               </div>
             </div>

@@ -33,7 +33,8 @@ export default async function handler(req, res) {
     const users = (xpData || []).map((user, index) => ({
       id: `user_${index + 1}`,
       name: user.name,
-      displayName: user.name, // 暂时用 name 代替昵称
+      displayName: user.nickname || user.name, // 优先显示昵称
+      nickname: user.nickname,
       title: '',
       xp: user.total_xp,
       points: 0,
