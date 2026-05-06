@@ -370,7 +370,7 @@ function App() {
                     </div>
                     <div className="p-4 rounded-acnh shadow-acnh-sm" style={{ backgroundColor: '#f7f3df' }}>
                       <p className="text-textSecondary">可用积分</p>
-                      <p className="text-2xl font-bold text-warning">{searchResult.xp - (searchResult.points || 0)}</p>
+                      <p className="text-2xl font-bold text-warning">{searchResult.points || 0}</p>
                     </div>
                   </div>
 

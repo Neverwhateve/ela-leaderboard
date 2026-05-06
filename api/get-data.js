@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     console.log('获取用户列表...');
     const { data: xpData, error: xpError } = await supabase
       .from('xp_total')
-      .select('name, nickname, total_xp')
+      .select('name, nickname, total_xp, points')
       .order('total_xp', { ascending: false });
 
     if (xpError) {
@@ -47,7 +47,32 @@ export default async function handler(req, res) {
       });
     });
 
+    // 获取所有兑换记录
+    const { data: redeemData, error: redeemError } = await supabase
+      .from('redemption_requests')
+      .select('user_name, item_name, points_cost, created_at')
+      .eq('status', 'approved')
+      .order('created_at', { ascending: false });
+
+    if (redeemError) {
+      console.error('获取兑换记录失败:', redeemError);
+    }
+
+    // 按用户名分组兑换记录
+    const redeemByUser = {};
+    (redeemData || []).forEach(r => {
+      if (!redeemByUser[r.user_name]) {
+        redeemByUser[r.user_name] = [];
+      }
+      redeemByUser[r.user_name].push({
+        date: r.created_at,
+        item: r.item_name,
+        points: r.points_cost
+      });
+    });
+
     console.log('积分记录:', Object.keys(transactionsByUser).length, '个用户有记录');
+    console.log('兑换记录:', Object.keys(redeemByUser).length, '个用户有记录');
 
     // 获取最新的10条记录（用于弹幕）
     const { data: recordsData, error: recordsError } = await supabase
@@ -68,9 +93,9 @@ export default async function handler(req, res) {
       nickname: user.nickname,
       title: '',
       xp: user.total_xp,
-      points: 0,
+      points: user.points || 0,
       xpHistory: transactionsByUser[user.name] || [],
-      redeemHistory: [],
+      redeemHistory: redeemByUser[user.name] || [],
       weekly: 0, // 暂时没有周统计
       monthly: 0 // 暂时没有月统计
     }));

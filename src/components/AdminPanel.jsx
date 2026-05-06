@@ -12,6 +12,7 @@ const AdminPanel = () => {
   const [searchUser, setSearchUser] = useState('');
   const [selectedUser, setSelectedUser] = useState(null);
   const [userBalance, setUserBalance] = useState(null);
+  const [userPoints, setUserPoints] = useState(null);
   const [userTransactions, setUserTransactions] = useState([]);
   const [operationAmount, setOperationAmount] = useState('');
   const [operationReason, setOperationReason] = useState('');
@@ -305,6 +306,7 @@ const AdminPanel = () => {
       if (data.success) {
         setSelectedUser(data.user_name);
         setUserBalance(data.balance);
+        setUserPoints(data.points || 0);
         setUserTransactions(data.transactions || []);
       } else {
         showMessage('error', '用户不存在');
@@ -730,8 +732,11 @@ const AdminPanel = () => {
                         const u = allUsers.find(user => user.name === selectedUser);
                         return u?.nickname ? <span className="text-sm text-gray-500 ml-2">({selectedUser})</span> : null;
                       })()}
-                      <span className="ml-4 px-4 py-1 rounded-full text-white text-lg" style={{ backgroundColor: '#2196F3' }}>
-                        {userBalance} 积分
+                      <span className="ml-4 px-3 py-1 rounded-full text-white text-lg" style={{ backgroundColor: '#2196F3' }}>
+                        🎖️ {userBalance} 总经验
+                      </span>
+                      <span className="ml-2 px-3 py-1 rounded-full text-white text-lg" style={{ backgroundColor: '#FF9800' }}>
+                        🪙 {userPoints} 可用积分
                       </span>
                     </div>
                     <button

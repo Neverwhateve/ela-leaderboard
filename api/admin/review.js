@@ -16,22 +16,23 @@ const logAdminAction = async (adminName, action, targetUser, details) => {
     });
 };
 
-const getUserBalance = async (userName) => {
+const getUserData = async (userName) => {
   const { data } = await supabase
     .from('xp_total')
-    .select('total_xp')
+    .select('total_xp, points')
     .eq('name', userName)
     .single();
-  return data?.total_xp || 0;
+  return data || { total_xp: 0, points: 0 };
 };
 
-const updateUserBalance = async (userName, changeAmount, reason, type, adminName) => {
-  const currentBalance = await getUserBalance(userName);
-  const newBalance = currentBalance + changeAmount;
+const addUserXPAndPoints = async (userName, changeAmount, reason, type, adminName) => {
+  const currentData = await getUserData(userName);
+  const newXP = currentData.total_xp + changeAmount;
+  const newPoints = (currentData.points || 0) + changeAmount;
 
   await supabase
     .from('xp_total')
-    .update({ total_xp: newBalance })
+    .update({ total_xp: newXP, points: newPoints })
     .eq('name', userName);
 
   await supabase
@@ -39,11 +40,22 @@ const updateUserBalance = async (userName, changeAmount, reason, type, adminName
     .insert({
       user_name: userName,
       change_amount: changeAmount,
-      balance_after: newBalance,
+      balance_after: newXP,
       reason,
       type,
       created_by: adminName
     });
+};
+
+const deductUserPoints = async (userName, changeAmount, reason, adminName) => {
+  const currentData = await getUserData(userName);
+  const newPoints = (currentData.points || 0) - changeAmount;
+
+  // 只更新 points，不更新 total_xp
+  await supabase
+    .from('xp_total')
+    .update({ points: newPoints })
+    .eq('name', userName);
 };
 
 export default async function handler(req, res) {
@@ -107,7 +119,8 @@ export default async function handler(req, res) {
           return res.status(404).json({ error: '申请不存在或已被处理' });
         }
 
-        await updateUserBalance(
+        // 批准积分申请，同时增加经验值和可用积分
+        await addUserXPAndPoints(
           approval.user_name,
           approval.points,
           `积分申请：${approval.reason}`,
@@ -160,11 +173,11 @@ export default async function handler(req, res) {
           return res.status(404).json({ error: '兑换申请不存在或已被处理' });
         }
 
-        await updateUserBalance(
+        // 批准兑换，只扣除可用积分，不影响经验值
+        await deductUserPoints(
           redemption.user_name,
-          -redemption.points_cost,
+          redemption.points_cost,
           `兑换：${redemption.item_name}`,
-          'redemption',
           admin_name
         );
 
@@ -200,7 +213,8 @@ export default async function handler(req, res) {
           return res.status(400).json({ error: '需要填写用户名和积分数' });
         }
 
-        await updateUserBalance(user_name, points, reason || '管理员添加积分', 'admin_add', admin_name);
+        // 管理员添加积分，同时增加经验值和可用积分
+        await addUserXPAndPoints(user_name, points, reason || '管理员添加积分', 'admin_add', admin_name);
         await logAdminAction(admin_name, 'add_points', user_name, `手动添加${points}积分，原因：${reason}`);
 
         return res.status(200).json({ success: true, message: `已为 ${user_name} 添加 ${points} 积分` });
@@ -210,18 +224,19 @@ export default async function handler(req, res) {
           return res.status(400).json({ error: '需要填写用户名和积分数' });
         }
 
-        const currentBal = await getUserBalance(user_name);
-        if (currentBal < points) {
-          return res.status(400).json({ error: `${user_name} 当前积分不足，当前积分：${currentBal}` });
+        const userData = await getUserData(user_name);
+        if ((userData.points || 0) < points) {
+          return res.status(400).json({ error: `${user_name} 当前可用积分不足，当前可用积分：${userData.points || 0}` });
         }
 
-        await updateUserBalance(user_name, -points, reason || '管理员扣除积分', 'admin_deduct', admin_name);
+        // 管理员扣除积分，只扣除可用积分
+        await deductUserPoints(user_name, points, reason || '管理员扣除积分', admin_name);
         await logAdminAction(admin_name, 'deduct_points', user_name, `手动扣除${points}积分，原因：${reason}`);
 
-        return res.status(200).json({ success: true, message: `已为 ${user_name} 扣除 ${points} 积分` });
+        return res.status(200).json({ success: true, message: `已为 ${user_name} 扣除 ${points} 可用积分` });
 
       case 'get_user_balance':
-        const balance = await getUserBalance(user_name);
+        const userBalanceData = await getUserData(user_name);
         const transactions = await supabase
           .from('point_transactions')
           .select('*')
@@ -232,7 +247,8 @@ export default async function handler(req, res) {
         return res.status(200).json({
           success: true,
           user_name,
-          balance,
+          balance: userBalanceData.total_xp,
+          points: userBalanceData.points || 0,
           transactions: transactions.data || []
         });
 
@@ -310,9 +326,13 @@ export default async function handler(req, res) {
           return res.status(404).json({ error: '积分记录不存在' });
         }
 
+        const currentUserData = await getUserData(transactionToDelete.user_name);
+        const newTotalXP = transactionToDelete.balance_after - transactionToDelete.change_amount;
+        const newPoints = (currentUserData.points || 0) - transactionToDelete.change_amount;
+
         await supabase
           .from('xp_total')
-          .update({ total_xp: transactionToDelete.balance_after - transactionToDelete.change_amount })
+          .update({ total_xp: newTotalXP, points: newPoints })
           .eq('name', transactionToDelete.user_name);
 
         await supabase
@@ -339,6 +359,8 @@ export default async function handler(req, res) {
         const newAmount = points;
         const amountDiff = newAmount - oldAmount;
         const newBalance = transactionToUpdate.balance_after + amountDiff;
+        const userDataForUpdate = await getUserData(transactionToUpdate.user_name);
+        const newPointsForUpdate = (userDataForUpdate.points || 0) + amountDiff;
 
         await supabase
           .from('point_transactions')
@@ -351,7 +373,7 @@ export default async function handler(req, res) {
 
         await supabase
           .from('xp_total')
-          .update({ total_xp: newBalance })
+          .update({ total_xp: newBalance, points: newPointsForUpdate })
           .eq('name', transactionToUpdate.user_name);
 
         await logAdminAction(admin_name, 'update_transaction', transactionToUpdate.user_name, `修改积分记录：从${oldAmount}改为${newAmount}，原因：${reason || transactionToUpdate.reason}`);
@@ -363,15 +385,16 @@ export default async function handler(req, res) {
           return res.status(400).json({ error: '需要填写用户名和积分数' });
         }
 
-        const currentUserBalance = await getUserBalance(user_name);
-        const newUserBalance = currentUserBalance + points;
+        const currentUserDataForAdd = await getUserData(user_name);
+        const newTotalXPForAdd = currentUserDataForAdd.total_xp + points;
+        const newPointsForAdd = (currentUserDataForAdd.points || 0) + points;
 
         await supabase
           .from('point_transactions')
           .insert({
             user_name,
             change_amount: points,
-            balance_after: newUserBalance,
+            balance_after: newTotalXPForAdd,
             reason: reason || '管理员手动添加',
             type: 'admin_add',
             created_by: admin_name
@@ -379,7 +402,7 @@ export default async function handler(req, res) {
 
         await supabase
           .from('xp_total')
-          .update({ total_xp: newUserBalance })
+          .update({ total_xp: newTotalXPForAdd, points: newPointsForAdd })
           .eq('name', user_name);
 
         await logAdminAction(admin_name, 'add_points', user_name, `手动添加积分记录：${points > 0 ? '+' : ''}${points}积分，原因：${reason || '管理员手动添加'}`);
