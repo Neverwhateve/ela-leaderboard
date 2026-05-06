@@ -10,7 +10,7 @@ export default async function handler(req, res) {
     // 获取所有用户数据
     const { data: xpData, error: xpError } = await supabase
       .from('xp_total')
-      .select('name, total_xp')
+      .select('name, nickname, total_xp')
       .order('total_xp', { ascending: false });
 
     if (xpError) {
