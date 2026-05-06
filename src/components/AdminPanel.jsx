@@ -46,6 +46,10 @@ const AdminPanel = () => {
       if (data.success) {
         setIsLoggedIn(true);
         showMessage('success', `欢迎 ${data.admin.name}！`);
+        // 登录成功后加载初始数据
+        await loadPending();
+        await loadUsers();
+        await loadLogs();
       } else {
         showMessage('error', data.error || '登录失败');
       }
@@ -148,6 +152,12 @@ const AdminPanel = () => {
   useEffect(() => {
     if (isLoggedIn && activeTab === 'announcement') {
       loadAnnouncementConfig();
+    }
+    if (isLoggedIn && activeTab === 'users') {
+      loadUsers();
+    }
+    if (isLoggedIn && activeTab === 'logs') {
+      loadLogs();
     }
   }, [isLoggedIn, activeTab]);
 

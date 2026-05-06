@@ -80,9 +80,27 @@ function App() {
     if (urlParams.get('admin') === 'true') {
       setCurrentPage('admin');
     }
-    setUsers(data.users || []);
-    setLatestRecords(data.latestRecords || []);
-    setLoading(false);
+    
+    // 从 Supabase 获取数据
+    fetch('/api/get-data')
+      .then(res => res.json())
+      .then(result => {
+        if (result.success) {
+          setUsers(result.users || []);
+          setLatestRecords(result.latestRecords || []);
+        } else {
+          // 如果 API 失败，回退到 data.json
+          setUsers(data.users || []);
+          setLatestRecords(data.latestRecords || []);
+        }
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('获取数据失败，回退到静态数据:', err);
+        setUsers(data.users || []);
+        setLatestRecords(data.latestRecords || []);
+        setLoading(false);
+      });
 
     // 加载公告配置
     fetch('/api/admin/config')
