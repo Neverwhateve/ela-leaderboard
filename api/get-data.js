@@ -7,7 +7,10 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 export default async function handler(req, res) {
   try {
+    console.log('开始获取数据...');
+
     // 获取所有用户数据
+    console.log('获取用户列表...');
     const { data: xpData, error: xpError } = await supabase
       .from('xp_total')
       .select('name, nickname, total_xp')
@@ -17,6 +20,8 @@ export default async function handler(req, res) {
       console.error('获取用户数据失败:', xpError);
       return res.status(500).json({ success: false, error: '获取用户数据失败' });
     }
+
+    console.log('用户数据:', xpData?.length || 0, '条');
 
     // 获取最新的积分记录（用于弹幕）
     const { data: recordsData, error: recordsError } = await supabase
@@ -44,6 +49,8 @@ export default async function handler(req, res) {
       monthly: 0 // 暂时没有月统计
     }));
 
+    console.log('格式化用户数:', users.length);
+
     const latestRecords = (recordsData || []).map(record => ({
       name: record.user_name,
       reason: record.reason,
@@ -58,6 +65,6 @@ export default async function handler(req, res) {
     });
   } catch (err) {
     console.error('获取数据失败:', err);
-    return res.status(500).json({ success: false, error: '服务器错误' });
+    return res.status(500).json({ success: false, error: '服务器错误', message: err.message });
   }
 }

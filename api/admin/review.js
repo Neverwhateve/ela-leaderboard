@@ -279,9 +279,9 @@ export default async function handler(req, res) {
         // 记录操作日志
         await supabase.from('admin_logs').insert([{
           action: 'update_nickname',
-          admin_name: adminName,
+          admin_name: admin_name,
           target_user: userName,
-          reason: `设置昵称为 ${nickname || '(空)'}`,
+          details: `设置昵称为 ${nickname || '(空)'}`,
           created_at: new Date().toISOString()
         }]);
 
