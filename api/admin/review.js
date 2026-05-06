@@ -236,17 +236,54 @@ export default async function handler(req, res) {
         return res.status(200).json({ success: true, message: `已为 ${user_name} 扣除 ${points} 可用积分` });
 
       case 'get_user_balance':
-        const userBalanceData = await getUserData(user_name);
+        // 首先检查用户是否存在
+        const { data: checkUser, error: checkError } = await supabase
+          .from('xp_total')
+          .select('name, total_xp, points')
+          .ilike('name', user_name) // 使用ilike支持模糊匹配
+          .single();
+
+        if (checkError || !checkUser) {
+          // 如果没有找到，尝试搜索nickname
+          const { data: checkUserByNick, error: checkNickError } = await supabase
+            .from('xp_total')
+            .select('name, total_xp, points')
+            .ilike('nickname', user_name)
+            .single();
+
+          if (checkNickError || !checkUserByNick) {
+            return res.status(404).json({ success: false, error: '用户不存在' });
+          } else {
+            // 找到了，通过nickname匹配
+            const userBalanceData = await getUserData(checkUserByNick.name);
+            const transactions = await supabase
+              .from('point_transactions')
+              .select('*')
+              .eq('user_name', checkUserByNick.name)
+              .order('created_at', { ascending: false })
+              .limit(50);
+
+            return res.status(200).json({
+              success: true,
+              user_name: checkUserByNick.name,
+              balance: userBalanceData.total_xp,
+              points: userBalanceData.points || 0,
+              transactions: transactions.data || []
+            });
+          }
+        }
+
+        const userBalanceData = await getUserData(checkUser.name);
         const transactions = await supabase
           .from('point_transactions')
           .select('*')
-          .eq('user_name', user_name)
+          .eq('user_name', checkUser.name)
           .order('created_at', { ascending: false })
           .limit(50);
 
         return res.status(200).json({
           success: true,
-          user_name,
+          user_name: checkUser.name,
           balance: userBalanceData.total_xp,
           points: userBalanceData.points || 0,
           transactions: transactions.data || []

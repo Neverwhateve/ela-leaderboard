@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Time, Cursor, Modal, Footer, Divider, Button, Typewriter as AnimalTypewriter, Collapse } from 'animal-island-ui';
 import 'animal-island-ui/style';
-import { announcementConfig as defaultAnnouncementConfig, getPointOptions as getDefaultPointOptions, pointMapping as defaultPointMapping } from './announcementConfig';
+import { announcementConfig as defaultAnnouncementConfig, getPointOptions, pointMapping as defaultPointMapping } from './announcementConfig';
 import LaborDayEvent from './LaborDayEvent';
 import Danmaku from './components/Danmaku';
 import Guestbook from './components/Guestbook';
@@ -13,6 +13,16 @@ const calculateLevel = (xp) => {
   if (xp >= 300) return 'Lv3';
   if (xp >= 100) return 'Lv2';
   return 'Lv1';
+};
+
+// 格式化日期为YYYY-MM-DD格式
+const formatDate = (dateString) => {
+  if (!dateString) return '';
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 };
 
 const getDateRange = (type) => {
@@ -380,7 +390,7 @@ function App() {
                       {searchResult.xpHistory && searchResult.xpHistory.length > 0 ? (
                         searchResult.xpHistory.map((record, index) => (
                           <div key={index} className="flex justify-between text-sm py-1">
-                            <span>{record.date} - {record.reason}</span>
+                            <span>{formatDate(record.date)} - {record.reason}</span>
                             <span className="text-success font-bold">+{record.amount}</span>
                           </div>
                         ))
@@ -396,7 +406,7 @@ function App() {
                       {searchResult.redeemHistory && searchResult.redeemHistory.length > 0 ? (
                         searchResult.redeemHistory.map((record, index) => (
                           <div key={index} className="flex justify-between text-sm py-1">
-                            <span>{record.date} - {record.item}</span>
+                            <span>{formatDate(record.date)} - {record.item}</span>
                             <span className="text-error font-bold">-{record.points}</span>
                           </div>
                         ))
@@ -486,10 +496,10 @@ function App() {
                   });
                   return usersWithRank.slice(0, 20);
                 })().map((user, index) => (
-                    <React.Fragment key={user.id}>
+                    <React.Fragment key={user.name}>
                       <tr 
                         className={`hover:bg-primaryBg transition-colors cursor-pointer ${user.rank <= 3 ? 'font-bold' : ''}`}
-                        onClick={() => user.rank <= 3 && toggleUserExpand(user.id)}
+                        onClick={() => toggleUserExpand(user.name)}
                       >
                         <td className="py-3 px-4 font-medium w-16">
                           <div className="flex items-center h-8">
@@ -500,14 +510,10 @@ function App() {
                           </div>
                         </td>
                         <td className="py-3 px-4 font-medium">
-                          {user.rank <= 3 ? (
-                            <span className="flex items-center gap-2">
-                              {user.displayName}
-                              {expandedUsers[user.id] && <span className="text-xs">🌟</span>}
-                            </span>
-                          ) : (
-                            user.displayName
-                          )}
+                          <span className="flex items-center gap-2">
+                            {user.displayName}
+                            {expandedUsers[user.name] && <span className="text-xs">🌟</span>}
+                          </span>
                         </td>
                         <td className="py-3 px-4 font-bold text-primary w-32">{calculatePeriodXP(user, leaderboardType)}</td>
                         <td className="py-3 px-4">
@@ -516,13 +522,13 @@ function App() {
                           </span>
                         </td>
                       </tr>
-                      {user.rank <= 3 && expandedUsers[user.id] && (
-                        <tr key={`${user.id}-expanded`}>
+                      {expandedUsers[user.name] && (
+                        <tr key={`${user.name}-expanded`}>
                           <td colSpan="4" className="p-2 bg-primaryBg">
                             <div className="rounded-acnh overflow-hidden" style={{ backgroundColor: '#f7f3df' }}>
                               <div 
                                 className="p-3 cursor-pointer flex justify-between items-center"
-                                onClick={() => toggleUserExpand(user.id)}
+                                onClick={() => toggleUserExpand(user.name)}
                               >
                                 <span className="font-semibold text-primary">{user.displayName}</span>
                                 <span>🌟</span>
@@ -539,7 +545,7 @@ function App() {
                                         .slice(0, 5)
                                         .map((record, idx) => (
                                           <div key={idx} className="flex justify-between text-sm">
-                                            <span className="text-textSecondary">{record.date} - {record.reason}</span>
+                                            <span className="text-textSecondary">{formatDate(record.date)} - {record.reason}</span>
                                             <span className="text-primary font-semibold">+{record.amount}</span>
                                           </div>
                                         ))}
@@ -589,7 +595,9 @@ function App() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              zIndex: 1000,
+              zIndex: 999999,
+              pointerEvents: 'auto',
+              overflow: 'hidden',
             }}
             onClick={() => {
               if (!isSubmitting) {
@@ -795,7 +803,9 @@ function App() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              zIndex: 1000,
+              zIndex: 999999,
+              pointerEvents: 'auto',
+              overflow: 'hidden',
             }}
             onClick={() => {
               if (!isRegistering) {
@@ -986,7 +996,9 @@ function App() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              zIndex: 1000,
+              zIndex: 999999,
+              pointerEvents: 'auto',
+              overflow: 'hidden',
             }}
             onClick={() => {
               if (!isRedeeming) {

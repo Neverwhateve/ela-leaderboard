@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from 'react';
 
+// 格式化日期为YYYY-MM-DD格式
+const formatDate = (dateString) => {
+  if (!dateString) return '';
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
 const AdminPanel = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [adminName, setAdminName] = useState('');
@@ -612,7 +622,7 @@ const AdminPanel = () => {
                     </div>
                     <p className="text-gray-600 mb-2">原因：{item.reason}</p>
                     <p className="text-sm text-gray-400 mb-3">
-                      申请时间：{new Date(item.created_at).toLocaleString('zh-CN')}
+                      申请时间：{formatDate(item.created_at)}
                     </p>
                     <div className="flex gap-2">
                       <button
@@ -663,7 +673,7 @@ const AdminPanel = () => {
                     </div>
                     <p className="text-gray-600 mb-2">兑换物品：{item.item_name}</p>
                     <p className="text-sm text-gray-400 mb-3">
-                      申请时间：{new Date(item.created_at).toLocaleString('zh-CN')}
+                      申请时间：{formatDate(item.created_at)}
                     </p>
                     <div className="flex gap-2">
                       <button
@@ -803,7 +813,7 @@ const AdminPanel = () => {
                         <tbody>
                           {userTransactions.map((t, i) => (
                             <tr key={i} className="border-b">
-                              <td className="py-2">{new Date(t.created_at).toLocaleString('zh-CN')}</td>
+                              <td className="py-2">{formatDate(t.created_at)}</td>
                               <td className={`py-2 ${t.change_amount > 0 ? 'text-green-600' : 'text-red-600'}`}>
                                 {t.change_amount > 0 ? '+' : ''}{t.change_amount}
                               </td>
@@ -886,7 +896,7 @@ const AdminPanel = () => {
                   <tbody>
                     {logs.map((log) => (
                       <tr key={log.id} className="border-b">
-                        <td className="py-2">{new Date(log.created_at).toLocaleString('zh-CN')}</td>
+                        <td className="py-2">{formatDate(log.created_at)}</td>
                         <td className="py-2">{log.admin_name}</td>
                         <td className="py-2">
                           <span className={`px-2 py-1 rounded text-xs ${
