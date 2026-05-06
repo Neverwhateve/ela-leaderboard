@@ -205,27 +205,6 @@ const Guestbook = () => {
     setReplyMessage('');
   };
 
-  // 点赞功能
-  const handleLike = async (item) => {
-    try {
-      const response = await fetch('/api/guestbook', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id: item.id }),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        await fetchMessages();
-      }
-    } catch (err) {
-      console.error('Failed to like:', err);
-    }
-  };
-
   // 渲染单个留言和它的回复
   const renderMessage = (item, isReply = false) => (
     <div
@@ -243,32 +222,6 @@ const Guestbook = () => {
           </span>
         </div>
         <div className="flex gap-2 items-center">
-          {/* 点赞按钮 */}
-          <button
-            onClick={() => handleLike(item)}
-            style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              padding: '4px',
-              borderRadius: '6px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-              transition: 'all 0.2s ease'
-            }}
-            title="点赞"
-            onMouseEnter={(e) => {
-              e.target.style.background = 'rgba(233,30,99,0.1)';
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.background = 'none';
-            }}
-          >
-            <img src="/icons/heart.png" alt="点赞" style={{ width: '20px', height: '20px' }} />
-            {item.likes > 0 && <span style={{ fontSize: '13px', color: '#e91e63', fontWeight: '600' }}>{item.likes}</span>}
-          </button>
-          
           <button
             onClick={() => handleReplyClick(item)}
             disabled={isSubmitting}
