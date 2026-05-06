@@ -18,6 +18,7 @@ const AdminPanel = () => {
   const [rejectReason, setRejectReason] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
+  const [announcementConfig, setAnnouncementConfig] = useState({ title: '📢 公告栏', sections: [] });
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -106,6 +107,49 @@ const AdminPanel = () => {
       console.error('Failed to load logs:', err);
     }
   };
+
+  const loadAnnouncementConfig = async () => {
+    try {
+      const response = await fetch('/api/admin/config');
+      const data = await response.json();
+      if (data.success && data.config) {
+        setAnnouncementConfig(data.config);
+      }
+    } catch (err) {
+      console.error('Failed to load announcement config:', err);
+    }
+  };
+
+  const saveAnnouncementConfig = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/admin/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          admin_name: adminName,
+          admin_password: adminPassword,
+          config: announcementConfig
+        })
+      });
+      const data = await response.json();
+      if (data.success) {
+        showMessage('success', '公告配置已保存');
+      } else {
+        showMessage('error', data.error || '保存失败');
+      }
+    } catch (err) {
+      showMessage('error', '保存失败');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isLoggedIn && activeTab === 'announcement') {
+      loadAnnouncementConfig();
+    }
+  }, [isLoggedIn, activeTab]);
 
   const handleApprovePoints = async (id) => {
     setIsLoading(true);
@@ -412,7 +456,7 @@ const AdminPanel = () => {
         )}
 
         <div className="flex gap-2 mb-6 flex-wrap">
-          {['pending', 'users', 'logs'].map((tab) => (
+          {['pending', 'users', 'logs', 'announcement'].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -425,6 +469,7 @@ const AdminPanel = () => {
               {tab === 'pending' && '📋 待审核'}
               {tab === 'users' && '👥 用户管理'}
               {tab === 'logs' && '📊 操作日志'}
+              {tab === 'announcement' && '📢 公告管理'}
             </button>
           ))}
         </div>
@@ -695,6 +740,126 @@ const AdminPanel = () => {
                   </tbody>
                 </table>
               )}
+            </div>
+          )}
+        )}
+
+        {activeTab === 'announcement' && (
+          <div>
+            <h3 className="text-xl font-bold mb-4" style={{ color: '#725d42' }}>📢 公告栏管理</h3>
+            <div className="mb-4">
+              <label className="block mb-2 text-sm font-medium" style={{ color: '#725d42' }}>
+                公告标题
+              </label>
+              <input
+                type="text"
+                value={announcementConfig.title || ''}
+                onChange={(e) => setAnnouncementConfig({ ...announcementConfig, title: e.target.value })}
+                className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary"
+              />
+            </div>
+
+            <div className="mb-4">
+              <div className="flex justify-between items-center mb-2">
+                <label className="text-sm font-medium" style={{ color: '#725d42' }}>
+                  公告内容
+                </label>
+                <button
+                  onClick={() => setAnnouncementConfig({
+                    ...announcementConfig,
+                    sections: [...announcementConfig.sections, { title: '新板块', content: [''] }]
+                  })}
+                  className="px-3 py-1 bg-blue-500 text-white rounded text-sm"
+                >
+                  + 添加板块
+                </button>
+              </div>
+
+              {announcementConfig.sections.map((section, sectionIndex) => (
+                <div key={sectionIndex} className="mb-4 p-4 bg-white rounded-lg shadow">
+                  <div className="flex gap-2 mb-2">
+                    <input
+                      type="text"
+                      value={section.title}
+                      onChange={(e) => {
+                        const newSections = [...announcementConfig.sections];
+                        newSections[sectionIndex].title = e.target.value;
+                        setAnnouncementConfig({ ...announcementConfig, sections: newSections });
+                      }}
+                      placeholder="板块标题"
+                      className="flex-1 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-primary"
+                    />
+                    <button
+                      onClick={() => {
+                        const newSections = announcementConfig.sections.filter((_, i) => i !== sectionIndex);
+                        setAnnouncementConfig({ ...announcementConfig, sections: newSections });
+                      }}
+                      className="px-3 py-2 bg-red-500 text-white rounded"
+                    >
+                      删除
+                    </button>
+                  </div>
+
+                  <div className="space-y-2">
+                    {section.content.map((line, lineIndex) => (
+                      <div key={lineIndex} className="flex gap-2">
+                        <input
+                          type="text"
+                          value={line}
+                          onChange={(e) => {
+                            const newSections = [...announcementConfig.sections];
+                            newSections[sectionIndex].content[lineIndex] = e.target.value;
+                            setAnnouncementConfig({ ...announcementConfig, sections: newSections });
+                          }}
+                          placeholder="内容行"
+                          className="flex-1 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-primary text-sm"
+                        />
+                        <button
+                          onClick={() => {
+                            const newSections = [...announcementConfig.sections];
+                            newSections[sectionIndex].content = newSections[sectionIndex].content.filter((_, i) => i !== lineIndex);
+                            setAnnouncementConfig({ ...announcementConfig, sections: newSections });
+                          }}
+                          className="px-2 py-2 bg-gray-200 rounded"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      const newSections = [...announcementConfig.sections];
+                      newSections[sectionIndex].content.push('');
+                      setAnnouncementConfig({ ...announcementConfig, sections: newSections });
+                    }}
+                    className="mt-2 px-3 py-1 bg-gray-100 rounded text-sm"
+                  >
+                    + 添加内容行
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex gap-2">
+              <button
+                onClick={saveAnnouncementConfig}
+                disabled={isLoading}
+                className="px-6 py-2 rounded-lg text-white font-medium"
+                style={{ backgroundColor: isLoading ? '#9e9e9e' : '#4caf50' }}
+              >
+                {isLoading ? '保存中...' : '保存公告'}
+              </button>
+              <button
+                onClick={() => {
+                  const jsonStr = JSON.stringify(announcementConfig, null, 2);
+                  prompt('复制以下JSON配置:', jsonStr);
+                }}
+                className="px-6 py-2 rounded-lg bg-gray-200 text-gray-700"
+              >
+                导出JSON
+              </button>
             </div>
           </div>
         )}

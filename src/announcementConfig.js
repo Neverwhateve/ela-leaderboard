@@ -1,5 +1,5 @@
-// 公告板配置文件
-export const announcementConfig = {
+// 默认公告板配置
+export const defaultAnnouncementConfig = {
   "title": "📢 公告栏",
   "sections": [
     {
@@ -51,8 +51,8 @@ export const announcementConfig = {
   ]
 };
 
-// 积分映射表
-export const pointMapping = {
+// 默认积分映射表
+export const defaultPointMapping = {
   "专业解答 & 资讯分享": 5,
   "Kahoot 优胜": 10,
   "Peer Tips": 15,
@@ -63,11 +63,47 @@ export const pointMapping = {
   "Creator Studio 演示与分享：每个 app": 10
 };
 
-// 从公告板提取加分选项（带积分值）
-export function getPointOptions() {
-  const options = [];
+// 根据配置获取积分映射
+export function getPointMappingFromConfig(config) {
+  const mapping = {};
+  if (!config || !config.sections) return defaultPointMapping;
 
-  announcementConfig.sections.forEach(section => {
+  config.sections.forEach(section => {
+    section.content.forEach(line => {
+      if (line === "---" || line.trim() === "" || line.includes("兑换")) {
+        return;
+      }
+
+      const match = line.match(/^(.*?)(：|:)\s*\+(\d+)积分/);
+      if (match) {
+        const name = match[1].trim();
+        const points = parseInt(match[3]);
+        if (name) {
+          mapping[name] = points;
+        }
+      } else if (line.includes("+") && !line.includes("升级条件")) {
+        const plusIndex = line.lastIndexOf("+");
+        const numMatch = line.substring(plusIndex).match(/\+(\d+)/);
+        if (plusIndex > 0 && numMatch) {
+          const name = line.substring(0, plusIndex).trim();
+          const points = parseInt(numMatch[1]);
+          if (name) {
+            mapping[name] = points;
+          }
+        }
+      }
+    });
+  });
+
+  return mapping;
+}
+
+// 从配置提取加分选项（带积分值）
+export function getPointOptionsFromConfig(config) {
+  const options = [];
+  const targetConfig = config || defaultAnnouncementConfig;
+
+  targetConfig.sections.forEach(section => {
     section.content.forEach(line => {
       if (line === "---" || line.trim() === "" || line.includes("兑换")) {
         return;
@@ -95,4 +131,13 @@ export function getPointOptions() {
   });
 
   return options;
+}
+
+// 保持向后兼容
+export const announcementConfig = defaultAnnouncementConfig;
+export const pointMapping = defaultPointMapping;
+
+// 保持向后兼容的 getPointOptions
+export function getPointOptions() {
+  return getPointOptionsFromConfig(defaultAnnouncementConfig);
 }

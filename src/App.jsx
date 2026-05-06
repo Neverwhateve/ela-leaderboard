@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Time, Cursor, Modal, Footer, Divider, Button, Typewriter as AnimalTypewriter, Collapse } from 'animal-island-ui';
 import 'animal-island-ui/style';
-import { announcementConfig, getPointOptions, pointMapping } from './announcementConfig';
+import { announcementConfig as defaultAnnouncementConfig, getPointOptions as getDefaultPointOptions, pointMapping as defaultPointMapping } from './announcementConfig';
 import LaborDayEvent from './LaborDayEvent';
 import Danmaku from './components/Danmaku';
 import Guestbook from './components/Guestbook';
@@ -57,6 +57,8 @@ function App() {
   const [showRedemptionModal, setShowRedemptionModal] = useState(false);
   const [redemptionItem, setRedemptionItem] = useState('');
   const [redemptionName, setRedemptionName] = useState('');
+  const [announcementConfig, setAnnouncementConfig] = useState(defaultAnnouncementConfig);
+  const [pointMapping, setPointMapping] = useState(defaultPointMapping);
   const [redemptionMessage, setRedemptionMessage] = useState('');
   const [isRedeeming, setIsRedeeming] = useState(false);
 
@@ -81,6 +83,16 @@ function App() {
     setUsers(data.users || []);
     setLatestRecords(data.latestRecords || []);
     setLoading(false);
+
+    // 加载公告配置
+    fetch('/api/admin/config')
+      .then(res => res.json())
+      .then(result => {
+        if (result.success && result.config) {
+          setAnnouncementConfig(result.config);
+        }
+      })
+      .catch(err => console.error('加载公告配置失败:', err));
   }, []);
 
   // 计算时间段经验值
