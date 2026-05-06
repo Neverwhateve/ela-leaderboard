@@ -32,14 +32,6 @@ export default async function handler(req, res) {
       return res.status(401).json({ error: '管理员名称或密码错误' });
     }
 
-    await supabase
-      .from('admin_logs')
-      .insert({
-        admin_name: name,
-        action: 'login',
-        details: '管理员登录成功'
-      });
-
     return res.status(200).json({
       success: true,
       admin: {

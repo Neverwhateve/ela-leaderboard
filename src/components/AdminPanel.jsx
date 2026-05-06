@@ -759,6 +759,148 @@ const AdminPanel = ({ onBack }) => {
         {activeTab === 'users' && (
           <div>
             <h3 className="text-xl sm:text-2xl font-bold mb-6" style={{ color: '#725d42' }}>👥 用户积分管理</h3>
+            
+            {/* 选中用户信息展开区域 */}
+            {selectedUser && (
+              <div className="mb-8 border-2 border-green-400 p-6 rounded-xl bg-green-50 shadow-lg">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-6">
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-2xl">👤</span>
+                    <span className="font-bold text-2xl">
+                      {(() => {
+                        const u = allUsers.find(user => user.name === selectedUser);
+                        return u?.nickname || selectedUser;
+                      })()}
+                    </span>
+                  </div>
+                  {(() => {
+                    const u = allUsers.find(user => user.name === selectedUser);
+                    return u?.nickname ? <span className="text-sm text-gray-500 ml-2">({selectedUser})</span> : null;
+                  })()}
+                  <div className="flex flex-wrap gap-3 mt-4">
+                    <span className="px-5 py-3 rounded-full text-white text-lg" style={{ backgroundColor: '#2196F3' }}>
+                      🎖️ {userBalance} 总经验
+                    </span>
+                    <span className="px-5 py-3 rounded-full text-white text-lg" style={{ backgroundColor: '#FF9800' }}>
+                      🪙 {userPoints} 可用积分
+                    </span>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => handleUpdateNickname(selectedUser)}
+                    className="px-4 py-3 text-base rounded bg-blue-100 text-blue-700 hover:bg-blue-200"
+                  >
+                    ✏️ 编辑昵称
+                  </button>
+                  <button
+                    onClick={() => {
+                      setSelectedUser(null);
+                      setSearchUser('');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className="px-4 py-3 text-base rounded bg-gray-200 text-gray-700 hover:bg-gray-300"
+                  >
+                    ✖️ 关闭
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-3 mb-6">
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <input
+                    type="number"
+                    value={operationAmount}
+                    onChange={(e) => setOperationAmount(e.target.value)}
+                    placeholder="积分数"
+                    className="w-full sm:w-40 px-5 py-4 text-base border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary"
+                  />
+                  <select
+                    value={operationReason}
+                    onChange={(e) => setOperationReason(e.target.value)}
+                    className="flex-1 px-5 py-4 text-base border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary"
+                  >
+                    <option value="">选择原因</option>
+                    <option value="新用户注册">新用户注册 (+10积分)</option>
+                    <option value="Outing 九宫图">Outing 九宫图 (+10积分)</option>
+                    <option value="DD 分享">DD 分享 (+20积分)</option>
+                    <option value="Kahoot 优胜">Kahoot 优胜 (+10积分)</option>
+                    <option value="Peer Tips">Peer Tips (+15积分)</option>
+                    <option value="专业解答 & 资讯分享">专业解答 & 资讯分享 (+5积分)</option>
+                    <option value="观看 Town Hall 视频">观看 Town Hall 视频 (+5积分)</option>
+                    <option value="4月 Training 已完成">4月 Training 已完成 (+20积分)</option>
+                    <option value="学习进度达标">学习进度达标 (+25积分)</option>
+                    <option value="完成隐藏任务">完成隐藏任务 (+40积分)</option>
+                    <option value="5月 Training 已完成">5月 Training 已完成 (+30积分)</option>
+                    <option value="管理员手动调整">管理员手动调整</option>
+                  </select>
+                </div>
+                <div className="flex gap-3">
+                  <button
+                    onClick={handleAddPoints}
+                    disabled={isLoading}
+                    className="flex-1 px-4 py-3 rounded-lg text-white text-base"
+                    style={{ backgroundColor: '#4caf50' }}
+                  >
+                    ➕ 添加积分
+                  </button>
+                  <button
+                    onClick={handleDeductPoints}
+                    disabled={isLoading}
+                    className="flex-1 px-4 py-3 rounded-lg text-white text-base"
+                    style={{ backgroundColor: '#e74c3c' }}
+                  >
+                    ➖ 扣除积分
+                  </button>
+                </div>
+              </div>
+
+              <h4 className="font-bold mb-4 text-lg">📋 积分变动记录</h4>
+              <div className="max-h-80 overflow-y-auto bg-white rounded-lg p-3">
+                {userTransactions.length === 0 ? (
+                  <p className="text-gray-500 py-6 text-base text-center">暂无记录</p>
+                ) : (
+                  <div className="space-y-3">
+                    {userTransactions.map((t, i) => (
+                      <div key={i} className="p-4 bg-gray-50 rounded-lg">
+                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-3">
+                          <div>
+                            <div className="text-gray-700 text-base">{formatDate(t.created_at)}</div>
+                            <div className="text-gray-500 text-base">{t.reason}</div>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <span className={`font-bold text-lg ${t.change_amount > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                              {t.change_amount > 0 ? '+' : ''}{t.change_amount}
+                            </span>
+                            <span className="text-sm text-gray-500">余额: {t.balance_after}</span>
+                          </div>
+                        </div>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => handleEditTransaction(t)}
+                            disabled={isLoading}
+                            className="px-3 py-2 text-base rounded bg-blue-500 text-white"
+                          >
+                            编辑
+                          </button>
+                          <button
+                            onClick={() => handleDeleteTransaction(t.id)}
+                            disabled={isLoading}
+                            className="px-3 py-2 text-base rounded bg-red-500 text-white"
+                          >
+                            删除
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+            
+            {/* 搜索区域 */}
             <div className="mb-8">
               <div className="flex flex-col sm:flex-row gap-3 mb-6">
                 <input
@@ -774,150 +916,25 @@ const AdminPanel = ({ onBack }) => {
                   className="px-6 py-4 rounded-lg text-white text-base"
                   style={{ backgroundColor: '#4caf50' }}
                 >
-                  搜索
+                  🔍 搜索
                 </button>
               </div>
 
-              {selectedUser && (
-                <div className="p-5 rounded-lg bg-white shadow mb-6">
-                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-6">
-                    <div>
-                      <span className="font-bold text-xl">
-                        {(() => {
-                          const u = allUsers.find(user => user.name === selectedUser);
-                          return u?.nickname || selectedUser;
-                        })()}
-                      </span>
-                      {(() => {
-                        const u = allUsers.find(user => user.name === selectedUser);
-                        return u?.nickname ? <span className="text-sm text-gray-500 ml-2">({selectedUser})</span> : null;
-                      })()}
-                      <div className="flex flex-wrap gap-2 mt-3">
-                        <span className="px-4 py-2 rounded-full text-white text-base" style={{ backgroundColor: '#2196F3' }}>
-                          🎖️ {userBalance} 总经验
-                        </span>
-                        <span className="px-4 py-2 rounded-full text-white text-base" style={{ backgroundColor: '#FF9800' }}>
-                          🪙 {userPoints} 可用积分
-                        </span>
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => handleUpdateNickname(selectedUser)}
-                      className="px-4 py-2 text-base rounded bg-blue-100 text-blue-700 hover:bg-blue-200"
-                    >
-                      ✏️ 编辑昵称
-                    </button>
-                  </div>
-
-                  <div className="flex flex-col gap-3 mb-6">
-                    <div className="flex flex-col sm:flex-row gap-3">
-                      <input
-                        type="number"
-                        value={operationAmount}
-                        onChange={(e) => setOperationAmount(e.target.value)}
-                        placeholder="积分数"
-                        className="w-full sm:w-32 px-5 py-4 text-base border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary"
-                      />
-                      <select
-                        value={operationReason}
-                        onChange={(e) => setOperationReason(e.target.value)}
-                        className="flex-1 px-5 py-4 text-base border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary"
-                      >
-                        <option value="">选择原因</option>
-                        <option value="新用户注册">新用户注册 (+10积分)</option>
-                        <option value="Outing 九宫图">Outing 九宫图 (+10积分)</option>
-                        <option value="DD 分享">DD 分享 (+20积分)</option>
-                        <option value="Kahoot 优胜">Kahoot 优胜 (+10积分)</option>
-                        <option value="Peer Tips">Peer Tips (+15积分)</option>
-                        <option value="专业解答 & 资讯分享">专业解答 & 资讯分享 (+5积分)</option>
-                        <option value="观看 Town Hall 视频">观看 Town Hall 视频 (+5积分)</option>
-                        <option value="4月 Training 已完成">4月 Training 已完成 (+20积分)</option>
-                        <option value="学习进度达标">学习进度达标 (+25积分)</option>
-                        <option value="完成隐藏任务">完成隐藏任务 (+40积分)</option>
-                        <option value="5月 Training 已完成">5月 Training 已完成 (+30积分)</option>
-                        <option value="管理员手动调整">管理员手动调整</option>
-                      </select>
-                    </div>
-                    <div className="flex gap-3">
-                      <button
-                        onClick={handleAddPoints}
-                        disabled={isLoading}
-                        className="flex-1 px-4 py-3 rounded-lg text-white text-base"
-                        style={{ backgroundColor: '#4caf50' }}
-                      >
-                        添加
-                      </button>
-                      <button
-                        onClick={handleDeductPoints}
-                        disabled={isLoading}
-                        className="flex-1 px-4 py-3 rounded-lg text-white text-base"
-                        style={{ backgroundColor: '#e74c3c' }}
-                      >
-                        扣除
-                      </button>
-                    </div>
-                  </div>
-
-                  <h4 className="font-bold mb-4 text-lg">积分变动记录</h4>
-                  <div className="max-h-64 overflow-y-auto">
-                    {userTransactions.length === 0 ? (
-                      <p className="text-gray-500 py-6 text-base">暂无记录</p>
-                    ) : (
-                      <div className="space-y-3">
-                        {userTransactions.map((t, i) => (
-                          <div key={i} className="p-4 bg-gray-50 rounded-lg">
-                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-3">
-                              <div>
-                                <div className="text-gray-700 text-base">{formatDate(t.created_at)}</div>
-                                <div className="text-gray-500 text-base">{t.reason}</div>
-                              </div>
-                              <div className="flex items-center gap-3">
-                                <span className={`font-bold text-lg ${t.change_amount > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                  {t.change_amount > 0 ? '+' : ''}{t.change_amount}
-                                </span>
-                                <span className="text-sm text-gray-500">余额: {t.balance_after}</span>
-                              </div>
-                            </div>
-                            <div className="flex gap-2">
-                              <button
-                                onClick={() => handleEditTransaction(t)}
-                                disabled={isLoading}
-                                className="px-3 py-2 text-base rounded bg-blue-500 text-white"
-                              >
-                                编辑
-                              </button>
-                              <button
-                                onClick={() => handleDeleteTransaction(t.id)}
-                                disabled={isLoading}
-                                className="px-3 py-2 text-base rounded bg-red-500 text-white"
-                              >
-                                删除
-                              </button>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              <h4 className="font-bold mb-4 text-lg">所有用户</h4>
+              <h4 className="font-bold mb-4 text-lg">👥 所有用户</h4>
               <div className="grid gap-3">
                 {allUsers.map((user) => (
                   <div
                     key={user.name}
-                    className={`p-4 rounded-lg flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 ${
-                      selectedUser === user.name ? 'bg-green-100' : 'bg-white hover:bg-gray-100'
+                    className={`p-4 rounded-lg flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 cursor-pointer transition-all ${
+                      selectedUser === user.name ? 'bg-green-100 border-2 border-green-400' : 'bg-white hover:bg-gray-100'
                     }`}
+                    onClick={() => {
+                      setSearchUser(user.name);
+                      handleSearchUser(user.name);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
                   >
-                    <button
-                      onClick={() => {
-                        setSearchUser(user.name);
-                        handleSearchUser(user.name);
-                      }}
-                      className="text-left flex-1"
-                    >
+                    <div className="flex-1">
                       <div className="font-medium text-base">{user.nickname || user.name}</div>
                       {user.nickname && <div className="text-sm text-gray-500">{user.name}</div>}
                       <div className="flex flex-wrap gap-2 mt-2">
@@ -928,13 +945,20 @@ const AdminPanel = ({ onBack }) => {
                           {user.points} 可用积分
                         </span>
                       </div>
-                    </button>
-                    <button
-                      onClick={() => handleUpdateNickname(user.name)}
-                      className="px-4 py-2 text-base rounded bg-blue-100 text-blue-700 hover:bg-blue-200"
-                    >
-                      ✏️ 昵称
-                    </button>
+                    </div>
+                    <div className="flex gap-2">
+                      {selectedUser !== user.name && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleUpdateNickname(user.name);
+                          }}
+                          className="px-4 py-2 text-base rounded bg-blue-100 text-blue-700 hover:bg-blue-200"
+                        >
+                          ✏️ 昵称
+                        </button>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>
