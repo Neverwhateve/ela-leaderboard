@@ -92,12 +92,35 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: '注册需要填写姓名' });
       }
 
+      const { error: insertError } = await supabase
+        .from('xp_total')
+        .insert({
+          name: user_name,
+          total_xp: 0
+        });
+
+      if (insertError && insertError.code !== '23505') {
+        console.error('注册插入用户错误:', insertError);
+      }
+
+      await supabase
+        .from('point_transactions')
+        .insert({
+          user_name: user_name,
+          user_nickname: user_nickname || '',
+          change_amount: 0,
+          balance_after: 0,
+          reason: '新用户注册',
+          type: 'initial',
+          created_by: 'system'
+        });
+
       await sendFeishuNotification(
         '👤 新用户注册',
         `姓名：${user_name}\n昵称：${user_nickname || '无'}\n推荐人：${reason || '无'}`
       );
 
-      return res.status(200).json({ success: true, message: '注册信息已收到' });
+      return res.status(200).json({ success: true, message: '注册成功！' });
 
     } else {
       return res.status(400).json({ error: '未知的申请类型' });

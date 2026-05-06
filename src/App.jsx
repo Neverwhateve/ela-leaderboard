@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Time, Cursor, Modal, Footer, Divider, Button, Typewriter as AnimalTypewriter, Collapse } from 'animal-island-ui';
 import 'animal-island-ui/style';
-import { announcementConfig, getPointOptions } from './announcementConfig';
+import { announcementConfig, getPointOptions, pointMapping } from './announcementConfig';
 import LaborDayEvent from './LaborDayEvent';
 import Danmaku from './components/Danmaku';
 import Guestbook from './components/Guestbook';
@@ -626,7 +626,7 @@ function App() {
                 >
                   <option value="">请选择加分项目</option>
                   {getPointOptions().map((option, index) => (
-                    <option key={index} value={option}>{option}</option>
+                    <option key={index} value={option.value}>{option.label}</option>
                   ))}
                   <option value="其他">其他（请在下方填写）</option>
                 </select>
@@ -701,8 +701,8 @@ function App() {
                       return;
                     }
                     setIsSubmitting(true);
-                    const today = new Date().toISOString().split('T')[0];
                     const finalReason = selectedReason === '其他' ? customReason.trim() : selectedReason;
+                    const points = pointMapping[finalReason] || 0;
                     try {
                       const response = await fetch('/api/admin/apply', {
                         method: 'POST',
@@ -712,7 +712,7 @@ function App() {
                           user_name: submitName.trim(),
                           user_nickname: '',
                           reason: finalReason,
-                          points: 0
+                          points: points
                         })
                       });
                       const result = await response.json();
