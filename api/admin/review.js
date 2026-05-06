@@ -393,19 +393,27 @@ export default async function handler(req, res) {
         }
 
         const oldAmount = transactionToUpdate.change_amount;
-        const newAmount = points;
+        const newAmount = points !== undefined ? points : oldAmount;
         const amountDiff = newAmount - oldAmount;
         const newBalance = transactionToUpdate.balance_after + amountDiff;
         const userDataForUpdate = await getUserData(transactionToUpdate.user_name);
         const newPointsForUpdate = (userDataForUpdate.points || 0) + amountDiff;
 
+        // 准备更新数据
+        const updateData = {
+          change_amount: newAmount,
+          balance_after: newBalance,
+          reason: reason !== undefined ? reason : transactionToUpdate.reason,
+        };
+
+        // 如果提供了时间，也更新时间
+        if (created_at) {
+          updateData.created_at = created_at;
+        }
+
         await supabase
           .from('point_transactions')
-          .update({
-            change_amount: newAmount,
-            balance_after: newBalance,
-            reason: reason || transactionToUpdate.reason
-          })
+          .update(updateData)
           .eq('id', id);
 
         await supabase
@@ -413,7 +421,7 @@ export default async function handler(req, res) {
           .update({ total_xp: newBalance, points: newPointsForUpdate })
           .eq('name', transactionToUpdate.user_name);
 
-        await logAdminAction(admin_name, 'update_transaction', transactionToUpdate.user_name, `修改积分记录：从${oldAmount}改为${newAmount}，原因：${reason || transactionToUpdate.reason}`);
+        await logAdminAction(admin_name, 'update_transaction', transactionToUpdate.user_name, `修改积分记录：从${oldAmount}改为${newAmount}，原因：${updateData.reason}`);
 
         return res.status(200).json({ success: true, message: '积分记录已更新' });
 

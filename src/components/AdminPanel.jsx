@@ -30,6 +30,11 @@ const AdminPanel = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
   const [announcementConfig, setAnnouncementConfig] = useState({ title: '📢 公告栏', sections: [] });
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingTransaction, setEditingTransaction] = useState(null);
+  const [editAmount, setEditAmount] = useState('');
+  const [editReason, setEditReason] = useState('');
+  const [editDate, setEditDate] = useState('');
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -433,33 +438,60 @@ const AdminPanel = () => {
   };
 
   const handleEditTransaction = async (transaction) => {
-    const newAmount = prompt('请输入新的积分数量：', transaction.change_amount);
-    if (newAmount === null) return;
-    const amount = parseInt(newAmount);
+    // 格式化日期为 input 可接受的格式
+    let formattedDate = '';
+    try {
+      const date = new Date(transaction.created_at);
+      formattedDate = date.toISOString().split('T')[0];
+    } catch (e) {
+      formattedDate = '';
+    }
+
+    setEditingTransaction(transaction);
+    setEditAmount(String(transaction.change_amount));
+    setEditReason(transaction.reason);
+    setEditDate(formattedDate);
+    setShowEditModal(true);
+  };
+
+  const handleSaveTransaction = async () => {
+    if (!editingTransaction) return;
+    const amount = parseInt(editAmount);
     if (isNaN(amount)) {
       showMessage('error', '请输入正确的数字');
       return;
     }
-    const newReason = prompt('请输入新的原因：', transaction.reason);
-    if (newReason === null) return;
+    if (!editReason.trim()) {
+      showMessage('error', '请输入原因');
+      return;
+    }
 
     setIsLoading(true);
     try {
+      const requestBody = {
+        action: 'update_transaction',
+        id: editingTransaction.id,
+        points: amount,
+        reason: editReason.trim(),
+        admin_name: adminName,
+        admin_password: adminPassword
+      };
+
+      // 如果编辑了日期，也发送日期
+      if (editDate) {
+        requestBody.created_at = new Date(editDate).toISOString();
+      }
+
       const response = await fetch('/api/admin/review', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'update_transaction',
-          id: transaction.id,
-          points: amount,
-          reason: newReason,
-          admin_name: adminName,
-          admin_password: adminPassword
-        })
+        body: JSON.stringify(requestBody)
       });
       const data = await response.json();
       if (data.success) {
         showMessage('success', '积分记录已更新');
+        setShowEditModal(false);
+        setEditingTransaction(null);
         await handleSearchUser(selectedUser);
         await loadUsers();
         await loadLogs();
@@ -1040,6 +1072,184 @@ const AdminPanel = () => {
           </div>
         )}
       </div>
+
+      {/* 编辑积分记录模态框 */}
+      {showEditModal && (
+        <div 
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 999999,
+            pointerEvents: 'auto',
+            overflow: 'hidden'
+          }}
+          onClick={() => {
+            if (!isLoading) {
+              setShowEditModal(false);
+              setEditingTransaction(null);
+            }
+          }}
+        >
+          <div 
+              style={{
+                backgroundColor: 'white',
+                borderRadius: '12px',
+                padding: '24px',
+                width: '90%',
+                maxWidth: '450px',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.15)'
+              }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 style={{ margin: '0 0 16px 0', fontSize: '18px', fontWeight: 'bold', textAlign: 'center' }}>
+              ✏️ 编辑积分记录
+            </h3>
+            
+            <div style={{ marginBottom: '12px' }}>
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#333' }}>
+                用户：
+              </label>
+              <div style={{ padding: '8px 12px', backgroundColor: '#f5f5f5', borderRadius: '8px', fontSize: '14px' }}>
+                {editingTransaction?.user_name}
+                {editingTransaction?.user_nickname && ` (${editingTransaction.user_nickname})`}
+              </div>
+            </div>
+
+            <div style={{ marginBottom: '12px' }}>
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#333' }}>
+                积分变动：
+              </label>
+              <input
+                type="number"
+                value={editAmount}
+                onChange={(e) => setEditAmount(e.target.value)}
+                placeholder="请输入积分数"
+                disabled={isLoading}
+                style={{
+                  width: '100%',
+                  padding: '8px 12px',
+                  border: '1px solid #ddd',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  outline: 'none',
+                  boxSizing: 'border-box',
+                  backgroundColor: isLoading ? '#f5f5f5' : 'white',
+                  color: isLoading ? '#999' : '#333'
+                }}
+              />
+            </div>
+
+            <div style={{ marginBottom: '12px' }}>
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#333' }}>
+                原因：
+              </label>
+              <input
+                type="text"
+                value={editReason}
+                onChange={(e) => setEditReason(e.target.value)}
+                placeholder="请输入原因"
+                disabled={isLoading}
+                style={{
+                  width: '100%',
+                  padding: '8px 12px',
+                  border: '1px solid #ddd',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  outline: 'none',
+                  boxSizing: 'border-box',
+                  backgroundColor: isLoading ? '#f5f5f5' : 'white',
+                  color: isLoading ? '#999' : '#333'
+                }}
+              />
+            </div>
+
+            <div style={{ marginBottom: '12px' }}>
+              <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#333' }}>
+                日期：
+              </label>
+              <input
+                type="date"
+                value={editDate}
+                onChange={(e) => setEditDate(e.target.value)}
+                disabled={isLoading}
+                style={{
+                  width: '100%',
+                  padding: '8px 12px',
+                  border: '1px solid #ddd',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  outline: 'none',
+                  boxSizing: 'border-box',
+                  backgroundColor: isLoading ? '#f5f5f5' : 'white',
+                  color: isLoading ? '#999' : '#333'
+                }}
+              />
+            </div>
+
+            {message.text && (
+              <div
+                style={{
+                  marginBottom: '12px',
+                  padding: '10px',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  backgroundColor: message.type === 'error' ? '#f8d7da' : '#d4edda',
+                  color: message.type === 'error' ? '#721c24' : '#155724'
+                }}
+              >
+                {message.text}
+              </div>
+            )}
+
+            <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
+              <button
+                onClick={() => {
+                  if (!isLoading) {
+                    setShowEditModal(false);
+                    setEditingTransaction(null);
+                  }
+                }}
+                disabled={isLoading}
+                style={{
+                  flex: 1,
+                  padding: '10px',
+                  border: '1px solid #ddd',
+                  borderRadius: '8px',
+                  backgroundColor: isLoading ? '#e0e0e0' : '#f5f5f5',
+                  color: isLoading ? '#9e9e9e' : '#333',
+                  cursor: isLoading ? 'not-allowed' : 'pointer',
+                  fontSize: '14px'
+                }}
+              >
+                取消
+              </button>
+              <button
+                onClick={handleSaveTransaction}
+                disabled={isLoading}
+                style={{
+                  flex: 1,
+                  padding: '10px',
+                  border: 'none',
+                  borderRadius: '8px',
+                  backgroundColor: isLoading ? '#9e9e9e' : '#4caf50',
+                  color: 'white',
+                  cursor: isLoading ? 'not-allowed' : 'pointer',
+                  fontSize: '14px'
+                }}
+              >
+                {isLoading ? '保存中...' : '保存'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
