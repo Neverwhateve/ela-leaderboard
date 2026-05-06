@@ -537,11 +537,11 @@ function App() {
         <div className="mt-12">
           <Footer type="tree" />
           <div className="text-center text-textSecondary text-sm mt-4">
-            <a 
-              href="mailto:neverwhateve@me.com?subject=意见与反馈" 
+            <a
+              href="?admin=true"
               className="text-textSecondary hover:text-primary transition-colors underline"
             >
-              感谢 xxx、xx、xxxx 还有 xxxxx 的反馈和建议！
+              管理员入口
             </a>
           </div>
         </div>
