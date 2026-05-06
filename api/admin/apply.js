@@ -96,7 +96,7 @@ export default async function handler(req, res) {
         .from('xp_total')
         .insert({
           name: user_name,
-          total_xp: 0
+          total_xp: 10
         });
 
       if (insertError && insertError.code !== '23505') {
@@ -108,9 +108,9 @@ export default async function handler(req, res) {
         .insert({
           user_name: user_name,
           user_nickname: user_nickname || '',
-          change_amount: 0,
-          balance_after: 0,
-          reason: '新用户注册',
+          change_amount: 10,
+          balance_after: 10,
+          reason: '新用户注册奖励',
           type: 'initial',
           created_by: 'system'
         });
@@ -120,7 +120,7 @@ export default async function handler(req, res) {
         `姓名：${user_name}\n昵称：${user_nickname || '无'}\n推荐人：${reason || '无'}`
       );
 
-      return res.status(200).json({ success: true, message: '注册成功！' });
+      return res.status(200).json({ success: true, message: '注册成功！获得10积分奖励！' });
 
     } else {
       return res.status(400).json({ error: '未知的申请类型' });
