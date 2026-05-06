@@ -299,18 +299,6 @@ export default async function handler(req, res) {
           history: history.data || []
         });
 
-      case 'get_redemption_history':
-        const history = await supabase
-          .from('redemption_requests')
-          .select('*')
-          .order('created_at', { ascending: false })
-          .limit(50);
-
-        return res.status(200).json({
-          success: true,
-          history: history.data || []
-        });
-
       case 'delete_transaction':
         const { data: transactionToDelete, error: deleteTxError } = await supabase
           .from('point_transactions')
