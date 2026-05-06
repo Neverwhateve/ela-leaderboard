@@ -23,7 +23,33 @@ export default async function handler(req, res) {
 
     console.log('用户数据:', xpData?.length || 0, '条');
 
-    // 获取最新的积分记录（用于弹幕）
+    // 获取所有积分记录
+    console.log('获取积分记录...');
+    const { data: transactionsData, error: transactionsError } = await supabase
+      .from('point_transactions')
+      .select('user_name, change_amount, reason, created_at')
+      .order('created_at', { ascending: false });
+
+    if (transactionsError) {
+      console.error('获取积分记录失败:', transactionsError);
+    }
+
+    // 按用户名分组记录
+    const transactionsByUser = {};
+    (transactionsData || []).forEach(tx => {
+      if (!transactionsByUser[tx.user_name]) {
+        transactionsByUser[tx.user_name] = [];
+      }
+      transactionsByUser[tx.user_name].push({
+        date: tx.created_at,
+        reason: tx.reason,
+        amount: tx.change_amount
+      });
+    });
+
+    console.log('积分记录:', Object.keys(transactionsByUser).length, '个用户有记录');
+
+    // 获取最新的10条记录（用于弹幕）
     const { data: recordsData, error: recordsError } = await supabase
       .from('point_transactions')
       .select('user_name, change_amount, reason, created_at')
@@ -31,7 +57,7 @@ export default async function handler(req, res) {
       .limit(10);
 
     if (recordsError) {
-      console.error('获取积分记录失败:', recordsError);
+      console.error('获取最近10条记录失败:', recordsError);
     }
 
     // 格式化数据为兼容 data.json 的格式
@@ -43,7 +69,7 @@ export default async function handler(req, res) {
       title: '',
       xp: user.total_xp,
       points: 0,
-      xpHistory: [],
+      xpHistory: transactionsByUser[user.name] || [],
       redeemHistory: [],
       weekly: 0, // 暂时没有周统计
       monthly: 0 // 暂时没有月统计
