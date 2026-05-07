@@ -26,6 +26,7 @@ const AdminPanel = ({ onBack }) => {
   const [userTransactions, setUserTransactions] = useState([]);
   const [operationAmount, setOperationAmount] = useState('');
   const [operationReason, setOperationReason] = useState('');
+  const [operationCustomReason, setOperationCustomReason] = useState('');
   const [rejectReason, setRejectReason] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
@@ -338,6 +339,16 @@ const AdminPanel = ({ onBack }) => {
       showMessage('error', '请填写正确的积分数');
       return;
     }
+    
+    const finalReason = operationReason === '管理员手动调整' 
+      ? operationCustomReason.trim() 
+      : operationReason;
+    
+    if (!finalReason) {
+      showMessage('error', '请填写原因');
+      return;
+    }
+    
     setIsLoading(true);
     try {
       const response = await fetch('/api/admin/review', {
@@ -347,7 +358,7 @@ const AdminPanel = ({ onBack }) => {
           action: 'add_points',
           user_name: selectedUser,
           points: parseInt(operationAmount),
-          reason: operationReason,
+          reason: finalReason,
           admin_name: adminName,
           admin_password: adminPassword
         })
@@ -357,6 +368,7 @@ const AdminPanel = ({ onBack }) => {
         showMessage('success', data.message);
         setOperationAmount('');
         setOperationReason('');
+        setOperationCustomReason('');
         await handleSearchUser(selectedUser);
         await loadUsers();
         await loadLogs();
@@ -822,20 +834,24 @@ const AdminPanel = ({ onBack }) => {
                     className="flex-1 px-5 py-4 text-base border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary"
                   >
                     <option value="">选择原因</option>
-                    <option value="新用户注册">新用户注册 (+10积分)</option>
-                    <option value="Outing 九宫图">Outing 九宫图 (+10积分)</option>
-                    <option value="DD 分享">DD 分享 (+20积分)</option>
+                    <option value="专业解答 & 资讯分享">专业解答 & 资讯分享 (+5积分)</option>
                     <option value="Kahoot 优胜">Kahoot 优胜 (+10积分)</option>
                     <option value="Peer Tips">Peer Tips (+15积分)</option>
-                    <option value="专业解答 & 资讯分享">专业解答 & 资讯分享 (+5积分)</option>
-                    <option value="观看 Town Hall 视频">观看 Town Hall 视频 (+5积分)</option>
-                    <option value="4月 Training 已完成">4月 Training 已完成 (+20积分)</option>
-                    <option value="学习进度达标">学习进度达标 (+25积分)</option>
-                    <option value="完成隐藏任务">完成隐藏任务 (+40积分)</option>
-                    <option value="5月 Training 已完成">5月 Training 已完成 (+30积分)</option>
-                    <option value="管理员手动调整">管理员手动调整</option>
+                    <option value="分享知识（DD, huddle, 邮件等）">分享知识（DD, huddle, 邮件等）(+15积分)</option>
+                    <option value="管理员手动调整">管理员手动调整（自定义）</option>
                   </select>
                 </div>
+                {operationReason === '管理员手动调整' && (
+                  <div>
+                    <input
+                      type="text"
+                      value={operationCustomReason}
+                      onChange={(e) => setOperationCustomReason(e.target.value)}
+                      placeholder="请输入自定义原因..."
+                      className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary"
+                    />
+                  </div>
+                )}
                 <div className="flex gap-3">
                   <button
                     onClick={handleAddPoints}
