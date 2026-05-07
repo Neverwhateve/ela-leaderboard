@@ -96,7 +96,8 @@ export default async function handler(req, res) {
         .from('xp_total')
         .insert({
           name: user_name,
-          total_xp: 10
+          total_xp: 10,
+          points: 10
         });
 
       if (insertError && insertError.code !== '23505') {
