@@ -722,8 +722,9 @@ function App() {
                   borderRadius: '8px',
                   fontSize: '14px',
                   marginBottom: '12px',
-                  backgroundColor: submitMessage.includes('成功') ? '#d4edda' : '#f8d7da',
-                  color: submitMessage.includes('成功') ? '#155724' : '#721c24',
+                  backgroundColor: submitMessage.includes('成功') || submitMessage.includes('已提交') ? '#d4edda' : '#f8d7da',
+                  color: submitMessage.includes('成功') || submitMessage.includes('已提交') ? '#155724' : '#721c24',
+                  border: `1px solid ${submitMessage.includes('成功') || submitMessage.includes('已提交') ? '#c3e6cb' : '#f5c6cb'}`,
                 }}>
                   {submitMessage}
                 </div>
@@ -1120,8 +1121,9 @@ function App() {
                   borderRadius: '8px',
                   fontSize: '14px',
                   marginBottom: '12px',
-                  backgroundColor: redemptionMessage.includes('成功') ? '#d4edda' : '#f8d7da',
-                  color: redemptionMessage.includes('成功') ? '#155724' : '#721c24',
+                  backgroundColor: redemptionMessage.includes('成功') || redemptionMessage.includes('已提交') ? '#d4edda' : '#f8d7da',
+                  color: redemptionMessage.includes('成功') || redemptionMessage.includes('已提交') ? '#155724' : '#721c24',
+                  border: `1px solid ${redemptionMessage.includes('成功') || redemptionMessage.includes('已提交') ? '#c3e6cb' : '#f5c6cb'}`,
                 }}>
                   {redemptionMessage}
                 </div>
