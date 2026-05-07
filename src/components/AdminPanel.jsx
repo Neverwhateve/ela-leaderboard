@@ -382,43 +382,6 @@ const AdminPanel = ({ onBack }) => {
     }
   };
 
-  const handleDeductPoints = async () => {
-    if (!selectedUser || !operationAmount || operationAmount <= 0) {
-      showMessage('error', '请填写正确的积分数');
-      return;
-    }
-    setIsLoading(true);
-    try {
-      const response = await fetch('/api/admin/review', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'deduct_points',
-          user_name: selectedUser,
-          points: parseInt(operationAmount),
-          reason: operationReason,
-          admin_name: adminName,
-          admin_password: adminPassword
-        })
-      });
-      const data = await response.json();
-      if (data.success) {
-        showMessage('success', data.message);
-        setOperationAmount('');
-        setOperationReason('');
-        await handleSearchUser(selectedUser);
-        await loadUsers();
-        await loadLogs();
-      } else {
-        showMessage('error', data.error);
-      }
-    } catch (err) {
-      showMessage('error', '操作失败');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const handleDeleteTransaction = async (transactionId) => {
     if (!confirm('确定要删除这条积分记录吗？')) return;
     setIsLoading(true);
@@ -860,14 +823,6 @@ const AdminPanel = ({ onBack }) => {
                     style={{ backgroundColor: '#4caf50' }}
                   >
                     ➕ 添加积分
-                  </button>
-                  <button
-                    onClick={handleDeductPoints}
-                    disabled={isLoading}
-                    className="flex-1 px-4 py-3 rounded-lg text-white text-base"
-                    style={{ backgroundColor: '#e74c3c' }}
-                  >
-                    ➖ 扣除积分
                   </button>
                 </div>
               </div>
