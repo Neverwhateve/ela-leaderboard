@@ -96,6 +96,7 @@ export default async function handler(req, res) {
         .from('xp_total')
         .insert({
           name: user_name,
+          nickname: user_nickname,
           total_xp: 10,
           points: 10
         });
