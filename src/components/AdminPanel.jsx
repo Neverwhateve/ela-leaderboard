@@ -208,8 +208,7 @@ const AdminPanel = ({ onBack }) => {
   };
 
   const handleRejectPoints = async (id) => {
-    if (!rejectReason.trim()) {
-      showMessage('error', '请填写拒绝原因');
+    if (!confirm('确定要拒绝这个积分申请吗？')) {
       return;
     }
     setIsLoading(true);
@@ -222,13 +221,12 @@ const AdminPanel = ({ onBack }) => {
           id,
           admin_name: adminName,
           admin_password: adminPassword,
-          reject_reason: rejectReason
+          reject_reason: '管理员拒绝'
         })
       });
       const data = await response.json();
       if (data.success) {
         showMessage('success', '积分申请已拒绝');
-        setRejectReason('');
         await loadPending();
         await loadLogs();
       } else {
@@ -271,8 +269,7 @@ const AdminPanel = ({ onBack }) => {
   };
 
   const handleRejectRedemption = async (id) => {
-    if (!rejectReason.trim()) {
-      showMessage('error', '请填写拒绝原因');
+    if (!confirm('确定要拒绝这个兑换申请吗？')) {
       return;
     }
     setIsLoading(true);
@@ -285,13 +282,12 @@ const AdminPanel = ({ onBack }) => {
           id,
           admin_name: adminName,
           admin_password: adminPassword,
-          reject_reason: rejectReason
+          reject_reason: '管理员拒绝'
         })
       });
       const data = await response.json();
       if (data.success) {
         showMessage('success', '兑换申请已拒绝');
-        setRejectReason('');
         await loadPending();
         await loadLogs();
       } else {
