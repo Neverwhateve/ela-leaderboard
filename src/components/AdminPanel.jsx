@@ -655,13 +655,7 @@ const AdminPanel = ({ onBack }) => {
                         ✅ 批准
                       </button>
                       <button
-                        onClick={() => {
-                          const reason = prompt('请输入拒绝原因：');
-                          if (reason) {
-                            setRejectReason(reason);
-                            handleRejectPoints(item.id);
-                          }
-                        }}
+                        onClick={() => handleRejectPoints(item.id)}
                         disabled={isLoading}
                         className="flex-1 px-4 py-3 rounded-lg text-white text-base"
                         style={{ backgroundColor: isLoading ? '#9e9e9e' : '#e74c3c' }}
@@ -706,13 +700,7 @@ const AdminPanel = ({ onBack }) => {
                         ✅ 批准
                       </button>
                       <button
-                        onClick={() => {
-                          const reason = prompt('请输入拒绝原因：');
-                          if (reason) {
-                            setRejectReason(reason);
-                            handleRejectRedemption(item.id);
-                          }
-                        }}
+                        onClick={() => handleRejectRedemption(item.id)}
                         disabled={isLoading}
                         className="flex-1 px-4 py-3 rounded-lg text-white text-base"
                         style={{ backgroundColor: isLoading ? '#9e9e9e' : '#e74c3c' }}
