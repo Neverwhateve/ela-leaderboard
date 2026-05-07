@@ -779,14 +779,24 @@ function App() {
                     } else {
                       points = pointMapping[finalReason] || 0;
                     }
+                    
+                    // 查找实际用户名（支持昵称或用户名）
+                    const searchName = submitName.trim();
+                    const matchedUser = users.find(u => 
+                      u.name.toLowerCase() === searchName.toLowerCase() || 
+                      (u.nickname && u.nickname.toLowerCase() === searchName.toLowerCase())
+                    );
+                    const actualUserName = matchedUser ? matchedUser.name : searchName;
+                    const actualNickname = matchedUser ? (matchedUser.nickname || '') : '';
+                    
                     try {
                       const response = await fetch('/api/admin/apply', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                           type: 'points',
-                          user_name: submitName.trim(),
-                          user_nickname: '',
+                          user_name: actualUserName,
+                          user_nickname: actualNickname,
                           reason: finalReason,
                           points: points
                         })
@@ -1147,6 +1157,16 @@ function App() {
                       return;
                     }
                     setIsRedeeming(true);
+                    
+                    // 查找实际用户名（支持昵称或用户名）
+                    const searchName = redemptionName.trim();
+                    const matchedUser = users.find(u => 
+                      u.name.toLowerCase() === searchName.toLowerCase() || 
+                      (u.nickname && u.nickname.toLowerCase() === searchName.toLowerCase())
+                    );
+                    const actualUserName = matchedUser ? matchedUser.name : searchName;
+                    const actualNickname = matchedUser ? (matchedUser.nickname || '') : '';
+                    
                     try {
                       const pointsCost = redemptionItem.startsWith('50') ? 50 : 100;
                       const response = await fetch('/api/admin/apply', {
@@ -1154,8 +1174,8 @@ function App() {
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                           type: 'redemption',
-                          user_name: redemptionName.trim(),
-                          user_nickname: '',
+                          user_name: actualUserName,
+                          user_nickname: actualNickname,
                           item_name: redemptionItem,
                           points_cost: pointsCost
                         })
