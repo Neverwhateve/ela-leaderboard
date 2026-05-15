@@ -641,7 +641,7 @@ function App() {
               onClick={(e) => e.stopPropagation()}
             >
               <h3 style={{ margin: '0 0 16px 0', fontSize: '18px', fontWeight: 'bold', textAlign: 'center' }}>📝 提交积分</h3>
-              <div style={{ marginBottom: '12px' }}>
+              <div style={{ marginBottom: '12px', position: 'relative' }}>
                 <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#333' }}>我是：</label>
                 <input
                   type="text"
@@ -661,6 +661,54 @@ function App() {
                     color: isSubmitting ? '#999' : '#333',
                   }}
                 />
+                {submitName.trim() && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '100%',
+                    left: 0,
+                    right: 0,
+                    backgroundColor: 'white',
+                    border: '1px solid #ddd',
+                    borderRadius: '8px',
+                    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+                    maxHeight: '200px',
+                    overflowY: 'auto',
+                    zIndex: 1000,
+                  }}>
+                    {users
+                      .filter(user => 
+                        user.name.toLowerCase().includes(submitName.toLowerCase()) ||
+                        (user.nickname && user.nickname.toLowerCase().includes(submitName.toLowerCase()))
+                      )
+                      .slice(0, 10)
+                      .map(user => (
+                        <div
+                          key={user.name}
+                          onClick={() => {
+                            setSubmitName(user.nickname || user.name);
+                            setSubmitMessage('');
+                          }}
+                          style={{
+                            padding: '10px 12px',
+                            cursor: 'pointer',
+                            borderBottom: '1px solid #f0f0f0',
+                            transition: 'background-color 0.2s',
+                          }}
+                          onMouseEnter={(e) => e.target.style.backgroundColor = '#f5f5f5'}
+                          onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
+                        >
+                          <div style={{ fontWeight: '500', color: '#333' }}>
+                            {user.nickname || user.name}
+                          </div>
+                          {user.nickname && (
+                            <div style={{ fontSize: '12px', color: '#999' }}>
+                              用户名: {user.name}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                  </div>
+                )}
               </div>
               <div style={{ marginBottom: '12px' }}>
                 <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#333' }}>分类：</label>
