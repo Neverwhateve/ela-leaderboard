@@ -9,16 +9,20 @@ export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {
       const { data, error } = await supabase
-        .from('config')
-        .select('value')
-        .eq('key', 'point_categories')
+        .from('app_config')
+        .select('config_value')
+        .eq('config_key', 'point_categories')
         .single();
 
-      if (error || !data) {
+      if (error && error.code !== 'PGRST116') {
+        throw error;
+      }
+
+      if (!data) {
         return res.status(200).json({ success: true, categories: getDefaultCategories() });
       }
 
-      return res.status(200).json({ success: true, categories: JSON.parse(data.value) });
+      return res.status(200).json({ success: true, categories: data.config_value });
     } catch (err) {
       console.error('Error getting point categories:', err);
       return res.status(200).json({ success: true, categories: getDefaultCategories() });
@@ -43,15 +47,25 @@ export default async function handler(req, res) {
       }
 
       const { error: upsertError } = await supabase
-        .from('config')
+        .from('app_config')
         .upsert({
-          key: 'point_categories',
-          value: JSON.stringify(categories)
+          config_key: 'point_categories',
+          config_value: categories
+        }, {
+          onConflict: 'config_key'
         });
 
       if (upsertError) {
         throw upsertError;
       }
+
+      await supabase
+        .from('admin_logs')
+        .insert({
+          admin_name: admin_name,
+          action: 'update_point_categories',
+          details: '更新积分分类配置'
+        });
 
       return res.status(200).json({ success: true, message: '积分分类配置已保存' });
     } catch (err) {
