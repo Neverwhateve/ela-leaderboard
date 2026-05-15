@@ -74,6 +74,7 @@ function App() {
   const [pointMapping, setPointMapping] = useState(defaultPointMapping);
   const [redemptionMessage, setRedemptionMessage] = useState('');
   const [isRedeeming, setIsRedeeming] = useState(false);
+  const [showSearchSuggestions, setShowSearchSuggestions] = useState(false);
 
   const handlePlayDanmaku = () => {
     setPlayDanmaku(false);
@@ -626,6 +627,7 @@ function App() {
                 setSubmitMessage('');
                 setSelectedReason('');
                 setCustomReason('');
+                setShowSearchSuggestions(false);
               }
             }}
           >
@@ -646,7 +648,12 @@ function App() {
                 <input
                   type="text"
                   value={submitName}
-                  onChange={(e) => setSubmitName(e.target.value)}
+                  onChange={(e) => {
+                    setSubmitName(e.target.value);
+                    setShowSearchSuggestions(true);
+                  }}
+                  onFocus={() => setShowSearchSuggestions(true)}
+                  onBlur={() => setTimeout(() => setShowSearchSuggestions(false), 200)}
                   placeholder="请输入你的名字或昵称"
                   disabled={isSubmitting}
                   style={{
@@ -661,7 +668,7 @@ function App() {
                     color: isSubmitting ? '#999' : '#333',
                   }}
                 />
-                {submitName.trim() && (
+                {submitName.trim() && showSearchSuggestions && (
                   <div style={{
                     position: 'absolute',
                     top: '100%',
@@ -678,13 +685,13 @@ function App() {
                     {users
                       .filter(user => 
                         user.name.toLowerCase().includes(submitName.toLowerCase()) ||
-                        (user.nickname && user.nickname.toLowerCase().includes(submitName.toLowerCase()))
+                        (user.displayName && user.displayName.toLowerCase().includes(submitName.toLowerCase()))
                       )
                       .slice(0, 10)
                       .map(user => {
-                        const matchedOnNickname = user.nickname && user.nickname.toLowerCase().includes(submitName.toLowerCase());
+                        const matchedOnDisplayName = user.displayName && user.displayName.toLowerCase().includes(submitName.toLowerCase());
                         const matchedOnName = user.name.toLowerCase().includes(submitName.toLowerCase());
-                        const displayName = matchedOnNickname ? user.nickname : user.name;
+                        const displayName = matchedOnDisplayName ? user.displayName : user.name;
                         
                         return (
                           <div
@@ -692,6 +699,7 @@ function App() {
                             onClick={() => {
                               setSubmitName(displayName);
                               setSubmitMessage('');
+                              setShowSearchSuggestions(false);
                             }}
                             style={{
                               padding: '10px 12px',
@@ -843,6 +851,7 @@ function App() {
                       setCustomReason('');
                       setCustomPoints('');
                       setSelectedCategory('');
+                      setShowSearchSuggestions(false);
                     }
                   }}
                   disabled={isSubmitting}
@@ -922,6 +931,7 @@ function App() {
                           setSelectedReason('');
                           setCustomReason('');
                           setCustomPoints('');
+                          setShowSearchSuggestions(false);
                         }, 2000);
                       }
                     } catch (error) {
