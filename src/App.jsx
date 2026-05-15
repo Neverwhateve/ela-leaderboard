@@ -681,32 +681,33 @@ function App() {
                         (user.nickname && user.nickname.toLowerCase().includes(submitName.toLowerCase()))
                       )
                       .slice(0, 10)
-                      .map(user => (
-                        <div
-                          key={user.name}
-                          onClick={() => {
-                            setSubmitName(user.nickname || user.name);
-                            setSubmitMessage('');
-                          }}
-                          style={{
-                            padding: '10px 12px',
-                            cursor: 'pointer',
-                            borderBottom: '1px solid #f0f0f0',
-                            transition: 'background-color 0.2s',
-                          }}
-                          onMouseEnter={(e) => e.target.style.backgroundColor = '#f5f5f5'}
-                          onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
-                        >
-                          <div style={{ fontWeight: '500', color: '#333' }}>
-                            {user.nickname || user.name}
-                          </div>
-                          {user.nickname && (
-                            <div style={{ fontSize: '12px', color: '#999' }}>
-                              用户名: {user.name}
+                      .map(user => {
+                        const matchedOnNickname = user.nickname && user.nickname.toLowerCase().includes(submitName.toLowerCase());
+                        const matchedOnName = user.name.toLowerCase().includes(submitName.toLowerCase());
+                        const displayName = matchedOnNickname ? user.nickname : user.name;
+                        
+                        return (
+                          <div
+                            key={user.name}
+                            onClick={() => {
+                              setSubmitName(displayName);
+                              setSubmitMessage('');
+                            }}
+                            style={{
+                              padding: '10px 12px',
+                              cursor: 'pointer',
+                              borderBottom: '1px solid #f0f0f0',
+                              transition: 'background-color 0.2s',
+                            }}
+                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f5f5f5'}
+                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                          >
+                            <div style={{ fontWeight: '500', color: '#333' }}>
+                              {displayName}
                             </div>
-                          )}
-                        </div>
-                      ))}
+                          </div>
+                        );
+                      })}
                   </div>
                 )}
               </div>
