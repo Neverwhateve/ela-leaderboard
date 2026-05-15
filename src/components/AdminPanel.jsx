@@ -31,6 +31,9 @@ const AdminPanel = ({ onBack }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
   const [announcementConfig, setAnnouncementConfig] = useState({ title: '📢 公告栏', sections: [] });
+  const [pointCategories, setPointCategories] = useState([
+    { id: "regular", name: "常规积分", icon: "📚", items: [{ name: "专业解答 & 资讯分享", points: 5 }] }
+  ]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editingTransaction, setEditingTransaction] = useState(null);
   const [editAmount, setEditAmount] = useState('');
@@ -141,6 +144,43 @@ const AdminPanel = ({ onBack }) => {
     }
   };
 
+  const loadPointCategories = async () => {
+    try {
+      const response = await fetch('/api/admin/point-categories');
+      const data = await response.json();
+      if (data.success && data.categories) {
+        setPointCategories(data.categories);
+      }
+    } catch (err) {
+      console.error('Failed to load point categories:', err);
+    }
+  };
+
+  const savePointCategories = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/admin/point-categories', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          admin_name: adminName,
+          admin_password: adminPassword,
+          categories: pointCategories
+        })
+      });
+      const data = await response.json();
+      if (data.success) {
+        showMessage('success', '积分分类配置已保存');
+      } else {
+        showMessage('error', data.error || '保存失败');
+      }
+    } catch (err) {
+      showMessage('error', '保存失败');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const saveAnnouncementConfig = async () => {
     setIsLoading(true);
     try {
@@ -175,6 +215,9 @@ const AdminPanel = ({ onBack }) => {
     }
     if (isLoggedIn && activeTab === 'logs') {
       loadLogs();
+    }
+    if (isLoggedIn && activeTab === 'pointCategories') {
+      loadPointCategories();
     }
   }, [isLoggedIn, activeTab]);
 
@@ -603,11 +646,11 @@ const AdminPanel = ({ onBack }) => {
         )}
 
         <div className="grid grid-cols-2 gap-3 mb-8">
-          {['pending', 'users', 'logs', 'announcement'].map((tab) => (
+          {['pending', 'users', 'logs', 'announcement', 'pointCategories'].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className="px-4 py-3 text-base rounded-lg font-medium transition-colors"
+              className="px-4 py-3 rounded-lg text-base font-medium transition-colors"
               style={{
                 backgroundColor: activeTab === tab ? '#4caf50' : '#e0e0e0',
                 color: activeTab === tab ? 'white' : '#333'
@@ -617,6 +660,7 @@ const AdminPanel = ({ onBack }) => {
               {tab === 'users' && '👥 用户管理'}
               {tab === 'logs' && '📊 操作日志'}
               {tab === 'announcement' && '📢 公告管理'}
+              {tab === 'pointCategories' && '🎯 积分分类'}
             </button>
           ))}
         </div>
@@ -1068,6 +1112,132 @@ const AdminPanel = ({ onBack }) => {
               <button
                 onClick={() => {
                   const jsonStr = JSON.stringify(announcementConfig, null, 2);
+                  prompt('复制以下JSON配置:', jsonStr);
+                }}
+                className="flex-1 px-6 py-3 rounded-lg bg-gray-200 text-gray-700 text-base"
+              >
+                导出JSON
+              </button>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'pointCategories' && (
+          <div>
+            <h3 className="text-xl sm:text-2xl font-bold mb-6" style={{ color: '#725d42' }}>🎯 积分分类管理</h3>
+            
+            <div className="space-y-6">
+              {pointCategories.map((category, categoryIndex) => (
+                <div key={category.id} className="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
+                    <div className="flex-1 flex items-center gap-3">
+                      <span className="text-2xl">{category.icon}</span>
+                      <input
+                        type="text"
+                        value={category.name}
+                        onChange={(e) => {
+                          const newCategories = [...pointCategories];
+                          newCategories[categoryIndex].name = e.target.value;
+                          setPointCategories(newCategories);
+                        }}
+                        className="flex-1 px-4 py-2 text-base border border-gray-300 rounded focus:outline-none focus:border-primary"
+                      />
+                    </div>
+                    <button
+                      onClick={() => {
+                        const newCategories = pointCategories.filter((_, i) => i !== categoryIndex);
+                        setPointCategories(newCategories);
+                      }}
+                      className="px-4 py-2 bg-red-500 text-white rounded text-base"
+                    >
+                      删除分类
+                    </button>
+                  </div>
+
+                  <div className="space-y-3">
+                    {category.items.map((item, itemIndex) => (
+                      <div key={itemIndex} className="flex flex-col sm:flex-row gap-3">
+                        <input
+                          type="text"
+                          value={item.name}
+                          onChange={(e) => {
+                            const newCategories = [...pointCategories];
+                            newCategories[categoryIndex].items[itemIndex].name = e.target.value;
+                            setPointCategories(newCategories);
+                          }}
+                          placeholder="项目名称"
+                          className="flex-1 px-4 py-2 text-base border border-gray-300 rounded focus:outline-none focus:border-primary"
+                        />
+                        <div className="flex items-center gap-2">
+                          <span className="text-gray-500">+</span>
+                          <input
+                            type="number"
+                            value={item.points}
+                            onChange={(e) => {
+                              const newCategories = [...pointCategories];
+                              newCategories[categoryIndex].items[itemIndex].points = parseInt(e.target.value) || 0;
+                              setPointCategories(newCategories);
+                            }}
+                            min="1"
+                            className="w-24 px-4 py-2 text-base border border-gray-300 rounded focus:outline-none focus:border-primary"
+                          />
+                          <span className="text-gray-500">积分</span>
+                          <button
+                            onClick={() => {
+                              const newCategories = [...pointCategories];
+                              newCategories[categoryIndex].items = newCategories[categoryIndex].items.filter((_, i) => i !== itemIndex);
+                              setPointCategories(newCategories);
+                            }}
+                            className="px-3 py-2 bg-gray-200 rounded text-base"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      const newCategories = [...pointCategories];
+                      newCategories[categoryIndex].items.push({ name: '', points: 5 });
+                      setPointCategories(newCategories);
+                    }}
+                    className="mt-3 px-4 py-2 bg-gray-100 rounded text-base"
+                  >
+                    + 添加项目
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            <button
+              onClick={() => {
+                const newId = `category_${Date.now()}`;
+                setPointCategories([...pointCategories, {
+                  id: newId,
+                  name: '新分类',
+                  icon: '📌',
+                  items: [{ name: '', points: 5 }]
+                }]);
+              }}
+              className="mt-6 px-6 py-3 bg-blue-500 text-white rounded-lg text-base"
+            >
+              + 添加分类
+            </button>
+
+            <div className="flex flex-col sm:flex-row gap-3 mt-6">
+              <button
+                onClick={savePointCategories}
+                disabled={isLoading}
+                className="flex-1 px-6 py-3 rounded-lg text-white font-medium text-base"
+                style={{ backgroundColor: isLoading ? '#9e9e9e' : '#4caf50' }}
+              >
+                {isLoading ? '保存中...' : '保存积分分类'}
+              </button>
+              <button
+                onClick={() => {
+                  const jsonStr = JSON.stringify(pointCategories, null, 2);
                   prompt('复制以下JSON配置:', jsonStr);
                 }}
                 className="flex-1 px-6 py-3 rounded-lg bg-gray-200 text-gray-700 text-base"

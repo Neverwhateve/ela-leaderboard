@@ -51,16 +51,52 @@ export const defaultAnnouncementConfig = {
   ]
 };
 
+// 默认积分分类配置（用于提交积分时的分类选择）
+export const defaultPointCategories = [
+  {
+    id: "regular",
+    name: "常规积分",
+    icon: "📚",
+    items: [
+      { name: "专业解答 & 资讯分享", points: 5 },
+      { name: "Kahoot 优胜", points: 10 },
+      { name: "Peer Tips", points: 15 },
+      { name: "分享知识（DD, huddle, 邮件等）", points: 15 },
+    ]
+  },
+  {
+    id: "event",
+    name: "特殊活动",
+    icon: "🎉",
+    items: [
+      { name: "观看 Town Hall 视频", points: 5 },
+      { name: "藏宝图任务", points: 20 },
+    ]
+  },
+  {
+    id: "bounty",
+    name: "悬赏任务",
+    icon: "💰",
+    items: [
+      { name: "家人共享与儿童账户：整理并分享知识", points: 20 },
+      { name: "Creator Studio 演示与分享", points: 10 },
+    ]
+  }
+];
+
 // 默认积分映射表
 export const defaultPointMapping = {
   "专业解答 & 资讯分享": 5,
   "Kahoot 优胜": 10,
   "Peer Tips": 15,
   "分享知识（ DD,huddle,邮件 等）": 15,
+  "分享知识（DD, huddle, 邮件等）": 15,
   "观看 Town Hall 视频": 5,
   "藏宝图：Forum 硬盘 - 丰富人生学院 里有三份秘籍，修炼有成": 20,
+  "藏宝图任务": 20,
   "家人共享与儿童账户：整理并分享知识": 20,
-  "Creator Studio 演示与分享：每个 app": 10
+  "Creator Studio 演示与分享：每个 app": 10,
+  "Creator Studio 演示与分享": 10
 };
 
 // 根据配置获取积分映射
@@ -95,7 +131,7 @@ export function getPointMappingFromConfig(config) {
     });
   });
 
-  return mapping;
+  return { ...defaultPointMapping, ...mapping };
 }
 
 // 从配置提取加分选项（带积分值）

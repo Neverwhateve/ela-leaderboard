@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Time, Cursor, Modal, Footer, Divider, Button, Typewriter as AnimalTypewriter, Collapse } from 'animal-island-ui';
 import 'animal-island-ui/style';
-import { announcementConfig as defaultAnnouncementConfig, getPointOptions, pointMapping as defaultPointMapping } from './announcementConfig';
+import { announcementConfig as defaultAnnouncementConfig, getPointOptions, pointMapping as defaultPointMapping, defaultPointCategories } from './announcementConfig';
 import LaborDayEvent from './LaborDayEvent';
 import Danmaku from './components/Danmaku';
 import Guestbook from './components/Guestbook';
@@ -59,6 +59,8 @@ function App() {
   const [selectedReason, setSelectedReason] = useState('');
   const [customReason, setCustomReason] = useState('');
   const [customPoints, setCustomPoints] = useState('');
+  const [pointCategories, setPointCategories] = useState(defaultPointCategories);
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [registerEnglishName, setRegisterEnglishName] = useState('');
   const [registerNickname, setRegisterNickname] = useState('');
@@ -122,6 +124,16 @@ function App() {
         }
       })
       .catch(err => console.error('加载公告配置失败:', err));
+
+    // 加载积分分类配置
+    fetch('/api/admin/point-categories')
+      .then(res => res.json())
+      .then(result => {
+        if (result.success && result.categories) {
+          setPointCategories(result.categories);
+        }
+      })
+      .catch(err => console.error('加载积分分类配置失败:', err));
   }, []);
 
   // 计算时间段经验值
@@ -646,10 +658,13 @@ function App() {
                 />
               </div>
               <div style={{ marginBottom: '12px' }}>
-                <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#333' }}>因为：</label>
+                <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#333' }}>分类：</label>
                 <select
-                  value={selectedReason}
-                  onChange={(e) => setSelectedReason(e.target.value)}
+                  value={selectedCategory}
+                  onChange={(e) => {
+                    setSelectedCategory(e.target.value);
+                    setSelectedReason('');
+                  }}
                   disabled={isSubmitting}
                   style={{
                     width: '100%',
@@ -664,13 +679,46 @@ function App() {
                     marginBottom: '8px',
                   }}
                 >
-                  <option value="">请选择加分项目</option>
-                  {getPointOptions().map((option, index) => (
-                    <option key={index} value={option.value}>{option.label}</option>
+                  <option value="">请选择分类</option>
+                  {pointCategories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.icon} {category.name}
+                    </option>
                   ))}
-                  <option value="其他">其他（请在下方填写）</option>
+                  <option value="other">其他（自定义）</option>
                 </select>
-                {selectedReason === '其他' && (
+
+                {selectedCategory && selectedCategory !== 'other' && (
+                  <>
+                    <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#333' }}>项目：</label>
+                    <select
+                      value={selectedReason}
+                      onChange={(e) => setSelectedReason(e.target.value)}
+                      disabled={isSubmitting}
+                      style={{
+                        width: '100%',
+                        padding: '8px 12px',
+                        border: '1px solid #ddd',
+                        borderRadius: '8px',
+                        fontSize: '14px',
+                        outline: 'none',
+                        boxSizing: 'border-box',
+                        backgroundColor: isSubmitting ? '#f5f5f5' : 'white',
+                        color: isSubmitting ? '#999' : '#333',
+                        marginBottom: '8px',
+                      }}
+                    >
+                      <option value="">请选择具体项目</option>
+                      {pointCategories.find(c => c.id === selectedCategory)?.items.map((item, index) => (
+                        <option key={index} value={item.name}>
+                          {item.name} (+{item.points}积分)
+                        </option>
+                      ))}
+                    </select>
+                  </>
+                )}
+
+                {selectedCategory === 'other' && (
                   <>
                     <div style={{ marginBottom: '8px' }}>
                       <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#333' }}>分数：</label>
@@ -740,6 +788,7 @@ function App() {
                       setSelectedReason('');
                       setCustomReason('');
                       setCustomPoints('');
+                      setSelectedCategory('');
                     }
                   }}
                   disabled={isSubmitting}
@@ -758,11 +807,15 @@ function App() {
                 </button>
                 <button
                   onClick={async () => {
-                    if (!submitName.trim() || !selectedReason) {
+                    if (!submitName.trim() || !selectedCategory) {
                       setSubmitMessage('请填写完整信息');
                       return;
                     }
-                    if (selectedReason === '其他') {
+                    if (selectedCategory !== 'other' && !selectedReason) {
+                      setSubmitMessage('请选择具体项目');
+                      return;
+                    }
+                    if (selectedCategory === 'other') {
                       if (!customReason.trim()) {
                         setSubmitMessage('请填写具体原因');
                         return;
@@ -773,12 +826,14 @@ function App() {
                       }
                     }
                     setIsSubmitting(true);
-                    const finalReason = selectedReason === '其他' ? customReason.trim() : selectedReason;
+                    const finalReason = selectedCategory === 'other' ? customReason.trim() : selectedReason;
                     let points;
-                    if (selectedReason === '其他') {
+                    if (selectedCategory === 'other') {
                       points = parseInt(customPoints);
                     } else {
-                      points = pointMapping[finalReason] || 0;
+                      const category = pointCategories.find(c => c.id === selectedCategory);
+                      const item = category?.items.find(i => i.name === selectedReason);
+                      points = item?.points || 0;
                     }
                     
                     // 查找实际用户名（支持昵称或用户名）
