@@ -181,12 +181,17 @@ function App() {
     );
   }
 
+  const handleBackToHome = () => {
+    setCurrentPage('home');
+    window.history.pushState({}, '', window.location.pathname);
+  };
+
   return (
     <Cursor>
       {currentPage === 'laborDay' ? (
         <LaborDayEvent onBack={() => setCurrentPage('home')} />
       ) : currentPage === 'admin' ? (
-        <AdminPanel onBack={() => setCurrentPage('home')} />
+        <AdminPanel onBack={handleBackToHome} />
       ) : (
       <div className="min-h-screen p-4 md:p-8 font-acnh text-text relative">
         <Danmaku records={latestRecords} play={playDanmaku} />
