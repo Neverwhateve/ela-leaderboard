@@ -14,6 +14,13 @@ const AdminPanel = ({ onBack }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [adminName, setAdminName] = useState('');
   const [adminPassword, setAdminPassword] = useState('');
+
+  const handleBack = () => {
+    setIsLoggedIn(false);
+    setAdminName('');
+    setAdminPassword('');
+    onBack();
+  };
   const [activeTab, setActiveTab] = useState('pending');
   const [pendingApprovals, setPendingApprovals] = useState([]);
   const [pendingRedemptions, setPendingRedemptions] = useState([]);
@@ -558,7 +565,7 @@ const AdminPanel = ({ onBack }) => {
         <div className="rounded-acnh p-6 shadow-acnh" style={{ backgroundColor: '#f7f3df' }}>
           <div className="flex items-center mb-6">
             <button
-              onClick={onBack}
+              onClick={handleBack}
               className="px-4 py-2 rounded-lg text-white flex items-center gap-2 text-base"
               style={{ backgroundColor: '#725d42' }}
             >
@@ -620,7 +627,7 @@ const AdminPanel = ({ onBack }) => {
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
           <div className="flex items-center gap-4">
             <button
-              onClick={onBack}
+              onClick={handleBack}
               className="px-4 py-2 rounded-lg text-white flex items-center gap-2 text-base"
               style={{ backgroundColor: '#725d42' }}
             >
@@ -631,7 +638,7 @@ const AdminPanel = ({ onBack }) => {
             </h2>
           </div>
           <button
-            onClick={() => setIsLoggedIn(false)}
+            onClick={handleBack}
             className="px-4 py-2 rounded-lg text-white text-base"
             style={{ backgroundColor: '#e74c3c' }}
           >
