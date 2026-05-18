@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Time, Cursor, Modal, Footer, Divider, Button, Typewriter as AnimalTypewriter, Collapse } from 'animal-island-ui';
-import 'animal-island-ui/style';
+import { Time, Cursor, Modal, Footer, Divider, Button, Typewriter as AnimalTypewriter, Collapse, Loading } from 'animal-island-ui';
 import { announcementConfig as defaultAnnouncementConfig, getPointOptions, pointMapping as defaultPointMapping, defaultPointCategories } from './announcementConfig';
 import LaborDayEvent from './LaborDayEvent';
 import Danmaku from './components/Danmaku';
@@ -75,6 +74,7 @@ function App() {
   const [redemptionMessage, setRedemptionMessage] = useState('');
   const [isRedeeming, setIsRedeeming] = useState(false);
   const [showSearchSuggestions, setShowSearchSuggestions] = useState(false);
+  const [showRedeemSearchSuggestions, setShowRedeemSearchSuggestions] = useState(false);
 
   const handlePlayDanmaku = () => {
     setPlayDanmaku(false);
@@ -176,8 +176,8 @@ function App() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-bg">
-        <div className="text-2xl font-semibold text-primary animate-bounce">加载中...</div>
+      <div className="h-screen bg-bg relative">
+        <Loading active={true} style={{ position: 'absolute', inset: 0, height: '100%' }} />
       </div>
     );
   }
@@ -249,12 +249,6 @@ function App() {
               }}>{announcementConfig.title}</h3>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <button
-                  onClick={() => setShowRedemptionModal(true)}
-                  className="px-4 py-3 bg-warning text-white rounded-acnh hover:bg-warningHover transition-colors font-medium shadow-acnh"
-                >
-                  🎁 兑换
-                </button>
-                <button
                   onClick={() => setShowRegisterModal(true)}
                   className="px-4 py-3 bg-primary text-white rounded-acnh hover:bg-primaryHover transition-colors font-medium shadow-acnh"
                 >
@@ -265,6 +259,12 @@ function App() {
                   className="px-4 py-3 bg-primary text-white rounded-acnh hover:bg-primaryHover transition-colors font-medium shadow-acnh"
                 >
                   📝 提交积分
+                </button>
+                <button
+                  onClick={() => setShowRedemptionModal(true)}
+                  className="px-4 py-3 bg-warning text-white rounded-acnh hover:bg-warningHover transition-colors font-medium shadow-acnh"
+                >
+                  🎁 兑换
                 </button>
               </div>
             </div>
@@ -1175,6 +1175,7 @@ function App() {
                 setRedemptionName('');
                 setRedemptionItem('');
                 setRedemptionMessage('');
+                setShowRedeemSearchSuggestions(false);
               }
             }}
           >
@@ -1190,13 +1191,18 @@ function App() {
               onClick={(e) => e.stopPropagation()}
             >
               <h3 style={{ margin: '0 0 16px 0', fontSize: '18px', fontWeight: 'bold', textAlign: 'center' }}>🎁 积分兑换</h3>
-              <div style={{ marginBottom: '12px' }}>
+              <div style={{ marginBottom: '12px', position: 'relative' }}>
                 <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#333' }}>我是：</label>
                 <input
                   type="text"
                   value={redemptionName}
-                  onChange={(e) => setRedemptionName(e.target.value)}
-                  placeholder="请输入你的名字"
+                  onChange={(e) => {
+                    setRedemptionName(e.target.value);
+                    setShowRedeemSearchSuggestions(true);
+                  }}
+                  onFocus={() => setShowRedeemSearchSuggestions(true)}
+                  onBlur={() => setTimeout(() => setShowRedeemSearchSuggestions(false), 200)}
+                  placeholder="请输入你的名字或昵称"
                   disabled={isRedeeming}
                   style={{
                     width: '100%',
@@ -1210,6 +1216,56 @@ function App() {
                     color: isRedeeming ? '#999' : '#333',
                   }}
                 />
+                {redemptionName.trim() && showRedeemSearchSuggestions && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '100%',
+                    left: 0,
+                    right: 0,
+                    backgroundColor: 'white',
+                    border: '1px solid #ddd',
+                    borderRadius: '8px',
+                    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+                    maxHeight: '200px',
+                    overflowY: 'auto',
+                    zIndex: 1000,
+                  }}>
+                    {users
+                      .filter(user => 
+                        user.name.toLowerCase().includes(redemptionName.toLowerCase()) ||
+                        (user.displayName && user.displayName.toLowerCase().includes(redemptionName.toLowerCase()))
+                      )
+                      .slice(0, 10)
+                      .map(user => {
+                        const matchedOnDisplayName = user.displayName && user.displayName.toLowerCase().includes(redemptionName.toLowerCase());
+                        const matchedOnName = user.name.toLowerCase().includes(redemptionName.toLowerCase());
+                        const displayName = matchedOnDisplayName ? user.displayName : user.name;
+                        
+                        return (
+                          <div
+                            key={user.name}
+                            onClick={() => {
+                              setRedemptionName(displayName);
+                              setRedemptionMessage('');
+                              setShowRedeemSearchSuggestions(false);
+                            }}
+                            style={{
+                              padding: '10px 12px',
+                              cursor: 'pointer',
+                              borderBottom: '1px solid #f0f0f0',
+                              transition: 'background-color 0.2s',
+                            }}
+                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f5f5f5'}
+                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                          >
+                            <div style={{ fontWeight: '500', color: '#333' }}>
+                              {displayName}
+                            </div>
+                          </div>
+                        );
+                      })}
+                  </div>
+                )}
               </div>
               <div style={{ marginBottom: '12px' }}>
                 <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#333' }}>兑换物品：</label>
@@ -1255,6 +1311,7 @@ function App() {
                       setRedemptionName('');
                       setRedemptionItem('');
                       setRedemptionMessage('');
+                      setShowRedeemSearchSuggestions(false);
                     }
                   }}
                   disabled={isRedeeming}
