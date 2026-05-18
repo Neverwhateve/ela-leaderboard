@@ -183,19 +183,16 @@ function App() {
   };
 
   return (
-    <>
-      <Loading 
-        active={loading} 
-        style={{ position: 'fixed', inset: 0, zIndex: 9999 }} 
-      />
-      <Cursor>
-        {currentPage === 'laborDay' ? (
-          <LaborDayEvent onBack={() => setCurrentPage('home')} />
-        ) : currentPage === 'admin' ? (
-          <AdminPanel onBack={handleBackToHome} />
-        ) : (
-      <div className="min-h-screen p-4 md:p-8 font-acnh text-text relative">
-        <Danmaku records={latestRecords} play={playDanmaku} />
+    <div style={{ position: 'relative', height: '100vh' }}>
+      <div style={{ position: 'absolute', inset: 0 }}>
+        <Cursor>
+          {currentPage === 'laborDay' ? (
+            <LaborDayEvent onBack={() => setCurrentPage('home')} />
+          ) : currentPage === 'admin' ? (
+            <AdminPanel onBack={handleBackToHome} />
+          ) : (
+        <div className="min-h-screen p-4 md:p-8 font-acnh text-text relative">
+          <Danmaku records={latestRecords} play={playDanmaku} />
         {/* 头部 */}
         <div className="text-center mb-8">
           <h1
@@ -1631,7 +1628,9 @@ function App() {
       </div>
       )}
     </Cursor>
-    </>
+      </div>
+      <Loading active={loading} style={{ position: 'absolute', inset: 0, height: '100%' }} />
+    </div>
   );
 }
 
