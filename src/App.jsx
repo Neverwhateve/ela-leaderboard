@@ -77,6 +77,7 @@ function App() {
   const [showRedeemSearchSuggestions, setShowRedeemSearchSuggestions] = useState(false);
   const [showProjectModal, setShowProjectModal] = useState(false);
   const [showRedemptionItemModal, setShowRedemptionItemModal] = useState(false);
+  const [showCategoryModal, setShowCategoryModal] = useState(false);
 
   const handlePlayDanmaku = () => {
     setPlayDanmaku(false);
@@ -893,28 +894,14 @@ function App() {
               </div>
               <div style={{ marginBottom: '16px' }}>
                 <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, marginBottom: '6px', color: '#725d42', fontFamily: "Nunito, sans-serif" }}>分类：</label>
-                <Select
-                  value={selectedCategory}
-                  onChange={(value) => {
-                    setSelectedCategory(value);
-                    setSelectedReason('');
-                  }}
-                  options={[
-                    { key: '', label: '请选择分类' },
-                    ...pointCategories.map((category) => ({
-                      key: category.id,
-                      label: `${category.icon} ${category.name}`,
-                    })),
-                    { key: 'other', label: '其他（自定义）' },
-                  ]}
-                  placeholder="请选择分类"
+                <Button
+                  type={selectedCategory ? 'primary' : 'default'}
+                  block
                   disabled={isSubmitting}
-                  dropdownMatchSelectWidth={false}
-                  dropdownStyle={{ maxWidth: '100%', maxHeight: '150px', overflowY: 'auto' }}
-                  style={{ width: '100%' }}
-                  getPopupContainer={() => window.modalContainerRef}
-                  dropdownPlacement="bottomStart"
-                />
+                  onClick={() => setShowCategoryModal(true)}
+                >
+                  {selectedCategory ? pointCategories.find(c => c.id === selectedCategory)?.name || '其他（自定义）' : '请选择分类'}
+                </Button>
 
                 {selectedCategory && selectedCategory !== 'other' && (
                   <div style={{ marginBottom: '16px' }}>
@@ -1141,6 +1128,89 @@ function App() {
                 <Button
                   type="default"
                   onClick={() => setShowProjectModal(false)}
+                >
+                  取消
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 分类选择模态框 - 全屏居中 */}
+        {showCategoryModal && (
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0,0,0,0.6)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 9999999,
+              pointerEvents: 'auto',
+              padding: '20px',
+            }}
+            onClick={() => setShowCategoryModal(false)}
+          >
+            <div
+              className="rounded-acnh shadow-acnh"
+              style={{
+                backgroundColor: '#f7f3df',
+                padding: '24px',
+                width: '100%',
+                maxWidth: '360px',
+                maxHeight: '70vh',
+                overflowY: 'auto',
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3 style={{ margin: '0 0 20px 0', fontSize: '18px', fontWeight: 700, textAlign: 'center', fontFamily: "Nunito, 'Zen Maru Gothic', sans-serif", color: '#725d42' }}>📊 选择分类</h3>
+              
+              <div className="space-y-2">
+                {pointCategories.map((category) => (
+                  <div
+                    key={category.id}
+                    onClick={() => {
+                      setSelectedCategory(category.id);
+                      setSelectedReason('');
+                      setShowCategoryModal(false);
+                    }}
+                    className={`w-full px-4 py-3 rounded-acnh text-left cursor-pointer transition-all ${
+                      selectedCategory === category.id 
+                        ? 'bg-primary text-white' 
+                        : 'bg-white border-2 border-border hover:border-primary'
+                    }`}
+                    style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
+                  >
+                    <span className="text-lg">{category.icon}</span>
+                    <span className="flex-1 text-sm truncate">{category.name}</span>
+                  </div>
+                ))}
+                <div
+                  onClick={() => {
+                    setSelectedCategory('other');
+                    setSelectedReason('');
+                    setShowCategoryModal(false);
+                  }}
+                  className={`w-full px-4 py-3 rounded-acnh text-left cursor-pointer transition-all ${
+                    selectedCategory === 'other' 
+                      ? 'bg-primary text-white' 
+                      : 'bg-white border-2 border-border hover:border-primary'
+                  }`}
+                  style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
+                >
+                  <span className="text-lg">📝</span>
+                  <span className="flex-1 text-sm truncate">其他（自定义）</span>
+                </div>
+              </div>
+
+              <div style={{ marginTop: '20px', textAlign: 'center' }}>
+                <Button
+                  type="default"
+                  onClick={() => setShowCategoryModal(false)}
                 >
                   取消
                 </Button>
