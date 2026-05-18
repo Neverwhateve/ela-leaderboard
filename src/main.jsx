@@ -1,6 +1,7 @@
 import '@fontsource/nunito';
 import '@fontsource/zen-maru-gothic';
 import '@fontsource/m-plus-rounded-1c';
+import 'animal-island-ui/style';
 
 import React from 'react'
 import ReactDOM from 'react-dom/client'
