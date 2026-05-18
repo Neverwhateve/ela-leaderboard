@@ -180,7 +180,7 @@ function App() {
   if (loading) {
     return (
       <div className="h-screen bg-bg relative">
-        <Loading active={true} style={{ position: 'absolute', inset: 0, height: '100%' }} />
+        <Loading active={true} unmountDelay={300} style={{ position: 'absolute', inset: 0, height: '100%' }} />
       </div>
     );
   }
@@ -1185,7 +1185,7 @@ function App() {
                     }`}
                     style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
                   >
-                    <span className="text-lg">{category.icon}</span>
+                    <Icon name={`icon-${category.icon}`} size={20} />
                     <span className="flex-1 text-sm truncate">{category.name}</span>
                   </div>
                 ))}
@@ -1202,7 +1202,7 @@ function App() {
                   }`}
                   style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
                 >
-                  <span className="text-lg">📝</span>
+                  <Icon name="icon-variant" size={20} />
                   <span className="flex-1 text-sm truncate">其他（自定义）</span>
                 </div>
               </div>
