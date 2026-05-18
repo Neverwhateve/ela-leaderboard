@@ -179,7 +179,10 @@ function App() {
 
   if (loading) {
     return (
-      <div className="h-screen bg-bg relative">
+      <div className="h-screen bg-bg relative overflow-hidden">
+        <div style={{ position: 'absolute', inset: 0 }}>
+          {/* 底层内容 - Loading 关闭时会从这里透明圆形扩散露出 */}
+        </div>
         <Loading active={true} unmountDelay={300} style={{ position: 'absolute', inset: 0, height: '100%' }} />
       </div>
     );
