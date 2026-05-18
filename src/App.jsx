@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Time, Cursor, Modal, Footer, Divider, Button, Typewriter as AnimalTypewriter, Collapse, Loading } from 'animal-island-ui';
+import { Time, Cursor, Modal, Footer, Divider, Button, Typewriter as AnimalTypewriter, Collapse, Loading, Icon, Tabs, Select } from 'animal-island-ui';
 import { announcementConfig as defaultAnnouncementConfig, getPointOptions, pointMapping as defaultPointMapping, defaultPointCategories } from './announcementConfig';
 import LaborDayEvent from './LaborDayEvent';
 import Danmaku from './components/Danmaku';
@@ -75,6 +75,8 @@ function App() {
   const [isRedeeming, setIsRedeeming] = useState(false);
   const [showSearchSuggestions, setShowSearchSuggestions] = useState(false);
   const [showRedeemSearchSuggestions, setShowRedeemSearchSuggestions] = useState(false);
+  const [showProjectModal, setShowProjectModal] = useState(false);
+  const [showRedemptionItemModal, setShowRedemptionItemModal] = useState(false);
 
   const handlePlayDanmaku = () => {
     setPlayDanmaku(false);
@@ -250,21 +252,21 @@ function App() {
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <button
                   onClick={() => setShowRegisterModal(true)}
-                  className="px-4 py-3 bg-primary text-white rounded-acnh hover:bg-primaryHover transition-colors font-medium shadow-acnh"
+                  className="px-4 py-3 bg-primary text-white rounded-acnh hover:bg-primaryHover transition-colors font-medium shadow-acnh flex items-center gap-2"
                 >
-                  📋 注册
+                  <Icon name="icon-miles" size={20} /> 注册
                 </button>
                 <button
                   onClick={() => setShowSubmitModal(true)}
-                  className="px-4 py-3 bg-primary text-white rounded-acnh hover:bg-primaryHover transition-colors font-medium shadow-acnh"
+                  className="px-4 py-3 bg-primary text-white rounded-acnh hover:bg-primaryHover transition-colors font-medium shadow-acnh flex items-center gap-2"
                 >
-                  📝 提交积分
+                  <Icon name="icon-design" size={20} /> 提交积分
                 </button>
                 <button
                   onClick={() => setShowRedemptionModal(true)}
-                  className="px-4 py-3 bg-warning text-white rounded-acnh hover:bg-warningHover transition-colors font-medium shadow-acnh"
+                  className="px-4 py-3 bg-warning text-white rounded-acnh hover:bg-warningHover transition-colors font-medium shadow-acnh flex items-center gap-2"
                 >
-                  🎁 兑换
+                  <Icon name="icon-shopping" size={20} /> 兑换
                 </button>
               </div>
             </div>
@@ -464,126 +466,320 @@ function App() {
                 🎉
               </span>
             </div>
-            <div className="flex gap-2">
-              <Button 
-                type={leaderboardType === 'total' ? 'primary' : 'default'} 
-                onClick={() => setLeaderboardType('total')}
-              >
-                总榜单
-              </Button>
-              <Button 
-                type={leaderboardType === 'month' ? 'primary' : 'default'} 
-                onClick={() => setLeaderboardType('month')}
-              >
-                月榜单
-              </Button>
-              <Button 
-                type={leaderboardType === 'week' ? 'primary' : 'default'} 
-                onClick={() => setLeaderboardType('week')}
-              >
-                周榜单
-              </Button>
-            </div>
           </div>
           
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[500px] border-collapse">
-              <thead>
-                <tr className="bg-primaryBg">
-                  <th className={`py-3 px-4 text-left font-semibold border-b-2 w-16 ${leaderboardType === 'total' ? 'text-primary border-primary' : leaderboardType === 'month' ? 'text-success border-success' : 'text-warning border-warning'}`}>排名</th>
-                  <th className={`py-3 px-4 text-left font-semibold border-b-2 ${leaderboardType === 'total' ? 'text-primary border-primary' : leaderboardType === 'month' ? 'text-success border-success' : 'text-warning border-warning'}`}>玩家名</th>
-                  <th className={`py-3 px-4 text-left font-semibold border-b-2 w-32 ${leaderboardType === 'total' ? 'text-primary border-primary' : leaderboardType === 'month' ? 'text-success border-success' : 'text-warning border-warning'}`}>
-                    {leaderboardType === 'total' ? '总经验值' : leaderboardType === 'month' ? '月经验值' : '周经验值'}
-                  </th>
-                  <th className={`py-3 px-4 text-left font-semibold border-b-2 ${leaderboardType === 'total' ? 'text-primary border-primary' : leaderboardType === 'month' ? 'text-success border-success' : 'text-warning border-warning'}`}>称号</th>
-                </tr>
-              </thead>
-              <tbody>
-                {(() => {
-                  const sortedUsers = [...users].sort((a, b) => calculatePeriodXP(b, leaderboardType) - calculatePeriodXP(a, leaderboardType));
-                  const usersWithRank = [];
-                  sortedUsers.forEach((user, index) => {
-                    let rank = index + 1;
-                    if (index > 0) {
-                      const previousScore = calculatePeriodXP(sortedUsers[index - 1], leaderboardType);
-                      const currentScore = calculatePeriodXP(user, leaderboardType);
-                      if (previousScore === currentScore) {
-                        rank = usersWithRank[index - 1].rank;
-                      }
-                    }
-                    usersWithRank.push({ ...user, rank });
-                  });
-                  return usersWithRank.slice(0, 20);
-                })().map((user, index) => (
-                    <React.Fragment key={user.name}>
-                      <tr 
-                        className={`hover:bg-primaryBg transition-colors cursor-pointer ${user.rank <= 3 ? 'font-bold' : ''}`}
-                        onClick={() => toggleUserExpand(user.name)}
-                      >
-                        <td className="py-3 px-4 font-medium w-16">
-                          <div className="flex items-center h-8">
-                            {user.rank === 1 && <span className="text-warning text-2xl">🥇</span>}
-                            {user.rank === 2 && <span className="text-textSecondary text-2xl">🥈</span>}
-                            {user.rank === 3 && <span className="text-acnhBrown text-2xl">🥉</span>}
-                            {user.rank > 3 && <span className="w-8"></span>}
-                          </div>
-                        </td>
-                        <td className="py-3 px-4 font-medium">
-                          <span className="flex items-center gap-2">
-                            {user.displayName}
-                            {expandedUsers[user.name] && <span className="text-xs">🌟</span>}
-                          </span>
-                        </td>
-                        <td className="py-3 px-4 font-bold text-primary w-32">{calculatePeriodXP(user, leaderboardType)}</td>
-                        <td className="py-3 px-4">
-                          <span className="text-textSecondary font-medium">
-                            {user.title || '无称号'}
-                          </span>
-                        </td>
-                      </tr>
-                      {expandedUsers[user.name] && (
-                        <tr key={`${user.name}-expanded`}>
-                          <td colSpan="4" className="p-2 bg-primaryBg">
-                            <div className="rounded-acnh overflow-hidden" style={{ backgroundColor: '#f7f3df' }}>
-                              <div 
-                                className="p-3 cursor-pointer flex justify-between items-center"
+          <Tabs
+            activeKey={leaderboardType}
+            onChange={(key) => setLeaderboardType(key)}
+            items={[
+              {
+                key: 'total',
+                label: '总榜单',
+                children: (
+                  <div className="overflow-x-auto">
+                    <table className="w-full min-w-[500px] border-collapse">
+                      <thead>
+                        <tr className="bg-primaryBg">
+                          <th className="py-3 px-4 text-left font-semibold border-b-2 w-16 text-primary border-primary">排名</th>
+                          <th className="py-3 px-4 text-left font-semibold border-b-2 text-primary border-primary">玩家名</th>
+                          <th className="py-3 px-4 text-left font-semibold border-b-2 w-32 text-primary border-primary">总经验值</th>
+                          <th className="py-3 px-4 text-left font-semibold border-b-2 text-primary border-primary">称号</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {(() => {
+                          const sortedUsers = [...users].sort((a, b) => calculatePeriodXP(b, 'total') - calculatePeriodXP(a, 'total'));
+                          const usersWithRank = [];
+                          sortedUsers.forEach((user, index) => {
+                            let rank = index + 1;
+                            if (index > 0) {
+                              const previousScore = calculatePeriodXP(sortedUsers[index - 1], 'total');
+                              const currentScore = calculatePeriodXP(user, 'total');
+                              if (previousScore === currentScore) {
+                                rank = usersWithRank[index - 1].rank;
+                              }
+                            }
+                            usersWithRank.push({ ...user, rank });
+                          });
+                          return usersWithRank.slice(0, 20);
+                        })().map((user, index) => (
+                            <React.Fragment key={user.name}>
+                              <tr 
+                                className={`hover:bg-primaryBg transition-colors cursor-pointer ${user.rank <= 3 ? 'font-bold' : ''}`}
                                 onClick={() => toggleUserExpand(user.name)}
                               >
-                                <span className="font-semibold text-primary">{user.displayName}</span>
-                                <span>🌟</span>
-                              </div>
-                              <div className="px-3 pb-3">
-                                <div className="border-t-2 border-primaryBg pt-2">
-                                  <h4 className="text-sm font-semibold text-primary mb-2">
-                                    最近经验值记录
-                                  </h4>
-                                  {user.xpHistory && user.xpHistory.length > 0 ? (
-                                    <div className="space-y-1">
-                                      {user.xpHistory
-                                        .slice(0, 5)
-                                        .map((record, idx) => (
-                                          <div key={idx} className="flex justify-between text-sm">
-                                            <span className="text-textSecondary">{formatDate(record.date)} - {record.reason}</span>
-                                            <span className={record.amount >= 0 ? 'text-primary font-semibold' : 'text-red-500 font-semibold'}>
-                                              {record.amount >= 0 ? '+' : ''}{record.amount}
-                                            </span>
-                                          </div>
-                                        ))}
+                                <td className="py-3 px-4 font-medium w-16">
+                                  <div className="flex items-center h-8">
+                                    {user.rank === 1 && <span className="text-warning text-2xl">🥇</span>}
+                                    {user.rank === 2 && <span className="text-textSecondary text-2xl">🥈</span>}
+                                    {user.rank === 3 && <span className="text-acnhBrown text-2xl">🥉</span>}
+                                    {user.rank > 3 && <span className="w-8"></span>}
+                                  </div>
+                                </td>
+                                <td className="py-3 px-4 font-medium">
+                                  <span className="flex items-center gap-2">
+                                    {user.displayName}
+                                    {expandedUsers[user.name] && <span className="text-xs">🌟</span>}
+                                  </span>
+                                </td>
+                                <td className="py-3 px-4 font-bold text-primary w-32">{calculatePeriodXP(user, 'total')}</td>
+                                <td className="py-3 px-4">
+                                  <span className="text-textSecondary font-medium">
+                                    {user.title || '无称号'}
+                                  </span>
+                                </td>
+                              </tr>
+                              {expandedUsers[user.name] && (
+                                <tr key={`${user.name}-expanded`}>
+                                  <td colSpan="4" className="p-2 bg-primaryBg">
+                                    <div className="rounded-acnh overflow-hidden" style={{ backgroundColor: '#f7f3df' }}>
+                                      <div 
+                                        className="p-3 cursor-pointer flex justify-between items-center"
+                                        onClick={() => toggleUserExpand(user.name)}
+                                      >
+                                        <span className="font-semibold text-primary">{user.displayName}</span>
+                                        <span>🌟</span>
+                                      </div>
+                                      <div className="px-3 pb-3">
+                                        <div className="border-t-2 border-primaryBg pt-2">
+                                          <h4 className="text-sm font-semibold text-primary mb-2">
+                                            最近经验值记录
+                                          </h4>
+                                          {user.xpHistory && user.xpHistory.length > 0 ? (
+                                            <div className="space-y-1">
+                                              {user.xpHistory
+                                                .slice(0, 5)
+                                                .map((record, idx) => (
+                                                  <div key={idx} className="flex justify-between text-sm">
+                                                    <span className="text-textSecondary">{formatDate(record.date)} - {record.reason}</span>
+                                                    <span className={record.amount >= 0 ? 'text-primary font-semibold' : 'text-red-500 font-semibold'}>
+                                                      {record.amount >= 0 ? '+' : ''}{record.amount}
+                                                    </span>
+                                                  </div>
+                                                ))}
+                                            </div>
+                                          ) : (
+                                            <p className="text-sm text-textSecondary">暂无记录</p>
+                                          )}
+                                        </div>
+                                      </div>
                                     </div>
-                                  ) : (
-                                    <p className="text-sm text-textSecondary">暂无记录</p>
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                          </td>
+                                  </td>
+                                </tr>
+                              )}
+                            </React.Fragment>
+                          ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ),
+              },
+              {
+                key: 'month',
+                label: '月榜单',
+                children: (
+                  <div className="overflow-x-auto">
+                    <table className="w-full min-w-[500px] border-collapse">
+                      <thead>
+                        <tr className="bg-primaryBg">
+                          <th className="py-3 px-4 text-left font-semibold border-b-2 w-16 text-success border-success">排名</th>
+                          <th className="py-3 px-4 text-left font-semibold border-b-2 text-success border-success">玩家名</th>
+                          <th className="py-3 px-4 text-left font-semibold border-b-2 w-32 text-success border-success">月经验值</th>
+                          <th className="py-3 px-4 text-left font-semibold border-b-2 text-success border-success">称号</th>
                         </tr>
-                      )}
-                    </React.Fragment>
-                  ))}
-              </tbody>
-            </table>
-          </div>
+                      </thead>
+                      <tbody>
+                        {(() => {
+                          const sortedUsers = [...users].sort((a, b) => calculatePeriodXP(b, 'month') - calculatePeriodXP(a, 'month'));
+                          const usersWithRank = [];
+                          sortedUsers.forEach((user, index) => {
+                            let rank = index + 1;
+                            if (index > 0) {
+                              const previousScore = calculatePeriodXP(sortedUsers[index - 1], 'month');
+                              const currentScore = calculatePeriodXP(user, 'month');
+                              if (previousScore === currentScore) {
+                                rank = usersWithRank[index - 1].rank;
+                              }
+                            }
+                            usersWithRank.push({ ...user, rank });
+                          });
+                          return usersWithRank.slice(0, 20);
+                        })().map((user, index) => (
+                            <React.Fragment key={user.name}>
+                              <tr 
+                                className={`hover:bg-primaryBg transition-colors cursor-pointer ${user.rank <= 3 ? 'font-bold' : ''}`}
+                                onClick={() => toggleUserExpand(user.name)}
+                              >
+                                <td className="py-3 px-4 font-medium w-16">
+                                  <div className="flex items-center h-8">
+                                    {user.rank === 1 && <span className="text-warning text-2xl">🥇</span>}
+                                    {user.rank === 2 && <span className="text-textSecondary text-2xl">🥈</span>}
+                                    {user.rank === 3 && <span className="text-acnhBrown text-2xl">🥉</span>}
+                                    {user.rank > 3 && <span className="w-8"></span>}
+                                  </div>
+                                </td>
+                                <td className="py-3 px-4 font-medium">
+                                  <span className="flex items-center gap-2">
+                                    {user.displayName}
+                                    {expandedUsers[user.name] && <span className="text-xs">🌟</span>}
+                                  </span>
+                                </td>
+                                <td className="py-3 px-4 font-bold text-success w-32">{calculatePeriodXP(user, 'month')}</td>
+                                <td className="py-3 px-4">
+                                  <span className="text-textSecondary font-medium">
+                                    {user.title || '无称号'}
+                                  </span>
+                                </td>
+                              </tr>
+                              {expandedUsers[user.name] && (
+                                <tr key={`${user.name}-expanded`}>
+                                  <td colSpan="4" className="p-2 bg-primaryBg">
+                                    <div className="rounded-acnh overflow-hidden" style={{ backgroundColor: '#f7f3df' }}>
+                                      <div 
+                                        className="p-3 cursor-pointer flex justify-between items-center"
+                                        onClick={() => toggleUserExpand(user.name)}
+                                      >
+                                        <span className="font-semibold text-primary">{user.displayName}</span>
+                                        <span>🌟</span>
+                                      </div>
+                                      <div className="px-3 pb-3">
+                                        <div className="border-t-2 border-primaryBg pt-2">
+                                          <h4 className="text-sm font-semibold text-primary mb-2">
+                                            最近经验值记录
+                                          </h4>
+                                          {user.xpHistory && user.xpHistory.length > 0 ? (
+                                            <div className="space-y-1">
+                                              {user.xpHistory
+                                                .slice(0, 5)
+                                                .map((record, idx) => (
+                                                  <div key={idx} className="flex justify-between text-sm">
+                                                    <span className="text-textSecondary">{formatDate(record.date)} - {record.reason}</span>
+                                                    <span className={record.amount >= 0 ? 'text-success font-semibold' : 'text-red-500 font-semibold'}>
+                                                      {record.amount >= 0 ? '+' : ''}{record.amount}
+                                                    </span>
+                                                  </div>
+                                                ))}
+                                            </div>
+                                          ) : (
+                                            <p className="text-sm text-textSecondary">暂无记录</p>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                              )}
+                            </React.Fragment>
+                          ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ),
+              },
+              {
+                key: 'week',
+                label: '周榜单',
+                children: (
+                  <div className="overflow-x-auto">
+                    <table className="w-full min-w-[500px] border-collapse">
+                      <thead>
+                        <tr className="bg-primaryBg">
+                          <th className="py-3 px-4 text-left font-semibold border-b-2 w-16 text-warning border-warning">排名</th>
+                          <th className="py-3 px-4 text-left font-semibold border-b-2 text-warning border-warning">玩家名</th>
+                          <th className="py-3 px-4 text-left font-semibold border-b-2 w-32 text-warning border-warning">周经验值</th>
+                          <th className="py-3 px-4 text-left font-semibold border-b-2 text-warning border-warning">称号</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {(() => {
+                          const sortedUsers = [...users].sort((a, b) => calculatePeriodXP(b, 'week') - calculatePeriodXP(a, 'week'));
+                          const usersWithRank = [];
+                          sortedUsers.forEach((user, index) => {
+                            let rank = index + 1;
+                            if (index > 0) {
+                              const previousScore = calculatePeriodXP(sortedUsers[index - 1], 'week');
+                              const currentScore = calculatePeriodXP(user, 'week');
+                              if (previousScore === currentScore) {
+                                rank = usersWithRank[index - 1].rank;
+                              }
+                            }
+                            usersWithRank.push({ ...user, rank });
+                          });
+                          return usersWithRank.slice(0, 20);
+                        })().map((user, index) => (
+                            <React.Fragment key={user.name}>
+                              <tr 
+                                className={`hover:bg-primaryBg transition-colors cursor-pointer ${user.rank <= 3 ? 'font-bold' : ''}`}
+                                onClick={() => toggleUserExpand(user.name)}
+                              >
+                                <td className="py-3 px-4 font-medium w-16">
+                                  <div className="flex items-center h-8">
+                                    {user.rank === 1 && <span className="text-warning text-2xl">🥇</span>}
+                                    {user.rank === 2 && <span className="text-textSecondary text-2xl">🥈</span>}
+                                    {user.rank === 3 && <span className="text-acnhBrown text-2xl">🥉</span>}
+                                    {user.rank > 3 && <span className="w-8"></span>}
+                                  </div>
+                                </td>
+                                <td className="py-3 px-4 font-medium">
+                                  <span className="flex items-center gap-2">
+                                    {user.displayName}
+                                    {expandedUsers[user.name] && <span className="text-xs">🌟</span>}
+                                  </span>
+                                </td>
+                                <td className="py-3 px-4 font-bold text-warning w-32">{calculatePeriodXP(user, 'week')}</td>
+                                <td className="py-3 px-4">
+                                  <span className="text-textSecondary font-medium">
+                                    {user.title || '无称号'}
+                                  </span>
+                                </td>
+                              </tr>
+                              {expandedUsers[user.name] && (
+                                <tr key={`${user.name}-expanded`}>
+                                  <td colSpan="4" className="p-2 bg-primaryBg">
+                                    <div className="rounded-acnh overflow-hidden" style={{ backgroundColor: '#f7f3df' }}>
+                                      <div 
+                                        className="p-3 cursor-pointer flex justify-between items-center"
+                                        onClick={() => toggleUserExpand(user.name)}
+                                      >
+                                        <span className="font-semibold text-primary">{user.displayName}</span>
+                                        <span>🌟</span>
+                                      </div>
+                                      <div className="px-3 pb-3">
+                                        <div className="border-t-2 border-primaryBg pt-2">
+                                          <h4 className="text-sm font-semibold text-primary mb-2">
+                                            最近经验值记录
+                                          </h4>
+                                          {user.xpHistory && user.xpHistory.length > 0 ? (
+                                            <div className="space-y-1">
+                                              {user.xpHistory
+                                                .slice(0, 5)
+                                                .map((record, idx) => (
+                                                  <div key={idx} className="flex justify-between text-sm">
+                                                    <span className="text-textSecondary">{formatDate(record.date)} - {record.reason}</span>
+                                                    <span className={record.amount >= 0 ? 'text-warning font-semibold' : 'text-red-500 font-semibold'}>
+                                                      {record.amount >= 0 ? '+' : ''}{record.amount}
+                                                    </span>
+                                                  </div>
+                                                ))}
+                                            </div>
+                                          ) : (
+                                            <p className="text-sm text-textSecondary">暂无记录</p>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                              )}
+                            </React.Fragment>
+                          ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ),
+              },
+            ]}
+          />
         </div>
 
         {/* 留言板 */}
@@ -618,6 +814,7 @@ function App() {
               zIndex: 999999,
               pointerEvents: 'auto',
               overflow: 'hidden',
+              backdropFilter: 'blur(4px)',
             }}
             onClick={() => {
               if (!isSubmitting) {
@@ -632,19 +829,20 @@ function App() {
             }}
           >
             <div 
+              ref={(el) => { window.modalContainerRef = el; }}
+              className="rounded-acnh shadow-acnh"
               style={{
-                backgroundColor: 'white',
-                borderRadius: '12px',
-                padding: '24px',
+                backgroundColor: '#f7f3df',
+                padding: '28px',
                 width: '90%',
-                maxWidth: '400px',
-                boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+                maxWidth: '420px',
+                position: 'relative',
               }}
               onClick={(e) => e.stopPropagation()}
             >
-              <h3 style={{ margin: '0 0 16px 0', fontSize: '18px', fontWeight: 'bold', textAlign: 'center' }}>📝 提交积分</h3>
-              <div style={{ marginBottom: '12px', position: 'relative' }}>
-                <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#333' }}>我是：</label>
+              <h3 style={{ margin: '0 0 20px 0', fontSize: '20px', fontWeight: 700, textAlign: 'center', fontFamily: "Nunito, 'Zen Maru Gothic', sans-serif", color: '#725d42' }}>📝 提交积分</h3>
+              <div style={{ marginBottom: '16px', position: 'relative' }}>
+                <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, marginBottom: '6px', color: '#725d42', fontFamily: "Nunito, sans-serif" }}>我是：</label>
                 <input
                   type="text"
                   value={submitName}
@@ -656,32 +854,15 @@ function App() {
                   onBlur={() => setTimeout(() => setShowSearchSuggestions(false), 200)}
                   placeholder="请输入你的名字或昵称"
                   disabled={isSubmitting}
+                  className="w-full px-4 py-3 rounded-acnh border-2 border-border focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white"
                   style={{
-                    width: '100%',
-                    padding: '8px 12px',
-                    border: '1px solid #ddd',
-                    borderRadius: '8px',
                     fontSize: '14px',
-                    outline: 'none',
-                    boxSizing: 'border-box',
                     backgroundColor: isSubmitting ? '#f5f5f5' : 'white',
                     color: isSubmitting ? '#999' : '#333',
                   }}
                 />
                 {submitName.trim() && showSearchSuggestions && (
-                  <div style={{
-                    position: 'absolute',
-                    top: '100%',
-                    left: 0,
-                    right: 0,
-                    backgroundColor: 'white',
-                    border: '1px solid #ddd',
-                    borderRadius: '8px',
-                    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-                    maxHeight: '200px',
-                    overflowY: 'auto',
-                    zIndex: 1000,
-                  }}>
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-acnh shadow-acnh overflow-hidden z-50" style={{ maxHeight: '200px', overflowY: 'auto' }}>
                     {users
                       .filter(user => 
                         user.name.toLowerCase().includes(submitName.toLowerCase()) ||
@@ -701,83 +882,52 @@ function App() {
                               setSubmitMessage('');
                               setShowSearchSuggestions(false);
                             }}
-                            style={{
-                              padding: '10px 12px',
-                              cursor: 'pointer',
-                              borderBottom: '1px solid #f0f0f0',
-                              transition: 'background-color 0.2s',
-                            }}
-                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f5f5f5'}
-                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                            className="px-4 py-3 cursor-pointer hover:bg-primaryBg transition-colors border-b border-border last:border-b-0"
                           >
-                            <div style={{ fontWeight: '500', color: '#333' }}>
-                              {displayName}
-                            </div>
+                            <span className="font-medium text-primary">{displayName}</span>
                           </div>
                         );
                       })}
                   </div>
                 )}
               </div>
-              <div style={{ marginBottom: '12px' }}>
-                <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#333' }}>分类：</label>
-                <select
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, marginBottom: '6px', color: '#725d42', fontFamily: "Nunito, sans-serif" }}>分类：</label>
+                <Select
                   value={selectedCategory}
-                  onChange={(e) => {
-                    setSelectedCategory(e.target.value);
+                  onChange={(value) => {
+                    setSelectedCategory(value);
                     setSelectedReason('');
                   }}
+                  options={[
+                    { key: '', label: '请选择分类' },
+                    ...pointCategories.map((category) => ({
+                      key: category.id,
+                      label: `${category.icon} ${category.name}`,
+                    })),
+                    { key: 'other', label: '其他（自定义）' },
+                  ]}
+                  placeholder="请选择分类"
                   disabled={isSubmitting}
-                  style={{
-                    width: '100%',
-                    padding: '8px 12px',
-                    border: '1px solid #ddd',
-                    borderRadius: '8px',
-                    fontSize: '14px',
-                    outline: 'none',
-                    boxSizing: 'border-box',
-                    backgroundColor: isSubmitting ? '#f5f5f5' : 'white',
-                    color: isSubmitting ? '#999' : '#333',
-                    marginBottom: '8px',
-                  }}
-                >
-                  <option value="">请选择分类</option>
-                  {pointCategories.map((category) => (
-                    <option key={category.id} value={category.id}>
-                      {category.icon} {category.name}
-                    </option>
-                  ))}
-                  <option value="other">其他（自定义）</option>
-                </select>
+                  dropdownMatchSelectWidth={false}
+                  dropdownStyle={{ maxWidth: '100%', maxHeight: '150px', overflowY: 'auto' }}
+                  style={{ width: '100%' }}
+                  getPopupContainer={() => window.modalContainerRef}
+                  dropdownPlacement="bottomStart"
+                />
 
                 {selectedCategory && selectedCategory !== 'other' && (
-                  <>
-                    <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#333' }}>项目：</label>
-                    <select
-                      value={selectedReason}
-                      onChange={(e) => setSelectedReason(e.target.value)}
+                  <div style={{ marginBottom: '16px' }}>
+                    <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, marginBottom: '6px', color: '#725d42', fontFamily: "Nunito, sans-serif" }}>项目：</label>
+                    <Button
+                      type={selectedReason ? 'primary' : 'default'}
+                      block
                       disabled={isSubmitting}
-                      style={{
-                        width: '100%',
-                        padding: '8px 12px',
-                        border: '1px solid #ddd',
-                        borderRadius: '8px',
-                        fontSize: '14px',
-                        outline: 'none',
-                        boxSizing: 'border-box',
-                        backgroundColor: isSubmitting ? '#f5f5f5' : 'white',
-                        color: isSubmitting ? '#999' : '#333',
-                        marginBottom: '8px',
-                      }}
+                      onClick={() => setShowProjectModal(true)}
                     >
-                      <option value="">请选择具体项目</option>
-                      {pointCategories.find(c => c.id === selectedCategory)?.items.map((item, index) => (
-                        <option key={index} value={item.name}>
-                          {item.name} (+{item.points}积分)
-                        </option>
-                      ))}
-                    </select>
-                  </>
+                      {selectedReason ? selectedReason : '请选择具体项目'}
+                    </Button>
+                  </div>
                 )}
 
                 {selectedCategory === 'other' && (
@@ -791,56 +941,47 @@ function App() {
                         placeholder="请输入分数"
                         min="1"
                         disabled={isSubmitting}
+                        className="w-full px-4 py-3 rounded-acnh border-2 border-border focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white"
                         style={{
-                          width: '100%',
-                          padding: '8px 12px',
-                          border: '1px solid #ddd',
-                          borderRadius: '8px',
                           fontSize: '14px',
-                          outline: 'none',
-                          boxSizing: 'border-box',
                           backgroundColor: isSubmitting ? '#f5f5f5' : 'white',
                           color: isSubmitting ? '#999' : '#333',
                         }}
                       />
                     </div>
-                    <textarea
-                      value={customReason}
-                      onChange={(e) => setCustomReason(e.target.value)}
-                      placeholder="请描述你获得积分的原因..."
-                      rows={2}
-                      disabled={isSubmitting}
-                      style={{
-                        width: '100%',
-                        padding: '8px 12px',
-                        border: '1px solid #ddd',
-                        borderRadius: '8px',
-                        fontSize: '14px',
-                        outline: 'none',
-                        resize: 'none',
-                        boxSizing: 'border-box',
-                        backgroundColor: isSubmitting ? '#f5f5f5' : 'white',
-                        color: isSubmitting ? '#999' : '#333',
-                      }}
-                    />
+                    <div style={{ marginBottom: '16px' }}>
+                      <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, marginBottom: '6px', color: '#725d42', fontFamily: "Nunito, sans-serif" }}>原因：</label>
+                      <textarea
+                        value={customReason}
+                        onChange={(e) => setCustomReason(e.target.value)}
+                        placeholder="请描述你获得积分的原因..."
+                        rows={2}
+                        disabled={isSubmitting}
+                        className="w-full px-4 py-3 rounded-acnh border-2 border-border focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white resize-none"
+                        style={{
+                          fontSize: '14px',
+                          backgroundColor: isSubmitting ? '#f5f5f5' : 'white',
+                          color: isSubmitting ? '#999' : '#333',
+                        }}
+                      />
+                    </div>
                   </>
                 )}
               </div>
               {submitMessage && (
-                <div style={{
-                  padding: '10px',
-                  borderRadius: '8px',
-                  fontSize: '14px',
-                  marginBottom: '12px',
-                  backgroundColor: submitMessage.includes('成功') || submitMessage.includes('已提交') ? '#d4edda' : '#f8d7da',
-                  color: submitMessage.includes('成功') || submitMessage.includes('已提交') ? '#155724' : '#721c24',
-                  border: `1px solid ${submitMessage.includes('成功') || submitMessage.includes('已提交') ? '#c3e6cb' : '#f5c6cb'}`,
-                }}>
+                <div className={`rounded-acnh p-3 mb-4 text-sm ${
+                  submitMessage.includes('成功') || submitMessage.includes('已提交') 
+                    ? 'bg-success/10 text-success border border-success/30' 
+                    : 'bg-error/10 text-error border border-error/30'
+                }`}>
                   {submitMessage}
                 </div>
               )}
-              <div style={{ display: 'flex', gap: '12px' }}>
-                <button
+              <div className="flex gap-3">
+                <Button 
+                  type="default" 
+                  block 
+                  disabled={isSubmitting}
                   onClick={() => {
                     if (!isSubmitting) {
                       setShowSubmitModal(false);
@@ -854,21 +995,13 @@ function App() {
                       setShowSearchSuggestions(false);
                     }
                   }}
-                  disabled={isSubmitting}
-                  style={{
-                    flex: 1,
-                    padding: '10px',
-                    border: '1px solid #ddd',
-                    borderRadius: '8px',
-                    backgroundColor: isSubmitting ? '#e0e0e0' : '#f5f5f5',
-                    cursor: isSubmitting ? 'not-allowed' : 'pointer',
-                    fontSize: '14px',
-                    color: isSubmitting ? '#9e9e9e' : '#333',
-                  }}
                 >
                   取消
-                </button>
-                <button
+                </Button>
+                <Button 
+                  type="primary" 
+                  block 
+                  loading={isSubmitting}
                   onClick={async () => {
                     if (!submitName.trim() || !selectedCategory) {
                       setSubmitMessage('请填写完整信息');
@@ -899,7 +1032,6 @@ function App() {
                       points = item?.points || 0;
                     }
                     
-                    // 查找实际用户名（支持昵称或用户名）
                     const searchName = submitName.trim();
                     const matchedUser = users.find(u => 
                       u.name.toLowerCase() === searchName.toLowerCase() || 
@@ -931,6 +1063,7 @@ function App() {
                           setSelectedReason('');
                           setCustomReason('');
                           setCustomPoints('');
+                          setSelectedCategory('');
                           setShowSearchSuggestions(false);
                         }, 2000);
                       }
@@ -940,20 +1073,77 @@ function App() {
                       setIsSubmitting(false);
                     }
                   }}
-                  disabled={isSubmitting}
-                  style={{
-                    flex: 1,
-                    padding: '10px',
-                    border: 'none',
-                    borderRadius: '8px',
-                    backgroundColor: isSubmitting ? '#9E9E9E' : '#4CAF50',
-                    color: 'white',
-                    cursor: isSubmitting ? 'not-allowed' : 'pointer',
-                    fontSize: '14px',
-                  }}
                 >
                   {isSubmitting ? '提交中...' : '提交'}
-                </button>
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 项目选择模态框 - 全屏居中 */}
+        {showProjectModal && (
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0,0,0,0.6)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 9999999,
+              pointerEvents: 'auto',
+              padding: '20px',
+            }}
+            onClick={() => setShowProjectModal(false)}
+          >
+            <div
+              className="rounded-acnh shadow-acnh"
+              style={{
+                backgroundColor: '#f7f3df',
+                padding: '24px',
+                width: '100%',
+                maxWidth: '360px',
+                maxHeight: '70vh',
+                overflowY: 'auto',
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3 style={{ margin: '0 0 20px 0', fontSize: '18px', fontWeight: 700, textAlign: 'center', fontFamily: "Nunito, 'Zen Maru Gothic', sans-serif", color: '#725d42' }}>🎯 选择项目</h3>
+              
+              <div className="space-y-2">
+                {(pointCategories.find(c => c.id === selectedCategory)?.items || []).map((item) => (
+                  <div
+                    key={item.name}
+                    onClick={() => {
+                      setSelectedReason(item.name);
+                      setShowProjectModal(false);
+                    }}
+                    className={`w-full px-4 py-3 rounded-acnh text-left cursor-pointer transition-all ${
+                      selectedReason === item.name 
+                        ? 'bg-primary text-white' 
+                        : 'bg-white border-2 border-border hover:border-primary'
+                    }`}
+                    style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}
+                  >
+                    <span className="flex-1 text-sm truncate">{item.name}</span>
+                    <span className={`text-sm font-medium whitespace-nowrap ${
+                      selectedReason === item.name ? 'text-white' : 'text-primary'
+                    }`}>+{item.points}积分</span>
+                  </div>
+                ))}
+              </div>
+
+              <div style={{ marginTop: '20px', textAlign: 'center' }}>
+                <Button
+                  type="default"
+                  onClick={() => setShowProjectModal(false)}
+                >
+                  取消
+                </Button>
               </div>
             </div>
           </div>
@@ -975,6 +1165,7 @@ function App() {
               zIndex: 999999,
               pointerEvents: 'auto',
               overflow: 'hidden',
+              backdropFilter: 'blur(4px)',
             }}
             onClick={() => {
               if (!isRegistering) {
@@ -987,94 +1178,76 @@ function App() {
             }}
           >
             <div
+              className="rounded-acnh shadow-acnh"
               style={{
-                backgroundColor: 'white',
-                borderRadius: '12px',
-                padding: '24px',
+                backgroundColor: '#f7f3df',
+                padding: '28px',
                 width: '90%',
-                maxWidth: '400px',
-                boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+                maxWidth: '420px',
               }}
               onClick={(e) => e.stopPropagation()}
             >
-              <h3 style={{ margin: '0 0 16px 0', fontSize: '18px', fontWeight: 'bold', textAlign: 'center' }}>📋 注册</h3>
-              <div style={{ marginBottom: '12px' }}>
-                <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#333' }}>我是谁（英文名）：</label>
+              <h3 style={{ margin: '0 0 20px 0', fontSize: '20px', fontWeight: 700, textAlign: 'center', fontFamily: "Nunito, 'Zen Maru Gothic', sans-serif", color: '#725d42' }}>📋 注册</h3>
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, marginBottom: '6px', color: '#725d42', fontFamily: "Nunito, sans-serif" }}>我是谁（英文名）：</label>
                 <input
                   type="text"
                   value={registerEnglishName}
                   onChange={(e) => setRegisterEnglishName(e.target.value)}
                   placeholder="请输入你的英文名"
                   disabled={isRegistering}
+                  className="w-full px-4 py-3 rounded-acnh border-2 border-border focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white"
                   style={{
-                    width: '100%',
-                    padding: '8px 12px',
-                    border: '1px solid #ddd',
-                    borderRadius: '8px',
                     fontSize: '14px',
-                    outline: 'none',
-                    boxSizing: 'border-box',
                     backgroundColor: isRegistering ? '#f5f5f5' : 'white',
                     color: isRegistering ? '#999' : '#333',
                   }}
                 />
               </div>
-              <div style={{ marginBottom: '12px' }}>
-                <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#333' }}>昵称是什么：</label>
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, marginBottom: '6px', color: '#725d42', fontFamily: "Nunito, sans-serif" }}>昵称是什么：</label>
                 <input
                   type="text"
                   value={registerNickname}
                   onChange={(e) => setRegisterNickname(e.target.value)}
                   placeholder="请输入你的昵称"
                   disabled={isRegistering}
+                  className="w-full px-4 py-3 rounded-acnh border-2 border-border focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white"
                   style={{
-                    width: '100%',
-                    padding: '8px 12px',
-                    border: '1px solid #ddd',
-                    borderRadius: '8px',
                     fontSize: '14px',
-                    outline: 'none',
-                    boxSizing: 'border-box',
                     backgroundColor: isRegistering ? '#f5f5f5' : 'white',
                     color: isRegistering ? '#999' : '#333',
                   }}
                 />
               </div>
-              <div style={{ marginBottom: '12px' }}>
-                <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#333' }}>推荐人是谁（选填）：</label>
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, marginBottom: '6px', color: '#725d42', fontFamily: "Nunito, sans-serif" }}>推荐人是谁（选填）：</label>
                 <input
                   type="text"
                   value={registerReferrer}
                   onChange={(e) => setRegisterReferrer(e.target.value)}
                   placeholder="请输入推荐人的名字（可选）"
                   disabled={isRegistering}
+                  className="w-full px-4 py-3 rounded-acnh border-2 border-border focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white"
                   style={{
-                    width: '100%',
-                    padding: '8px 12px',
-                    border: '1px solid #ddd',
-                    borderRadius: '8px',
                     fontSize: '14px',
-                    outline: 'none',
-                    boxSizing: 'border-box',
                     backgroundColor: isRegistering ? '#f5f5f5' : 'white',
                     color: isRegistering ? '#999' : '#333',
                   }}
                 />
               </div>
               {registerMessage && (
-                <div style={{
-                  padding: '10px',
-                  borderRadius: '8px',
-                  fontSize: '14px',
-                  marginBottom: '12px',
-                  backgroundColor: registerMessage.includes('成功') ? '#d4edda' : '#f8d7da',
-                  color: registerMessage.includes('成功') ? '#155724' : '#721c24',
-                }}>
+                <div className={`rounded-acnh p-3 mb-4 text-sm ${
+                  registerMessage.includes('成功') ? 'bg-success/10 text-success border border-success/30' : 'bg-error/10 text-error border border-error/30'
+                }`}>
                   {registerMessage}
                 </div>
               )}
-              <div style={{ display: 'flex', gap: '12px' }}>
-                <button
+              <div className="flex gap-3">
+                <Button 
+                  type="default" 
+                  block 
+                  disabled={isRegistering}
                   onClick={() => {
                     if (!isRegistering) {
                       setShowRegisterModal(false);
@@ -1084,21 +1257,13 @@ function App() {
                       setRegisterMessage('');
                     }
                   }}
-                  disabled={isRegistering}
-                  style={{
-                    flex: 1,
-                    padding: '10px',
-                    border: '1px solid #ddd',
-                    borderRadius: '8px',
-                    backgroundColor: isRegistering ? '#e0e0e0' : '#f5f5f5',
-                    cursor: isRegistering ? 'not-allowed' : 'pointer',
-                    fontSize: '14px',
-                    color: isRegistering ? '#9e9e9e' : '#333',
-                  }}
                 >
                   取消
-                </button>
-                <button
+                </Button>
+                <Button 
+                  type="primary" 
+                  block 
+                  loading={isRegistering}
                   onClick={async () => {
                     if (!registerEnglishName.trim() || !registerNickname.trim()) {
                       setRegisterMessage('请填写完整信息');
@@ -1133,20 +1298,9 @@ function App() {
                       setIsRegistering(false);
                     }
                   }}
-                  disabled={isRegistering}
-                  style={{
-                    flex: 1,
-                    padding: '10px',
-                    border: 'none',
-                    borderRadius: '8px',
-                    backgroundColor: isRegistering ? '#9E9E9E' : '#FF9800',
-                    color: 'white',
-                    cursor: isRegistering ? 'not-allowed' : 'pointer',
-                    fontSize: '14px',
-                  }}
                 >
                   {isRegistering ? '注册中...' : '注册'}
-                </button>
+                </Button>
               </div>
             </div>
           </div>
@@ -1168,6 +1322,7 @@ function App() {
               zIndex: 999999,
               pointerEvents: 'auto',
               overflow: 'hidden',
+              backdropFilter: 'blur(4px)',
             }}
             onClick={() => {
               if (!isRedeeming) {
@@ -1180,19 +1335,20 @@ function App() {
             }}
           >
             <div
+              ref={(el) => { window.modalContainerRef = el; }}
+              className="rounded-acnh shadow-acnh"
               style={{
-                backgroundColor: 'white',
-                borderRadius: '12px',
-                padding: '24px',
+                backgroundColor: '#f7f3df',
+                padding: '28px',
                 width: '90%',
-                maxWidth: '400px',
-                boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+                maxWidth: '420px',
+                position: 'relative',
               }}
               onClick={(e) => e.stopPropagation()}
             >
-              <h3 style={{ margin: '0 0 16px 0', fontSize: '18px', fontWeight: 'bold', textAlign: 'center' }}>🎁 积分兑换</h3>
-              <div style={{ marginBottom: '12px', position: 'relative' }}>
-                <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#333' }}>我是：</label>
+              <h3 style={{ margin: '0 0 20px 0', fontSize: '20px', fontWeight: 700, textAlign: 'center', fontFamily: "Nunito, 'Zen Maru Gothic', sans-serif", color: '#725d42' }}>🎁 积分兑换</h3>
+              <div style={{ marginBottom: '16px', position: 'relative' }}>
+                <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, marginBottom: '6px', color: '#725d42', fontFamily: "Nunito, sans-serif" }}>我是：</label>
                 <input
                   type="text"
                   value={redemptionName}
@@ -1204,32 +1360,15 @@ function App() {
                   onBlur={() => setTimeout(() => setShowRedeemSearchSuggestions(false), 200)}
                   placeholder="请输入你的名字或昵称"
                   disabled={isRedeeming}
+                  className="w-full px-4 py-3 rounded-acnh border-2 border-border focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white"
                   style={{
-                    width: '100%',
-                    padding: '8px 12px',
-                    border: '1px solid #ddd',
-                    borderRadius: '8px',
                     fontSize: '14px',
-                    outline: 'none',
-                    boxSizing: 'border-box',
                     backgroundColor: isRedeeming ? '#f5f5f5' : 'white',
                     color: isRedeeming ? '#999' : '#333',
                   }}
                 />
                 {redemptionName.trim() && showRedeemSearchSuggestions && (
-                  <div style={{
-                    position: 'absolute',
-                    top: '100%',
-                    left: 0,
-                    right: 0,
-                    backgroundColor: 'white',
-                    border: '1px solid #ddd',
-                    borderRadius: '8px',
-                    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-                    maxHeight: '200px',
-                    overflowY: 'auto',
-                    zIndex: 1000,
-                  }}>
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-acnh shadow-acnh overflow-hidden z-50" style={{ maxHeight: '200px', overflowY: 'auto' }}>
                     {users
                       .filter(user => 
                         user.name.toLowerCase().includes(redemptionName.toLowerCase()) ||
@@ -1249,62 +1388,40 @@ function App() {
                               setRedemptionMessage('');
                               setShowRedeemSearchSuggestions(false);
                             }}
-                            style={{
-                              padding: '10px 12px',
-                              cursor: 'pointer',
-                              borderBottom: '1px solid #f0f0f0',
-                              transition: 'background-color 0.2s',
-                            }}
-                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f5f5f5'}
-                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                            className="px-4 py-3 cursor-pointer hover:bg-primaryBg transition-colors border-b border-border last:border-b-0"
                           >
-                            <div style={{ fontWeight: '500', color: '#333' }}>
-                              {displayName}
-                            </div>
+                            <span className="font-medium text-primary">{displayName}</span>
                           </div>
                         );
                       })}
                   </div>
                 )}
               </div>
-              <div style={{ marginBottom: '12px' }}>
-                <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#333' }}>兑换物品：</label>
-                <select
-                  value={redemptionItem}
-                  onChange={(e) => setRedemptionItem(e.target.value)}
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, marginBottom: '6px', color: '#725d42', fontFamily: "Nunito, sans-serif" }}>兑换物品：</label>
+                <Button
+                  type={redemptionItem ? 'primary' : 'default'}
+                  block
                   disabled={isRedeeming}
-                  style={{
-                    width: '100%',
-                    padding: '8px 12px',
-                    border: '1px solid #ddd',
-                    borderRadius: '8px',
-                    fontSize: '14px',
-                    outline: 'none',
-                    boxSizing: 'border-box',
-                    backgroundColor: isRedeeming ? '#f5f5f5' : 'white',
-                    color: isRedeeming ? '#999' : '#333',
-                  }}
+                  onClick={() => setShowRedemptionItemModal(true)}
                 >
-                  <option value="">请选择兑换物品</option>
-                  <option value="50积分兑换礼物">50积分 - 兑换礼物</option>
-                  <option value="100积分兑换礼物">100积分 - 兑换礼物</option>
-                </select>
+                  {redemptionItem ? redemptionItem.replace('兑换礼物', '').replace('积分', '积分 - ') : '请选择兑换物品'}
+                </Button>
               </div>
               {redemptionMessage && (
-                <div style={{
-                  padding: '10px',
-                  borderRadius: '8px',
-                  fontSize: '14px',
-                  marginBottom: '12px',
-                  backgroundColor: redemptionMessage.includes('成功') || redemptionMessage.includes('已提交') ? '#d4edda' : '#f8d7da',
-                  color: redemptionMessage.includes('成功') || redemptionMessage.includes('已提交') ? '#155724' : '#721c24',
-                  border: `1px solid ${redemptionMessage.includes('成功') || redemptionMessage.includes('已提交') ? '#c3e6cb' : '#f5c6cb'}`,
-                }}>
+                <div className={`rounded-acnh p-3 mb-4 text-sm ${
+                  redemptionMessage.includes('成功') || redemptionMessage.includes('已提交') 
+                    ? 'bg-success/10 text-success border border-success/30' 
+                    : 'bg-error/10 text-error border border-error/30'
+                }`}>
                   {redemptionMessage}
                 </div>
               )}
-              <div style={{ display: 'flex', gap: '12px' }}>
-                <button
+              <div className="flex gap-3">
+                <Button 
+                  type="default" 
+                  block 
+                  disabled={isRedeeming}
                   onClick={() => {
                     if (!isRedeeming) {
                       setShowRedemptionModal(false);
@@ -1314,21 +1431,13 @@ function App() {
                       setShowRedeemSearchSuggestions(false);
                     }
                   }}
-                  disabled={isRedeeming}
-                  style={{
-                    flex: 1,
-                    padding: '10px',
-                    border: '1px solid #ddd',
-                    borderRadius: '8px',
-                    backgroundColor: isRedeeming ? '#e0e0e0' : '#f5f5f5',
-                    cursor: isRedeeming ? 'not-allowed' : 'pointer',
-                    fontSize: '14px',
-                    color: isRedeeming ? '#9e9e9e' : '#333',
-                  }}
                 >
                   取消
-                </button>
-                <button
+                </Button>
+                <Button 
+                  type="primary" 
+                  block 
+                  loading={isRedeeming}
                   onClick={async () => {
                     if (!redemptionName.trim() || !redemptionItem) {
                       setRedemptionMessage('请填写完整信息');
@@ -1336,7 +1445,6 @@ function App() {
                     }
                     setIsRedeeming(true);
                     
-                    // 查找实际用户名（支持昵称或用户名）
                     const searchName = redemptionName.trim();
                     const matchedUser = users.find(u => 
                       u.name.toLowerCase() === searchName.toLowerCase() || 
@@ -1374,24 +1482,85 @@ function App() {
                       setIsRedeeming(false);
                     }
                   }}
-                  disabled={isRedeeming}
-                  style={{
-                    flex: 1,
-                    padding: '10px',
-                    border: 'none',
-                    borderRadius: '8px',
-                    backgroundColor: isRedeeming ? '#9E9E9E' : '#FF9800',
-                    color: 'white',
-                    cursor: isRedeeming ? 'not-allowed' : 'pointer',
-                    fontSize: '14px',
-                  }}
                 >
                   {isRedeeming ? '提交中...' : '提交'}
-                </button>
+                </Button>
               </div>
             </div>
           </div>
         )}
+
+        {/* 兑换物品选择模态框 - 全屏居中 */}
+        {showRedemptionItemModal && (
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0,0,0,0.6)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 9999999,
+              pointerEvents: 'auto',
+              padding: '20px',
+            }}
+            onClick={() => setShowRedemptionItemModal(false)}
+          >
+            <div
+              className="rounded-acnh shadow-acnh"
+              style={{
+                backgroundColor: '#f7f3df',
+                padding: '24px',
+                width: '100%',
+                maxWidth: '360px',
+                maxHeight: '70vh',
+                overflowY: 'auto',
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3 style={{ margin: '0 0 20px 0', fontSize: '18px', fontWeight: 700, textAlign: 'center', fontFamily: "Nunito, 'Zen Maru Gothic', sans-serif", color: '#725d42' }}>🎁 选择兑换物品</h3>
+              
+              <div className="space-y-2">
+                {[
+                  { key: '50积分兑换礼物', label: '50积分 - 兑换礼物', cost: 50 },
+                  { key: '100积分兑换礼物', label: '100积分 - 兑换礼物', cost: 100 },
+                ].map((item) => (
+                  <div
+                    key={item.key}
+                    onClick={() => {
+                      setRedemptionItem(item.key);
+                      setShowRedemptionItemModal(false);
+                    }}
+                    className={`w-full px-4 py-3 rounded-acnh text-left cursor-pointer transition-all ${
+                      redemptionItem === item.key 
+                        ? 'bg-primary text-white' 
+                        : 'bg-white border-2 border-border hover:border-primary'
+                    }`}
+                    style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}
+                  >
+                    <span className="flex-1 text-sm truncate">{item.label}</span>
+                    <span className={`text-sm font-medium whitespace-nowrap ${
+                      redemptionItem === item.key ? 'text-white' : 'text-primary'
+                    }`}>-{item.cost}积分</span>
+                  </div>
+                ))}
+              </div>
+
+              <div style={{ marginTop: '20px', textAlign: 'center' }}>
+                <Button
+                  type="default"
+                  onClick={() => setShowRedemptionItemModal(false)}
+                >
+                  取消
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
       </div>
       )}
     </Cursor>
