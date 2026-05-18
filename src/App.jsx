@@ -183,20 +183,23 @@ function App() {
   };
 
   return (
-    <div style={{ position: 'relative', height: '100vh' }}>
-      <div style={{ position: 'absolute', inset: 0 }}>
-        <Cursor>
-          {currentPage === 'laborDay' ? (
-            <LaborDayEvent onBack={() => setCurrentPage('home')} />
-          ) : currentPage === 'admin' ? (
-            <AdminPanel onBack={handleBackToHome} />
-          ) : (
-        <div className="min-h-screen p-4 md:p-8 font-acnh text-text relative">
-          <Danmaku records={latestRecords} play={playDanmaku} />
+    <>
+      <Loading 
+        active={loading} 
+        style={{ position: 'fixed', inset: 0, zIndex: 9999 }} 
+      />
+      <Cursor>
+        {currentPage === 'laborDay' ? (
+          <LaborDayEvent onBack={() => setCurrentPage('home')} />
+        ) : currentPage === 'admin' ? (
+          <AdminPanel onBack={handleBackToHome} />
+        ) : (
+      <div className="min-h-screen p-4 md:p-8 font-acnh text-text relative">
+        <Danmaku records={latestRecords} play={playDanmaku} />
         {/* 头部 */}
         <div className="text-center mb-8">
           <h1
-            className="mb-2 animate-float"
+            className="mb-2 animate-float cursor-pointer hover:opacity-80 transition-opacity"
             style={{
               fontFamily: "Nunito, 'Zen Maru Gothic', -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif",
               fontSize: 'clamp(2.5rem, 5vw, 60px)',
@@ -205,6 +208,7 @@ function App() {
               color: '#FFF9E6',
               textShadow: '0px 4px 1px rgba(0, 0, 0, 0.4)',
             }}
+            onClick={() => setCurrentPage('admin')}
           >
             ELA 积分榜
           </h1>
@@ -783,13 +787,8 @@ function App() {
         {/* 底部 */}
         <div className="mt-12">
           <Footer type="tree" />
-          <div className="text-center text-textSecondary text-sm mt-4">
-            <a
-              href="?admin=true"
-              className="text-textSecondary hover:text-primary transition-colors underline"
-            >
-              管理员入口
-            </a>
+          <div className="text-center text-textSecondary text-xs mt-2" style={{ fontFamily: "Nunito, sans-serif" }}>
+            版本更新时间：2026-05-19 18:30
           </div>
         </div>
 
@@ -1628,9 +1627,7 @@ function App() {
       </div>
       )}
     </Cursor>
-      </div>
-      <Loading active={loading} style={{ position: 'absolute', inset: 0, height: '100%' }} />
-    </div>
+    </>
   );
 }
 
