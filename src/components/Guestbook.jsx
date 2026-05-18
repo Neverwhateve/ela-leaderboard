@@ -249,33 +249,6 @@ const Guestbook = () => {
             <img src="/icons/message.png" alt="回复" style={{ width: '20px', height: '20px' }} />
           </button>
           
-          <button
-            onClick={() => handleDeleteClick(item.id)}
-            disabled={isSubmitting}
-            style={{
-              background: 'none',
-              border: 'none',
-              cursor: isSubmitting ? 'not-allowed' : 'pointer',
-              padding: '4px',
-              borderRadius: '6px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              transition: 'all 0.2s ease',
-              opacity: isSubmitting ? '0.5' : '1'
-            }}
-            title="删除留言"
-            onMouseEnter={(e) => {
-              if (!isSubmitting) {
-                e.target.style.background = 'rgba(231,76,60,0.1)';
-              }
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.background = 'none';
-            }}
-          >
-            <img src="/icons/delete.png" alt="删除" style={{ width: '20px', height: '20px' }} />
-          </button>
         </div>
       </div>
       <p className="text-text" style={{
@@ -398,7 +371,7 @@ const Guestbook = () => {
           marginBottom: '20px',
           textAlign: 'center'
         }}>
-          📝 留言板
+          <span style={{ marginRight: '8px' }}>💬</span>留言板
         </h2>
 
         {/* 发表留言表单 */}
