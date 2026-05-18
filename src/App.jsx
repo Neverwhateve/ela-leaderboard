@@ -177,29 +177,23 @@ function App() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="h-screen bg-bg relative overflow-hidden">
-        <div style={{ position: 'absolute', inset: 0 }}>
-          {/* 底层内容 - Loading 关闭时会从这里透明圆形扩散露出 */}
-        </div>
-        <Loading active={true} unmountDelay={300} style={{ position: 'absolute', inset: 0, height: '100%' }} />
-      </div>
-    );
-  }
-
   const handleBackToHome = () => {
     setCurrentPage('home');
     window.history.pushState({}, '', window.location.pathname);
   };
 
   return (
-    <Cursor>
-      {currentPage === 'laborDay' ? (
-        <LaborDayEvent onBack={() => setCurrentPage('home')} />
-      ) : currentPage === 'admin' ? (
-        <AdminPanel onBack={handleBackToHome} />
-      ) : (
+    <>
+      <Loading 
+        active={loading} 
+        style={{ position: 'fixed', inset: 0, zIndex: 9999 }} 
+      />
+      <Cursor>
+        {currentPage === 'laborDay' ? (
+          <LaborDayEvent onBack={() => setCurrentPage('home')} />
+        ) : currentPage === 'admin' ? (
+          <AdminPanel onBack={handleBackToHome} />
+        ) : (
       <div className="min-h-screen p-4 md:p-8 font-acnh text-text relative">
         <Danmaku records={latestRecords} play={playDanmaku} />
         {/* 头部 */}
@@ -1637,6 +1631,7 @@ function App() {
       </div>
       )}
     </Cursor>
+    </>
   );
 }
 
