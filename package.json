@@ -5,13 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/convertExcel.cjs && node scripts/convertLaborDayExcel.cjs && vite build",
+    "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "convert": "node scripts/convertExcel.cjs",
     "generate-excel": "node scripts/generateExcel.cjs",
-    "labor-day-template": "node scripts/generateLaborDayExcel.cjs",
-    "labor-day-convert": "node scripts/convertLaborDayExcel.cjs"
+    "labor-day-template": "node scripts/generateLaborDayExcel.cjs"
   },
   "dependencies": {
     "@fontsource/m-plus-rounded-1c": "^5.2.10",
