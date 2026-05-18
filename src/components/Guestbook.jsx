@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Icon } from 'animal-island-ui';
 
 const Guestbook = () => {
   const [messages, setMessages] = useState([]);
@@ -246,7 +247,7 @@ const Guestbook = () => {
               e.target.style.background = 'none';
             }}
           >
-            <img src="/icons/message.png" alt="回复" style={{ width: '20px', height: '20px' }} />
+            <Icon name="icon-chat" size={20} />
           </button>
           
         </div>
