@@ -5,6 +5,7 @@ import LaborDayEvent from './LaborDayEvent';
 import Danmaku from './components/Danmaku';
 import Guestbook from './components/Guestbook';
 import AdminPanel from './components/AdminPanel';
+import gitTime from './git-time.json';
 
 import data from './data.json';
 
@@ -788,13 +789,7 @@ function App() {
         <div className="mt-12">
           <Footer type="tree" />
           <div className="text-center text-textSecondary text-xs mt-2" style={{ fontFamily: "Nunito, sans-serif" }}>
-            版本更新时间：{new Date().toLocaleString('zh-CN', { 
-              year: 'numeric', 
-              month: '2-digit', 
-              day: '2-digit', 
-              hour: '2-digit', 
-              minute: '2-digit' 
-            })}
+            版本更新时间：{gitTime.date} ({gitTime.hash})
           </div>
         </div>
 

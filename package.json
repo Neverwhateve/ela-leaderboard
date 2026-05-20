@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "node scripts/get-git-time.cjs && vite",
+    "build": "node scripts/get-git-time.cjs && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "generate-excel": "node scripts/generateExcel.cjs",
