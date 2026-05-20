@@ -304,7 +304,7 @@ export default async function handler(req, res) {
       case 'get_all_users':
         const users = await supabase
           .from('xp_total')
-          .select('name, nickname, total_xp')
+          .select('name, nickname, total_xp, title, points')
           .order('total_xp', { ascending: false });
 
         return res.status(200).json({
