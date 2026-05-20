@@ -340,6 +340,33 @@ export default async function handler(req, res) {
 
         return res.status(200).json({ success: true });
 
+      case 'update_user_title':
+        const { userName: titleUserName, title } = req.body;
+
+        if (!titleUserName) {
+          return res.status(400).json({ success: false, error: '用户名不能为空' });
+        }
+
+        const { error: titleError } = await supabase
+          .from('xp_total')
+          .update({ title })
+          .eq('name', titleUserName);
+
+        if (titleError) {
+          console.error('更新称号失败:', titleError);
+          return res.status(500).json({ success: false, error: '更新失败' });
+        }
+
+        await supabase.from('admin_logs').insert([{
+          action: 'update_title',
+          admin_name: admin_name,
+          target_user: titleUserName,
+          details: `设置称号为 ${title || '(空)'}`,
+          created_at: new Date().toISOString()
+        }]);
+
+        return res.status(200).json({ success: true });
+
       case 'get_redemption_history':
         const history = await supabase
           .from('redemption_requests')
