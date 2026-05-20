@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     console.log('获取用户列表...');
     const { data: xpData, error: xpError } = await supabase
       .from('xp_total')
-      .select('name, nickname, total_xp, points')
+      .select('name, nickname, total_xp, points, title')
       .order('total_xp', { ascending: false });
 
     if (xpError) {
@@ -91,7 +91,7 @@ export default async function handler(req, res) {
       name: user.name,
       displayName: user.nickname || user.name, // 优先显示昵称
       nickname: user.nickname,
-      title: '',
+      title: user.title || '',
       xp: user.total_xp,
       points: user.points || 0,
       xpHistory: transactionsByUser[user.name] || [],
