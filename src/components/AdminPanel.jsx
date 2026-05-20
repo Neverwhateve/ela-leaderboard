@@ -559,6 +559,39 @@ const AdminPanel = ({ onBack }) => {
     }
   };
 
+  const handleUpdateTitle = async (userName) => {
+    const currentUser = allUsers.find(u => u.name === userName);
+    const newTitle = prompt('请输入新的称号：', currentUser?.title || '');
+    if (newTitle === null) return;
+
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/admin/review', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'update_user_title',
+          userName: userName,
+          title: newTitle.trim(),
+          admin_name: adminName,
+          admin_password: adminPassword
+        })
+      });
+      const data = await response.json();
+      if (data.success) {
+        showMessage('success', '称号已更新');
+        await loadUsers();
+        await loadLogs();
+      } else {
+        showMessage('error', data.error);
+      }
+    } catch (err) {
+      showMessage('error', '操作失败');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   if (!isLoggedIn) {
     return (
       <div className="max-w-md mx-auto mt-4 mb-8 px-4">
@@ -829,6 +862,7 @@ const AdminPanel = ({ onBack }) => {
                         <div className="flex-1">
                           <div className="font-medium text-base">{user.nickname || user.name}</div>
                           {user.nickname && <div className="text-sm text-gray-500">{user.name}</div>}
+                          {user.title && <div className="text-sm text-purple-600 mt-1">🏆 {user.title}</div>}
                           <div className="flex flex-wrap gap-2 mt-2">
                             <span className="px-3 py-1 rounded-full text-white text-sm" style={{ backgroundColor: '#2196F3' }}>
                               {user.total_xp} 总经验
@@ -840,15 +874,26 @@ const AdminPanel = ({ onBack }) => {
                         </div>
                         <div className="flex gap-2">
                           {selectedUser !== user.name && (
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleUpdateNickname(user.name);
-                              }}
-                              className="px-4 py-2 text-base rounded bg-blue-100 text-blue-700 hover:bg-blue-200"
-                            >
-                              ✏️ 昵称
-                            </button>
+                            <>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleUpdateNickname(user.name);
+                                }}
+                                className="px-4 py-2 text-base rounded bg-blue-100 text-blue-700 hover:bg-blue-200"
+                              >
+                                ✏️ 昵称
+                              </button>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleUpdateTitle(user.name);
+                                }}
+                                className="px-4 py-2 text-base rounded bg-purple-100 text-purple-700 hover:bg-purple-200"
+                              >
+                                🏆 称号
+                              </button>
+                            </>
                           )}
                           {selectedUser === user.name && (
                             <button
@@ -884,6 +929,9 @@ const AdminPanel = ({ onBack }) => {
                                 <span className="px-5 py-3 rounded-full text-white text-lg" style={{ backgroundColor: '#FF9800' }}>
                                   🪙 {userPoints} 可用积分
                                 </span>
+                                <span className="px-5 py-3 rounded-full text-white text-lg" style={{ backgroundColor: '#9c27b0' }}>
+                                  🏆 {user.title || '无称号'}
+                                </span>
                               </div>
                             </div>
                             <div className="flex gap-3">
@@ -892,6 +940,12 @@ const AdminPanel = ({ onBack }) => {
                                 className="px-4 py-3 text-base rounded bg-blue-100 text-blue-700 hover:bg-blue-200"
                               >
                                 ✏️ 编辑昵称
+                              </button>
+                              <button
+                                onClick={() => handleUpdateTitle(user.name)}
+                                className="px-4 py-3 text-base rounded bg-purple-100 text-purple-700 hover:bg-purple-200"
+                              >
+                                🏆 编辑称号
                               </button>
                             </div>
                           </div>

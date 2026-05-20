@@ -56,7 +56,7 @@ export const defaultPointCategories = [
   {
     id: "regular",
     name: "常规积分",
-    icon: "diy",
+    icon: "miles",
     items: [
       { name: "专业解答 & 资讯分享", points: 5 },
       { name: "Kahoot 优胜", points: 10 },
@@ -76,7 +76,7 @@ export const defaultPointCategories = [
   {
     id: "bounty",
     name: "悬赏任务",
-    icon: "map",
+    icon: "design",
     items: [
       { name: "家人共享与儿童账户：整理并分享知识", points: 20 },
       { name: "Creator Studio 演示与分享", points: 10 },

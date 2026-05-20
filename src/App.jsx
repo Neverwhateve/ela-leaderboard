@@ -1163,25 +1163,58 @@ function App() {
               <h3 style={{ margin: '0 0 20px 0', fontSize: '18px', fontWeight: 700, textAlign: 'center', fontFamily: "Nunito, 'Zen Maru Gothic', sans-serif", color: '#725d42' }}>📊 选择分类</h3>
               
               <div className="space-y-2">
-                {pointCategories.map((category) => (
-                  <div
-                    key={category.id}
-                    onClick={() => {
-                      setSelectedCategory(category.id);
-                      setSelectedReason('');
-                      setShowCategoryModal(false);
-                    }}
-                    className={`w-full px-4 py-3 rounded-acnh text-left cursor-pointer transition-all ${
-                      selectedCategory === category.id 
-                        ? 'bg-primary text-white' 
-                        : 'bg-white border-2 border-border hover:border-primary'
-                    }`}
-                    style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
-                  >
-                    <Icon name={`icon-${category.icon}`} size={20} />
-                    <span className="flex-1 text-sm truncate">{category.name}</span>
-                  </div>
-                ))}
+                {/* 常规积分 */}
+                <div
+                  onClick={() => {
+                    setSelectedCategory('regular');
+                    setSelectedReason('');
+                    setShowCategoryModal(false);
+                  }}
+                  className={`w-full px-4 py-3 rounded-acnh text-left cursor-pointer transition-all ${
+                    selectedCategory === 'regular' 
+                      ? 'bg-primary text-white' 
+                      : 'bg-white border-2 border-border hover:border-primary'
+                  }`}
+                  style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
+                >
+                  <Icon name="icon-miles" size={20} />
+                  <span className="flex-1 text-sm truncate">常规积分</span>
+                </div>
+                {/* 特殊活动 */}
+                <div
+                  onClick={() => {
+                    setSelectedCategory('event');
+                    setSelectedReason('');
+                    setShowCategoryModal(false);
+                  }}
+                  className={`w-full px-4 py-3 rounded-acnh text-left cursor-pointer transition-all ${
+                    selectedCategory === 'event' 
+                      ? 'bg-primary text-white' 
+                      : 'bg-white border-2 border-border hover:border-primary'
+                  }`}
+                  style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
+                >
+                  <Icon name="icon-helicopter" size={20} />
+                  <span className="flex-1 text-sm truncate">特殊活动</span>
+                </div>
+                {/* 悬赏任务 */}
+                <div
+                  onClick={() => {
+                    setSelectedCategory('bounty');
+                    setSelectedReason('');
+                    setShowCategoryModal(false);
+                  }}
+                  className={`w-full px-4 py-3 rounded-acnh text-left cursor-pointer transition-all ${
+                    selectedCategory === 'bounty' 
+                      ? 'bg-primary text-white' 
+                      : 'bg-white border-2 border-border hover:border-primary'
+                  }`}
+                  style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
+                >
+                  <Icon name="icon-design" size={20} />
+                  <span className="flex-1 text-sm truncate">悬赏任务</span>
+                </div>
+                {/* 其他（自定义） */}
                 <div
                   onClick={() => {
                     setSelectedCategory('other');
