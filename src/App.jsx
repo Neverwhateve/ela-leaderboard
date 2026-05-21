@@ -480,10 +480,8 @@ function App() {
                     <table className="w-full min-w-[500px] border-collapse">
                       <thead>
                         <tr className="bg-primaryBg">
-                          <th className="py-3 px-4 text-left font-semibold border-b-2 w-16 text-primary border-primary">排名</th>
                           <th className="py-3 px-4 text-left font-semibold border-b-2 text-primary border-primary">玩家名</th>
                           <th className="py-3 px-4 text-left font-semibold border-b-2 w-32 text-primary border-primary">总经验值</th>
-                          <th className="py-3 px-4 text-left font-semibold border-b-2 text-primary border-primary">称号</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -508,30 +506,22 @@ function App() {
                                 className={`hover:bg-primaryBg transition-colors cursor-pointer ${user.rank <= 3 ? 'font-bold' : ''}`}
                                 onClick={() => toggleUserExpand(user.name)}
                               >
-                                <td className="py-3 px-4 font-medium w-16">
-                                  <div className="flex items-center h-8">
-                                    {user.rank === 1 && <span className="text-warning text-2xl">🥇</span>}
-                                    {user.rank === 2 && <span className="text-textSecondary text-2xl">🥈</span>}
-                                    {user.rank === 3 && <span className="text-acnhBrown text-2xl">🥉</span>}
-                                    {user.rank > 3 && <span className="w-8"></span>}
-                                  </div>
-                                </td>
                                 <td className="py-3 px-4 font-medium">
                                   <span className="flex items-center gap-2">
+                                    {user.rank === 1 && <span className="text-warning text-xl">🥇</span>}
+                                    {user.rank === 2 && <span className="text-textSecondary text-xl">🥈</span>}
+                                    {user.rank === 3 && <span className="text-acnhBrown text-xl">🥉</span>}
+                                    {user.rank > 3 && <span className="w-6"></span>}
                                     {user.displayName}
+                                    {user.title && <span className="text-xs text-textSecondary">({user.title})</span>}
                                     {expandedUsers[user.name] && <span className="text-xs">🌟</span>}
                                   </span>
                                 </td>
                                 <td className="py-3 px-4 font-bold text-primary w-32">{calculatePeriodXP(user, 'total')}</td>
-                                <td className="py-3 px-4">
-                                  <span className="text-textSecondary font-medium">
-                                    {user.title || '无称号'}
-                                  </span>
-                                </td>
                               </tr>
                               {expandedUsers[user.name] && (
                                 <tr key={`${user.name}-expanded`}>
-                                  <td colSpan="4" className="p-2 bg-primaryBg">
+                                  <td colSpan="2" className="p-2 bg-primaryBg">
                                     <div className="rounded-acnh overflow-hidden" style={{ backgroundColor: '#f7f3df' }}>
                                       <div 
                                         className="p-3 cursor-pointer flex justify-between items-center"
@@ -582,10 +572,8 @@ function App() {
                     <table className="w-full min-w-[500px] border-collapse">
                       <thead>
                         <tr className="bg-primaryBg">
-                          <th className="py-3 px-4 text-left font-semibold border-b-2 w-16 text-success border-success">排名</th>
                           <th className="py-3 px-4 text-left font-semibold border-b-2 text-success border-success">玩家名</th>
                           <th className="py-3 px-4 text-left font-semibold border-b-2 w-32 text-success border-success">月经验值</th>
-                          <th className="py-3 px-4 text-left font-semibold border-b-2 text-success border-success">称号</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -610,30 +598,22 @@ function App() {
                                 className={`hover:bg-primaryBg transition-colors cursor-pointer ${user.rank <= 3 ? 'font-bold' : ''}`}
                                 onClick={() => toggleUserExpand(user.name)}
                               >
-                                <td className="py-3 px-4 font-medium w-16">
-                                  <div className="flex items-center h-8">
-                                    {user.rank === 1 && <span className="text-warning text-2xl">🥇</span>}
-                                    {user.rank === 2 && <span className="text-textSecondary text-2xl">🥈</span>}
-                                    {user.rank === 3 && <span className="text-acnhBrown text-2xl">🥉</span>}
-                                    {user.rank > 3 && <span className="w-8"></span>}
-                                  </div>
-                                </td>
                                 <td className="py-3 px-4 font-medium">
                                   <span className="flex items-center gap-2">
+                                    {user.rank === 1 && <span className="text-warning text-xl">🥇</span>}
+                                    {user.rank === 2 && <span className="text-textSecondary text-xl">🥈</span>}
+                                    {user.rank === 3 && <span className="text-acnhBrown text-xl">🥉</span>}
+                                    {user.rank > 3 && <span className="w-6"></span>}
                                     {user.displayName}
+                                    {user.title && <span className="text-xs text-textSecondary">({user.title})</span>}
                                     {expandedUsers[user.name] && <span className="text-xs">🌟</span>}
                                   </span>
                                 </td>
                                 <td className="py-3 px-4 font-bold text-success w-32">{calculatePeriodXP(user, 'month')}</td>
-                                <td className="py-3 px-4">
-                                  <span className="text-textSecondary font-medium">
-                                    {user.title || '无称号'}
-                                  </span>
-                                </td>
                               </tr>
                               {expandedUsers[user.name] && (
                                 <tr key={`${user.name}-expanded`}>
-                                  <td colSpan="4" className="p-2 bg-primaryBg">
+                                  <td colSpan="2" className="p-2 bg-primaryBg">
                                     <div className="rounded-acnh overflow-hidden" style={{ backgroundColor: '#f7f3df' }}>
                                       <div 
                                         className="p-3 cursor-pointer flex justify-between items-center"
@@ -684,10 +664,8 @@ function App() {
                     <table className="w-full min-w-[500px] border-collapse">
                       <thead>
                         <tr className="bg-primaryBg">
-                          <th className="py-3 px-4 text-left font-semibold border-b-2 w-16 text-warning border-warning">排名</th>
                           <th className="py-3 px-4 text-left font-semibold border-b-2 text-warning border-warning">玩家名</th>
                           <th className="py-3 px-4 text-left font-semibold border-b-2 w-32 text-warning border-warning">周经验值</th>
-                          <th className="py-3 px-4 text-left font-semibold border-b-2 text-warning border-warning">称号</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -712,30 +690,22 @@ function App() {
                                 className={`hover:bg-primaryBg transition-colors cursor-pointer ${user.rank <= 3 ? 'font-bold' : ''}`}
                                 onClick={() => toggleUserExpand(user.name)}
                               >
-                                <td className="py-3 px-4 font-medium w-16">
-                                  <div className="flex items-center h-8">
-                                    {user.rank === 1 && <span className="text-warning text-2xl">🥇</span>}
-                                    {user.rank === 2 && <span className="text-textSecondary text-2xl">🥈</span>}
-                                    {user.rank === 3 && <span className="text-acnhBrown text-2xl">🥉</span>}
-                                    {user.rank > 3 && <span className="w-8"></span>}
-                                  </div>
-                                </td>
                                 <td className="py-3 px-4 font-medium">
                                   <span className="flex items-center gap-2">
+                                    {user.rank === 1 && <span className="text-warning text-xl">🥇</span>}
+                                    {user.rank === 2 && <span className="text-textSecondary text-xl">🥈</span>}
+                                    {user.rank === 3 && <span className="text-acnhBrown text-xl">🥉</span>}
+                                    {user.rank > 3 && <span className="w-6"></span>}
                                     {user.displayName}
+                                    {user.title && <span className="text-xs text-textSecondary">({user.title})</span>}
                                     {expandedUsers[user.name] && <span className="text-xs">🌟</span>}
                                   </span>
                                 </td>
                                 <td className="py-3 px-4 font-bold text-warning w-32">{calculatePeriodXP(user, 'week')}</td>
-                                <td className="py-3 px-4">
-                                  <span className="text-textSecondary font-medium">
-                                    {user.title || '无称号'}
-                                  </span>
-                                </td>
                               </tr>
                               {expandedUsers[user.name] && (
                                 <tr key={`${user.name}-expanded`}>
-                                  <td colSpan="4" className="p-2 bg-primaryBg">
+                                  <td colSpan="2" className="p-2 bg-primaryBg">
                                     <div className="rounded-acnh overflow-hidden" style={{ backgroundColor: '#f7f3df' }}>
                                       <div 
                                         className="p-3 cursor-pointer flex justify-between items-center"
