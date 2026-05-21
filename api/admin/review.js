@@ -391,7 +391,7 @@ export default async function handler(req, res) {
         }
 
         const currentUserData = await getUserData(transactionToDelete.user_name);
-        const newTotalXP = transactionToDelete.balance_after - transactionToDelete.change_amount;
+        const newTotalXP = (currentUserData.total_xp || 0) - transactionToDelete.change_amount;
         const newPoints = (currentUserData.points || 0) - transactionToDelete.change_amount;
 
         await supabase
