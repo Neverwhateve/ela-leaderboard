@@ -761,6 +761,17 @@ function App() {
           <div className="text-center text-textSecondary text-xs mt-2" style={{ fontFamily: "Nunito, sans-serif" }}>
             版本更新时间：{gitTime.date} ({gitTime.hash})
           </div>
+          <div className="text-center mt-4" style={{ fontFamily: "Nunito, sans-serif" }}>
+            <a
+              href="https://beian.miit.gov.cn/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-textSecondary hover:text-primary transition-colors text-sm"
+              style={{ textDecoration: 'none' }}
+            >
+              苏ICP备2026034066号-1
+            </a>
+          </div>
         </div>
 
         {/* 提交积分模态框 */}
