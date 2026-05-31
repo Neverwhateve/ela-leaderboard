@@ -1649,13 +1649,8 @@ const AdminPanel = ({ onBack }) => {
                           className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                         >
                           <div className="flex items-center gap-3">
-                            <span className="font-medium text-base">{user?.nickname || userName}</span>
-                            {user?.nickname && <span className="text-sm text-gray-500">({userName})</span>}
-                            {user && (
-                              <span className="px-3 py-1 rounded-full text-white text-sm" style={{ backgroundColor: '#2196F3' }}>
-                                {user.total_xp} XP
-                              </span>
-                            )}
+                            <span className="font-medium text-base">{userName}</span>
+                            {user?.nickname && <span className="text-sm text-gray-500">({user?.nickname})</span>}
                           </div>
                           <button
                             onClick={() => handleRemoveAcademyMember(userName, selectedAcademy)}
@@ -1689,7 +1684,8 @@ const AdminPanel = ({ onBack }) => {
                       disabled={isLoading}
                       className="px-3 py-2 bg-gray-100 rounded text-sm text-left hover:bg-green-100 transition-colors truncate"
                     >
-                      {user.nickname || user.name}
+                      {user.name}
+                      {user.nickname && <span className="text-gray-500 ml-1">({user.nickname})</span>}
                     </button>
                   ))}
               </div>
