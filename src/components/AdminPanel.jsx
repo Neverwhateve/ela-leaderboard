@@ -52,6 +52,14 @@ const AdminPanel = ({ onBack }) => {
   const [batchAmount, setBatchAmount] = useState('');
   const [batchReason, setBatchReason] = useState('');
   const [batchCustomReason, setBatchCustomReason] = useState('');
+  
+  const [academyData, setAcademyData] = useState({
+    '种草实验室': [],
+    '隐藏技能局': [],
+    '偶像集中营': []
+  });
+  const [academySearchUser, setAcademySearchUser] = useState('');
+  const [selectedAcademy, setSelectedAcademy] = useState('种草实验室');
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -194,6 +202,79 @@ const AdminPanel = ({ onBack }) => {
     }
   };
 
+  const loadAcademyData = async () => {
+    try {
+      const response = await fetch('/api/admin/academy');
+      const data = await response.json();
+      if (data.success && data.academies) {
+        setAcademyData(data.academies);
+      }
+    } catch (err) {
+      console.error('Failed to load academy data:', err);
+    }
+  };
+
+  const handleAddAcademyMember = async (userName, academy) => {
+    if (!userName.trim()) {
+      showMessage('error', '请输入用户名');
+      return;
+    }
+    
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/admin/academy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'add_member',
+          admin_name: adminName,
+          admin_password: adminPassword,
+          user_name: userName.trim(),
+          academy
+        })
+      });
+      const data = await response.json();
+      if (data.success) {
+        showMessage('success', data.message);
+        await loadAcademyData();
+      } else {
+        showMessage('error', data.error);
+      }
+    } catch (err) {
+      showMessage('error', '操作失败');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRemoveAcademyMember = async (userName, academy) => {
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/admin/academy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'remove_member',
+          admin_name: adminName,
+          admin_password: adminPassword,
+          user_name: userName,
+          academy
+        })
+      });
+      const data = await response.json();
+      if (data.success) {
+        showMessage('success', data.message);
+        await loadAcademyData();
+      } else {
+        showMessage('error', data.error);
+      }
+    } catch (err) {
+      showMessage('error', '操作失败');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const saveAnnouncementConfig = async () => {
     setIsLoading(true);
     try {
@@ -231,6 +312,10 @@ const AdminPanel = ({ onBack }) => {
     }
     if (isLoggedIn && activeTab === 'pointCategories') {
       loadPointCategories();
+    }
+    if (isLoggedIn && activeTab === 'academy') {
+      loadAcademyData();
+      loadUsers();
     }
   }, [isLoggedIn, activeTab]);
 
@@ -780,7 +865,7 @@ const AdminPanel = ({ onBack }) => {
         )}
 
         <div className="grid grid-cols-2 gap-3 mb-8">
-          {['pending', 'users', 'logs', 'announcement', 'pointCategories'].map((tab) => (
+          {['pending', 'users', 'academy', 'logs', 'announcement', 'pointCategories'].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -792,6 +877,7 @@ const AdminPanel = ({ onBack }) => {
             >
               {tab === 'pending' && '📋 待审核'}
               {tab === 'users' && '👥 用户管理'}
+              {tab === 'academy' && '🏫 学院管理'}
               {tab === 'logs' && '📊 操作日志'}
               {tab === 'announcement' && '📢 公告管理'}
               {tab === 'pointCategories' && '🎯 积分分类'}
@@ -1503,6 +1589,110 @@ const AdminPanel = ({ onBack }) => {
               >
                 导出JSON
               </button>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'academy' && (
+          <div>
+            <h3 className="text-xl sm:text-2xl font-bold mb-6" style={{ color: '#725d42' }}>🏫 学院管理</h3>
+            
+            <div className="mb-6">
+              <div className="flex flex-wrap gap-3 mb-6">
+                {['种草实验室', '隐藏技能局', '偶像集中营'].map((academy) => (
+                  <button
+                    key={academy}
+                    onClick={() => setSelectedAcademy(academy)}
+                    className="px-6 py-3 rounded-lg text-base font-medium transition-all"
+                    style={{
+                      backgroundColor: selectedAcademy === academy ? '#4caf50' : '#e0e0e0',
+                      color: selectedAcademy === academy ? 'white' : '#333',
+                      border: selectedAcademy === academy ? '2px solid #388e3c' : '2px solid transparent'
+                    }}
+                  >
+                    {academy} ({academyData[academy]?.length || 0}人)
+                  </button>
+                ))}
+              </div>
+
+              <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
+                <div className="flex flex-col sm:flex-row gap-3 mb-6">
+                  <input
+                    type="text"
+                    value={academySearchUser}
+                    onChange={(e) => setAcademySearchUser(e.target.value)}
+                    placeholder="输入用户名搜索或添加..."
+                    className="flex-1 px-4 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:border-primary"
+                  />
+                  <button
+                    onClick={() => handleAddAcademyMember(academySearchUser, selectedAcademy)}
+                    disabled={isLoading}
+                    className="px-6 py-3 bg-green-500 text-white rounded-lg text-base font-medium"
+                  >
+                    + 添加成员
+                  </button>
+                </div>
+
+                <h4 className="font-bold mb-4 text-lg" style={{ color: '#725d42' }}>
+                  {selectedAcademy} 成员列表
+                </h4>
+
+                <div className="space-y-2">
+                  {academyData[selectedAcademy]?.length === 0 ? (
+                    <p className="text-gray-500 text-center py-8">暂无成员</p>
+                  ) : (
+                    academyData[selectedAcademy]?.map((userName) => {
+                      const user = allUsers.find(u => u.name === userName);
+                      return (
+                        <div
+                          key={userName}
+                          className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                        >
+                          <div className="flex items-center gap-3">
+                            <span className="font-medium text-base">{user?.nickname || userName}</span>
+                            {user?.nickname && <span className="text-sm text-gray-500">({userName})</span>}
+                            {user && (
+                              <span className="px-3 py-1 rounded-full text-white text-sm" style={{ backgroundColor: '#2196F3' }}>
+                                {user.total_xp} XP
+                              </span>
+                            )}
+                          </div>
+                          <button
+                            onClick={() => handleRemoveAcademyMember(userName, selectedAcademy)}
+                            disabled={isLoading}
+                            className="px-4 py-2 bg-red-100 text-red-700 rounded text-base hover:bg-red-200"
+                          >
+                            移除
+                          </button>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
+              <h4 className="font-bold mb-4 text-lg" style={{ color: '#725d42' }}>
+                快速添加成员
+              </h4>
+              <p className="text-sm text-gray-500 mb-4">
+                点击用户可快速添加到当前学院（{selectedAcademy}）
+              </p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 max-h-60 overflow-y-auto">
+                {allUsers
+                  .filter(user => !academyData[selectedAcademy]?.includes(user.name))
+                  .map((user) => (
+                    <button
+                      key={user.name}
+                      onClick={() => handleAddAcademyMember(user.name, selectedAcademy)}
+                      disabled={isLoading}
+                      className="px-3 py-2 bg-gray-100 rounded text-sm text-left hover:bg-green-100 transition-colors truncate"
+                    >
+                      {user.nickname || user.name}
+                    </button>
+                  ))}
+              </div>
             </div>
           </div>
         )}

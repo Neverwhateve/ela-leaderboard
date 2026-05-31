@@ -109,10 +109,31 @@ export default async function handler(req, res) {
       date: record.created_at
     }));
 
+    const { data: academyData, error: academyError } = await supabase
+      .from('academy_members')
+      .select('user_name, academy');
+
+    if (academyError) {
+      console.error('获取学院数据失败:', academyError);
+    }
+
+    const academies = {
+      '种草实验室': [],
+      '隐藏技能局': [],
+      '偶像集中营': []
+    };
+
+    (academyData || []).forEach(m => {
+      if (academies[m.academy]) {
+        academies[m.academy].push(m.user_name);
+      }
+    });
+
     return res.status(200).json({
       success: true,
       users,
-      latestRecords
+      latestRecords,
+      academies
     });
   } catch (err) {
     console.error('获取数据失败:', err);

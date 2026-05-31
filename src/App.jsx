@@ -5,6 +5,7 @@ import LaborDayEvent from './LaborDayEvent';
 import Danmaku from './components/Danmaku';
 import Guestbook from './components/Guestbook';
 import AdminPanel from './components/AdminPanel';
+import AcademyPage from './components/AcademyPage';
 import gitTime from './git-time.json';
 
 import data from './data.json';
@@ -79,6 +80,11 @@ function App() {
   const [showProjectModal, setShowProjectModal] = useState(false);
   const [showRedemptionItemModal, setShowRedemptionItemModal] = useState(false);
   const [showCategoryModal, setShowCategoryModal] = useState(false);
+  const [academies, setAcademies] = useState({
+    '种草实验室': [],
+    '隐藏技能局': [],
+    '偶像集中营': []
+  });
 
   const handlePlayDanmaku = () => {
     setPlayDanmaku(false);
@@ -106,8 +112,10 @@ function App() {
         if (result.success) {
           setUsers(result.users || []);
           setLatestRecords(result.latestRecords || []);
+          if (result.academies) {
+            setAcademies(result.academies);
+          }
         } else {
-          // 如果 API 失败，回退到 data.json
           setUsers(data.users || []);
           setLatestRecords(data.latestRecords || []);
         }
@@ -192,6 +200,8 @@ function App() {
       <Cursor>
         {currentPage === 'laborDay' ? (
           <LaborDayEvent onBack={() => setCurrentPage('home')} />
+        ) : currentPage === 'academy' ? (
+          <AcademyPage onBack={() => setCurrentPage('home')} users={users} academies={academies} />
         ) : currentPage === 'admin' ? (
           <AdminPanel onBack={handleBackToHome} />
         ) : (
@@ -350,14 +360,29 @@ function App() {
 
         {/* 个人查询 */}
         <div className="max-w-2xl mx-auto mb-8 rounded-acnh p-6 shadow-acnh" style={{ backgroundColor: '#f7f3df' }}>
-          <h2 style={{
-            fontFamily: "Nunito, 'Zen Maru Gothic', -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif",
-            fontSize: '24px',
-            fontWeight: 700,
-            color: '#725d42',
-            margin: 0,
-            marginBottom: '8px',
-          }}>个人查询</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 style={{
+              fontFamily: "Nunito, 'Zen Maru Gothic', -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif",
+              fontSize: '24px',
+              fontWeight: 700,
+              color: '#725d42',
+              margin: 0,
+            }}>个人查询</h2>
+            <button
+              onClick={() => setCurrentPage('academy')}
+              className="transition-all hover:scale-110"
+              title="查看学院成员榜"
+            >
+              <img
+                src="/Lv/OneMore.png"
+                alt="学院成员榜"
+                className="w-12 h-12 object-contain rounded-xl"
+                style={{
+                  filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.2))',
+                }}
+              />
+            </button>
+          </div>
           <div className="flex flex-col md:flex-row gap-4">
             <input
               type="text"
