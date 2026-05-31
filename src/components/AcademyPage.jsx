@@ -101,78 +101,70 @@ const AcademyPage = ({ onBack, users, academies }) => {
           {selectedAcademy ? (
             <div className="relative flex flex-col items-center">
               <div 
-                className="relative"
-                style={{ width: '500px', height: '500px' }}
+                className="cursor-pointer transition-all duration-500 hover:scale-105 p-6 rounded-acnh shadow-acnh"
+                style={{ backgroundColor: '#f7f3df' }}
+                onClick={() => handleAcademyClick(selectedAcademy)}
               >
-                <div 
-                  className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-all duration-500 hover:scale-105 p-6 rounded-acnh shadow-acnh"
-                  style={{ backgroundColor: '#f7f3df' }}
-                  onClick={() => handleAcademyClick(selectedAcademy)}
+                <img
+                  src={`/Lv/${selectedAcademy}.png`}
+                  alt={selectedAcademy}
+                  className="w-40 h-40 md:w-48 md:h-48 object-contain"
+                  style={{
+                    filter: 'drop-shadow(0 8px 20px rgba(0,0,0,0.3))',
+                  }}
+                />
+                <h2 
+                  className="text-center mt-4 text-xl font-bold"
+                  style={{
+                    fontFamily: "Nunito, 'Zen Maru Gothic', sans-serif",
+                    color: '#725d42',
+                  }}
                 >
-                  <img
-                    src={`/Lv/${selectedAcademy}.png`}
-                    alt={selectedAcademy}
-                    className="w-40 h-40 md:w-48 md:h-48 object-contain"
-                    style={{
-                      filter: 'drop-shadow(0 8px 20px rgba(0,0,0,0.3))',
-                    }}
-                  />
-                  <h2 
-                    className="text-center mt-4 text-xl font-bold"
-                    style={{
-                      fontFamily: "Nunito, 'Zen Maru Gothic', sans-serif",
-                      color: '#725d42',
-                    }}
-                  >
-                    {selectedAcademy}
-                  </h2>
-                </div>
+                  {selectedAcademy}
+                </h2>
+              </div>
 
-                {showMembers && (
-                  <div className="absolute inset-0">
-                    {(academies[selectedAcademy] || []).map((member, index) => {
-                      const { name: userName, level: memberLevel } = member;
-                      const user = users.find(u => u.name === userName);
-                      const level = memberLevel || 'Lv1';
-                      const { x, y } = getMemberPosition(index, academies[selectedAcademy].length);
-                      const isVisible = visibleMembers.includes(index);
+              {showMembers && (
+                <div className="mt-8 flex flex-wrap justify-center gap-4">
+                  {(academies[selectedAcademy] || []).map((member, index) => {
+                    const { name: userName, level: memberLevel } = member;
+                    const user = users.find(u => u.name === userName);
+                    const level = memberLevel || 'Lv1';
+                    const isVisible = visibleMembers.includes(index);
 
-                      return (
+                    return (
+                      <div
+                        key={userName}
+                        className="transition-all duration-500"
+                        style={{
+                          opacity: isVisible ? 1 : 0,
+                          transform: `scale(${isVisible ? 1 : 0})`,
+                        }}
+                      >
                         <div
-                          key={userName}
-                          className="absolute transition-all duration-500"
+                          className="px-4 py-3 rounded-acnh text-center whitespace-nowrap shadow-acnh"
                           style={{
-                            left: `calc(50% + ${x}px)`,
-                            top: `calc(50% + ${y}px)`,
-                            opacity: isVisible ? 1 : 0,
-                            transform: `translate(-50%, -50%) scale(${isVisible ? 1 : 0})`,
+                            backgroundColor: '#f7f3df',
                           }}
                         >
-                          <div
-                            className="px-4 py-3 rounded-acnh text-center whitespace-nowrap shadow-acnh"
-                            style={{
-                              backgroundColor: '#f7f3df',
+                          <div className="font-medium text-base" style={{ color: '#725d42' }}>
+                            {user?.displayName || userName}
+                          </div>
+                          <div 
+                            className="text-xs mt-1 px-2 py-0.5 rounded-full inline-block"
+                            style={{ 
+                              backgroundColor: getLevelColor(level),
+                              color: level === 'Lv3' ? '#333' : '#fff',
                             }}
                           >
-                            <div className="font-medium text-base" style={{ color: '#725d42' }}>
-                              {user?.displayName || userName}
-                            </div>
-                            <div 
-                              className="text-xs mt-1 px-2 py-0.5 rounded-full inline-block"
-                              style={{ 
-                                backgroundColor: getLevelColor(level),
-                                color: level === 'Lv3' ? '#333' : '#fff',
-                              }}
-                            >
-                              {level}
-                            </div>
+                            {level}
                           </div>
                         </div>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
 
               <div className="flex flex-wrap justify-center gap-4 mt-8">
                 {ACADEMIES.filter(a => a !== selectedAcademy).map((academy) => (
