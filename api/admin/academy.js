@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     try {
       const { data, error } = await supabase
         .from('academy_members')
-        .select('user_name, academy, created_at')
+        .select('user_name, academy, created_at, level')
         .order('academy')
         .order('user_name');
 
@@ -20,7 +20,10 @@ export default async function handler(req, res) {
 
       const academyData = {};
       ACADEMIES.forEach(academy => {
-        academyData[academy] = data.filter(m => m.academy === academy).map(m => m.user_name);
+        academyData[academy] = data.filter(m => m.academy === academy).map(m => ({
+          name: m.user_name,
+          level: m.level || 'Lv1'
+        }));
       });
 
       return res.status(200).json({
@@ -35,7 +38,7 @@ export default async function handler(req, res) {
   }
 
   if (req.method === 'POST') {
-    const { action, admin_name, admin_password, user_name, academy } = req.body;
+    const { action, admin_name, admin_password, user_name, academy, level } = req.body;
 
     if (!admin_name || !admin_password) {
       return res.status(400).json({ error: '需要管理员身份验证' });
@@ -110,6 +113,33 @@ export default async function handler(req, res) {
           }]);
 
           return res.status(200).json({ success: true, message: `已将 ${user_name} 从 ${academy} 移除` });
+
+        case 'update_level':
+          if (!user_name || !academy || !level) {
+            return res.status(400).json({ error: '需要用户名、学院名和等级' });
+          }
+
+          if (!['Lv1', 'Lv2', 'Lv3'].includes(level)) {
+            return res.status(400).json({ error: '无效的等级值' });
+          }
+
+          const { error: updateError } = await supabase
+            .from('academy_members')
+            .update({ level })
+            .eq('user_name', user_name)
+            .eq('academy', academy);
+
+          if (updateError) throw updateError;
+
+          await supabase.from('admin_logs').insert([{
+            action: 'update_academy_member_level',
+            admin_name,
+            target_user: user_name,
+            details: `将 ${user_name} 在 ${academy} 的等级更新为 ${level}`,
+            created_at: new Date().toISOString()
+          }]);
+
+          return res.status(200).json({ success: true, message: `已将 ${user_name} 的等级更新为 ${level}` });
 
         case 'batch_update':
           const { members } = req.body;

@@ -126,9 +126,10 @@ const AcademyPage = ({ onBack, users, academies }) => {
 
               {showMembers && (
                 <div className="relative mt-12" style={{ width: '400px', height: '400px' }}>
-                  {(academies[selectedAcademy] || []).map((userName, index) => {
+                  {(academies[selectedAcademy] || []).map((member, index) => {
+                    const { name: userName, level: memberLevel } = member;
                     const user = users.find(u => u.name === userName);
-                    const level = user ? calculateLevel(user.xp) : 'Lv1';
+                    const level = memberLevel || 'Lv1';
                     const { x, y } = getMemberPosition(index, academies[selectedAcademy].length);
                     const isVisible = visibleMembers.includes(index);
 

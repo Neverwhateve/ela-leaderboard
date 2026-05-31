@@ -275,6 +275,35 @@ const AdminPanel = ({ onBack }) => {
     }
   };
 
+  const handleUpdateAcademyMemberLevel = async (userName, academy, level) => {
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/admin/academy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'update_level',
+          admin_name: adminName,
+          admin_password: adminPassword,
+          user_name: userName,
+          academy,
+          level
+        })
+      });
+      const data = await response.json();
+      if (data.success) {
+        showMessage('success', data.message);
+        await loadAcademyData();
+      } else {
+        showMessage('error', data.error);
+      }
+    } catch (err) {
+      showMessage('error', '操作失败');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const saveAnnouncementConfig = async () => {
     setIsLoading(true);
     try {
@@ -1641,7 +1670,8 @@ const AdminPanel = ({ onBack }) => {
                   {academyData[selectedAcademy]?.length === 0 ? (
                     <p className="text-gray-500 text-center py-8">暂无成员</p>
                   ) : (
-                    academyData[selectedAcademy]?.map((userName) => {
+                    academyData[selectedAcademy]?.map((member) => {
+                      const { name: userName, level: currentLevel } = member;
                       const user = allUsers.find(u => u.name === userName);
                       return (
                         <div
@@ -1652,13 +1682,26 @@ const AdminPanel = ({ onBack }) => {
                             <span className="font-medium text-base">{userName}</span>
                             {user?.nickname && <span className="text-sm text-gray-500">({user?.nickname})</span>}
                           </div>
-                          <button
-                            onClick={() => handleRemoveAcademyMember(userName, selectedAcademy)}
-                            disabled={isLoading}
-                            className="px-4 py-2 bg-red-100 text-red-700 rounded text-base hover:bg-red-200"
-                          >
-                            移除
-                          </button>
+                          <div className="flex items-center gap-2">
+                            <select
+                              value={currentLevel}
+                              onChange={(e) => handleUpdateAcademyMemberLevel(userName, selectedAcademy, e.target.value)}
+                              disabled={isLoading}
+                              className="px-3 py-2 border border-gray-300 rounded text-base focus:outline-none focus:border-primary"
+                              style={{ minWidth: '80px' }}
+                            >
+                              <option value="Lv1">Lv1</option>
+                              <option value="Lv2">Lv2</option>
+                              <option value="Lv3">Lv3</option>
+                            </select>
+                            <button
+                              onClick={() => handleRemoveAcademyMember(userName, selectedAcademy)}
+                              disabled={isLoading}
+                              className="px-4 py-2 bg-red-100 text-red-700 rounded text-base hover:bg-red-200"
+                            >
+                              移除
+                            </button>
+                          </div>
                         </div>
                       );
                     })
@@ -1676,7 +1719,7 @@ const AdminPanel = ({ onBack }) => {
               </p>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 max-h-60 overflow-y-auto">
                 {allUsers
-                  .filter(user => !academyData[selectedAcademy]?.includes(user.name))
+                  .filter(user => !academyData[selectedAcademy]?.some(m => m.name === user.name))
                   .map((user) => (
                     <button
                       key={user.name}
