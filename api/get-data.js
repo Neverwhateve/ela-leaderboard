@@ -125,8 +125,15 @@ export default async function handler(req, res) {
 
     (academyData || []).forEach(m => {
       if (academies[m.academy]) {
-        academies[m.academy].push(m.user_name);
+        academies[m.academy].push({
+          name: m.user_name,
+          level: m.level || 'Lv1'
+        });
       }
+    });
+
+    Object.keys(academies).forEach(academy => {
+      academies[academy] = academies[academy].sort(() => Math.random() - 0.5);
     });
 
     return res.status(200).json({
