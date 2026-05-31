@@ -16,13 +16,13 @@ try {
 
   const date = new Date(gitTime);
   
-  // 格式化日期
   const formattedDate = date.toLocaleString('zh-CN', { 
     year: 'numeric', 
     month: '2-digit', 
     day: '2-digit', 
     hour: '2-digit', 
-    minute: '2-digit' 
+    minute: '2-digit',
+    timeZone: 'Asia/Shanghai'
   });
   
   const output = {
@@ -35,13 +35,13 @@ try {
   console.log('✅ Git 时间已更新:', formattedDate);
 } catch (error) {
   console.error('❌ 获取 Git 时间失败:', error.message);
-  // 如果失败，使用当前时间作为 fallback
   const fallbackDate = new Date().toLocaleString('zh-CN', { 
     year: 'numeric', 
     month: '2-digit', 
     day: '2-digit', 
     hour: '2-digit', 
-    minute: '2-digit' 
+    minute: '2-digit',
+    timeZone: 'Asia/Shanghai'
   });
   
   const output = {
