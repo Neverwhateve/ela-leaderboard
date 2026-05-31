@@ -481,6 +481,47 @@ export default async function handler(req, res) {
 
         return res.status(200).json({ success: true, message: '积分记录已添加' });
 
+      case 'batch_add_points':
+        const { user_names } = req.body;
+        
+        if (!user_names || !Array.isArray(user_names) || user_names.length === 0) {
+          return res.status(400).json({ error: '请选择至少一个用户' });
+        }
+        
+        if (!points || points <= 0) {
+          return res.status(400).json({ error: '请填写正确的积分数' });
+        }
+        
+        if (!reason) {
+          return res.status(400).json({ error: '请填写原因' });
+        }
+
+        let successCount = 0;
+        let failedCount = 0;
+        const failedUsers = [];
+
+        for (const userName of user_names) {
+          try {
+            // 管理员添加积分，同时增加经验值和可用积分
+            await addUserXPAndPoints(userName, points, reason, 'admin_batch_add', admin_name);
+            successCount++;
+          } catch (error) {
+            console.error(`为用户 ${userName} 添加积分失败:`, error);
+            failedCount++;
+            failedUsers.push(userName);
+          }
+        }
+
+        await logAdminAction(admin_name, 'batch_add_points', null, `批量添加积分：成功${successCount}人，失败${failedCount}人，每人${points}积分，原因：${reason}`);
+
+        return res.status(200).json({ 
+          success: true, 
+          message: `批量添加完成：成功${successCount}人，失败${failedCount}人`,
+          successCount,
+          failedCount,
+          failedUsers
+        });
+
       default:
         return res.status(400).json({ error: '未知的操作' });
     }

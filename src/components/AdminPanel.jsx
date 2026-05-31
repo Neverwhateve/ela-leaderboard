@@ -46,6 +46,12 @@ const AdminPanel = ({ onBack }) => {
   const [editAmount, setEditAmount] = useState('');
   const [editReason, setEditReason] = useState('');
   const [editDate, setEditDate] = useState('');
+  
+  // 批量添加积分相关状态
+  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [batchAmount, setBatchAmount] = useState('');
+  const [batchReason, setBatchReason] = useState('');
+  const [batchCustomReason, setBatchCustomReason] = useState('');
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -592,6 +598,88 @@ const AdminPanel = ({ onBack }) => {
     }
   };
 
+  // 切换用户选中状态
+  const toggleUserSelection = (userName) => {
+    setSelectedUsers(prev => {
+      if (prev.includes(userName)) {
+        return prev.filter(name => name !== userName);
+      } else {
+        return [...prev, userName];
+      }
+    });
+  };
+
+  // 全选/取消全选用户
+  const toggleSelectAll = () => {
+    const filteredUsers = allUsers.filter(user => {
+      if (!searchUser.trim()) return true;
+      const searchLower = searchUser.toLowerCase();
+      return user.name.toLowerCase().includes(searchLower) || 
+             (user.nickname && user.nickname.toLowerCase().includes(searchLower));
+    });
+    
+    if (selectedUsers.length === filteredUsers.length) {
+      // 全部已选中，取消全选
+      setSelectedUsers([]);
+    } else {
+      // 全选
+      setSelectedUsers(filteredUsers.map(user => user.name));
+    }
+  };
+
+  // 批量添加积分
+  const handleBatchAddPoints = async () => {
+    if (selectedUsers.length === 0) {
+      showMessage('error', '请选择至少一个用户');
+      return;
+    }
+    if (!batchAmount || batchAmount <= 0) {
+      showMessage('error', '请填写正确的积分数');
+      return;
+    }
+    
+    const finalReason = batchReason === '管理员手动调整' 
+      ? batchCustomReason.trim() 
+      : batchReason;
+    
+    if (!finalReason) {
+      showMessage('error', '请填写原因');
+      return;
+    }
+    
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/admin/review', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'batch_add_points',
+          user_names: selectedUsers,
+          points: parseInt(batchAmount),
+          reason: finalReason,
+          admin_name: adminName,
+          admin_password: adminPassword
+        })
+      });
+      const data = await response.json();
+      if (data.success) {
+        showMessage('success', data.message);
+        setBatchAmount('');
+        setBatchReason('');
+        setBatchCustomReason('');
+        setSelectedUsers([]);
+        await loadUsers();
+        await loadLogs();
+      } else {
+        showMessage('error', data.error);
+      }
+    } catch (err) {
+      showMessage('error', '操作失败');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   if (!isLoggedIn) {
     return (
       <div className="max-w-md mx-auto mt-4 mb-8 px-4">
@@ -803,6 +891,61 @@ const AdminPanel = ({ onBack }) => {
           <div>
             <h3 className="text-xl sm:text-2xl font-bold mb-6" style={{ color: '#725d42' }}>👥 用户积分管理</h3>
             
+            {/* 批量添加积分区域 */}
+            {selectedUsers.length > 0 && (
+              <div className="mb-8 p-6 rounded-lg" style={{ backgroundColor: '#e8f5e9', border: '2px solid #81c784' }}>
+                <h4 className="font-bold mb-4 text-lg">📊 批量添加积分 ({selectedUsers.length} 人已选中)</h4>
+                <div className="flex flex-col sm:flex-row gap-3 mb-4">
+                  <input
+                    type="number"
+                    value={batchAmount}
+                    onChange={(e) => setBatchAmount(e.target.value)}
+                    placeholder="积分数"
+                    className="w-full sm:w-40 px-5 py-4 text-base border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary"
+                  />
+                  <select
+                    value={batchReason}
+                    onChange={(e) => setBatchReason(e.target.value)}
+                    className="flex-1 px-5 py-4 text-base border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary"
+                  >
+                    <option value="">选择原因</option>
+                    <option value="专业解答 & 资讯分享">专业解答 & 资讯分享 (+5积分)</option>
+                    <option value="Kahoot 优胜">Kahoot 优胜 (+10积分)</option>
+                    <option value="Peer Tips">Peer Tips (+15积分)</option>
+                    <option value="分享知识（DD, huddle, 邮件等）">分享知识（DD, huddle, 邮件等）(+15积分)</option>
+                    <option value="管理员手动调整">管理员手动调整（自定义）</option>
+                  </select>
+                </div>
+                {batchReason === '管理员手动调整' && (
+                  <div className="mb-4">
+                    <input
+                      type="text"
+                      value={batchCustomReason}
+                      onChange={(e) => setBatchCustomReason(e.target.value)}
+                      placeholder="请输入自定义原因..."
+                      className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary"
+                    />
+                  </div>
+                )}
+                <div className="flex gap-3">
+                  <button
+                    onClick={handleBatchAddPoints}
+                    disabled={isLoading}
+                    className="flex-1 px-6 py-4 rounded-lg text-white text-base font-medium"
+                    style={{ backgroundColor: isLoading ? '#9e9e9e' : '#4caf50' }}
+                  >
+                    {isLoading ? '添加中...' : `✅ 为 ${selectedUsers.length} 人添加积分`}
+                  </button>
+                  <button
+                    onClick={() => setSelectedUsers([])}
+                    className="px-6 py-4 rounded-lg bg-gray-200 text-gray-700 text-base"
+                  >
+                    ✖️ 取消选择
+                  </button>
+                </div>
+              </div>
+            )}
+            
             {/* 搜索区域 */}
             <div className="mb-8">
               <div className="flex flex-col sm:flex-row gap-3 mb-6">
@@ -833,7 +976,24 @@ const AdminPanel = ({ onBack }) => {
                 </button>
               </div>
 
-              <h4 className="font-bold mb-4 text-lg">👥 所有用户</h4>
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+                <h4 className="font-bold text-lg">👥 所有用户</h4>
+                <button
+                  onClick={toggleSelectAll}
+                  className="px-4 py-2 rounded-lg text-base"
+                  style={{ backgroundColor: '#e3f2fd', color: '#1976d2' }}
+                >
+                  {(() => {
+                    const filteredUsers = allUsers.filter(user => {
+                      if (!searchUser.trim()) return true;
+                      const searchLower = searchUser.toLowerCase();
+                      return user.name.toLowerCase().includes(searchLower) || 
+                             (user.nickname && user.nickname.toLowerCase().includes(searchLower));
+                    });
+                    return selectedUsers.length === filteredUsers.length ? '取消全选' : '全选';
+                  })()}
+                </button>
+              </div>
               <div className="grid gap-3">
                 {allUsers
                   .filter(user => {
@@ -847,7 +1007,9 @@ const AdminPanel = ({ onBack }) => {
                       {/* 用户卡片 */}
                       <div
                         className={`p-4 flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 cursor-pointer transition-all ${
-                          selectedUser === user.name ? 'bg-green-100 border-2 border-green-400' : 'bg-white hover:bg-gray-100'
+                          selectedUser === user.name ? 'bg-green-100 border-2 border-green-400' : 
+                          selectedUsers.includes(user.name) ? 'bg-blue-50 border-2 border-blue-400' : 
+                          'bg-white hover:bg-gray-100'
                         }`}
                         onClick={() => {
                           setSearchUser(user.name);
@@ -859,17 +1021,28 @@ const AdminPanel = ({ onBack }) => {
                           }
                         }}
                       >
-                        <div className="flex-1">
-                          <div className="font-medium text-base">{user.nickname || user.name}</div>
-                          {user.nickname && <div className="text-sm text-gray-500">{user.name}</div>}
-                          {user.title && <div className="text-sm text-purple-600 mt-1">🏆 {user.title}</div>}
-                          <div className="flex flex-wrap gap-2 mt-2">
-                            <span className="px-3 py-1 rounded-full text-white text-sm" style={{ backgroundColor: '#2196F3' }}>
-                              {user.total_xp} 总经验
-                            </span>
-                            <span className="px-3 py-1 rounded-full text-white text-sm" style={{ backgroundColor: '#FF9800' }}>
-                              {user.points} 可用积分
-                            </span>
+                        <div className="flex items-start gap-3 flex-1">
+                          {/* 复选框 */}
+                          <div onClick={(e) => e.stopPropagation()}>
+                            <input
+                              type="checkbox"
+                              checked={selectedUsers.includes(user.name)}
+                              onChange={() => toggleUserSelection(user.name)}
+                              style={{ width: '20px', height: '20px', cursor: 'pointer' }}
+                            />
+                          </div>
+                          <div className="flex-1">
+                            <div className="font-medium text-base">{user.nickname || user.name}</div>
+                            {user.nickname && <div className="text-sm text-gray-500">{user.name}</div>}
+                            {user.title && <div className="text-sm text-purple-600 mt-1">🏆 {user.title}</div>}
+                            <div className="flex flex-wrap gap-2 mt-2">
+                              <span className="px-3 py-1 rounded-full text-white text-sm" style={{ backgroundColor: '#2196F3' }}>
+                                {user.total_xp} 总经验
+                              </span>
+                              <span className="px-3 py-1 rounded-full text-white text-sm" style={{ backgroundColor: '#FF9800' }}>
+                                {user.points} 可用积分
+                              </span>
+                            </div>
                           </div>
                         </div>
                         <div className="flex gap-2">
