@@ -30,12 +30,19 @@ const addUserXPAndPoints = async (userName, changeAmount, reason, type, adminNam
   const newXP = currentData.total_xp + changeAmount;
   const newPoints = (currentData.points || 0) + changeAmount;
 
-  await supabase
+  // 先更新用户积分
+  const { error: updateError } = await supabase
     .from('xp_total')
     .update({ total_xp: newXP, points: newPoints })
     .eq('name', userName);
 
-  await supabase
+  if (updateError) {
+    console.error(`更新用户 ${userName} 积分失败:`, updateError);
+    throw updateError;
+  }
+
+  // 再写入交易记录
+  const { error: insertError } = await supabase
     .from('point_transactions')
     .insert({
       user_name: userName,
@@ -43,8 +50,14 @@ const addUserXPAndPoints = async (userName, changeAmount, reason, type, adminNam
       balance_after: newXP,
       reason,
       type,
-      created_by: adminName
+      created_by: adminName,
+      created_at: new Date().toISOString()
     });
+
+  if (insertError) {
+    console.error(`写入用户 ${userName} 积分记录失败:`, insertError);
+    throw insertError;
+  }
 };
 
 const deductUserPoints = async (userName, changeAmount, reason, adminName) => {

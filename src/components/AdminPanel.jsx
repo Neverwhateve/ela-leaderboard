@@ -664,10 +664,16 @@ const AdminPanel = ({ onBack }) => {
       const data = await response.json();
       if (data.success) {
         showMessage('success', data.message);
+        // 保存一份当前选择的用户列表副本
+        const usersToUpdate = [...selectedUsers];
         setBatchAmount('');
         setBatchReason('');
         setBatchCustomReason('');
         setSelectedUsers([]);
+        // 如果当前正在查看某个用户，且该用户在批量添加列表中，刷新其数据
+        if (selectedUser && usersToUpdate.includes(selectedUser)) {
+          await handleSearchUser(selectedUser);
+        }
         await loadUsers();
         await loadLogs();
       } else {
