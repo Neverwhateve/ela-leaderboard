@@ -41,23 +41,32 @@ const addUserXPAndPoints = async (userName, changeAmount, reason, type, adminNam
     throw updateError;
   }
 
+  console.log(`[DEBUG] 成功更新用户 ${userName} 积分：${newXP} XP, ${newPoints} 积分`);
+
   // 再写入交易记录
-  const { error: insertError } = await supabase
+  const insertData = {
+    user_name: userName,
+    change_amount: changeAmount,
+    balance_after: newXP,
+    reason,
+    type,
+    created_by: adminName,
+    created_at: new Date().toISOString()
+  };
+
+  console.log(`[DEBUG] 准备写入积分记录:`, insertData);
+
+  const { data: insertDataResult, error: insertError } = await supabase
     .from('point_transactions')
-    .insert({
-      user_name: userName,
-      change_amount: changeAmount,
-      balance_after: newXP,
-      reason,
-      type,
-      created_by: adminName,
-      created_at: new Date().toISOString()
-    });
+    .insert(insertData)
+    .select();
 
   if (insertError) {
     console.error(`写入用户 ${userName} 积分记录失败:`, insertError);
     throw insertError;
   }
+
+  console.log(`[DEBUG] 成功写入积分记录:`, insertDataResult);
 };
 
 const deductUserPoints = async (userName, changeAmount, reason, adminName) => {
@@ -516,7 +525,7 @@ export default async function handler(req, res) {
         for (const userName of user_names) {
           try {
             // 管理员添加积分，同时增加经验值和可用积分
-            await addUserXPAndPoints(userName, points, reason, 'admin_batch_add', admin_name);
+            await addUserXPAndPoints(userName, points, reason, 'admin_add', admin_name);
             successCount++;
           } catch (error) {
             console.error(`为用户 ${userName} 添加积分失败:`, error);
@@ -525,7 +534,7 @@ export default async function handler(req, res) {
           }
         }
 
-        await logAdminAction(admin_name, 'batch_add_points', null, `批量添加积分：成功${successCount}人，失败${failedCount}人，每人${points}积分，原因：${reason}`);
+        await logAdminAction(admin_name, 'add_points', null, `批量添加积分：成功${successCount}人，失败${failedCount}人，每人${points}积分，原因：${reason}`);
 
         return res.status(200).json({ 
           success: true, 
