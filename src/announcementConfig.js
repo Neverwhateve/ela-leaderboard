@@ -33,7 +33,7 @@ export const defaultAnnouncementConfig = {
     {
       "title": "升级指南",
       "content": [
-        "🎉 Lv0 → Lv1 升级条件",
+        { "text": "🎉 Lv0 → Lv1 升级条件", "bold": true },
 
         "",
 
@@ -105,7 +105,8 @@ export function getPointMappingFromConfig(config) {
   if (!config || !config.sections) return defaultPointMapping;
 
   config.sections.forEach(section => {
-    section.content.forEach(line => {
+    section.content.forEach(lineItem => {
+      const line = typeof lineItem === 'object' ? lineItem.text : lineItem;
       if (line === "---" || line.trim() === "" || line.includes("兑换")) {
         return;
       }
@@ -140,7 +141,8 @@ export function getPointOptionsFromConfig(config) {
   const targetConfig = config || defaultAnnouncementConfig;
 
   targetConfig.sections.forEach(section => {
-    section.content.forEach(line => {
+    section.content.forEach(lineItem => {
+      const line = typeof lineItem === 'object' ? lineItem.text : lineItem;
       if (line === "---" || line.trim() === "" || line.includes("兑换")) {
         return;
       }

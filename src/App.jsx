@@ -290,12 +290,14 @@ function App() {
                       {section.content && (
                         <div className="space-y-2 text-left">
                           {section.content.map((item, idx) => {
-                            // 判断是否是标题行（以 emoji 开头或空行）
-                            const isTitle = item.startsWith('🎉') || item.startsWith('🎊') || item.startsWith('📢') || item.startsWith('📈') || item.trim() === '';
-                            const isNumbered = /^\d+\./.test(item.trim());
-                            const isDivider = item.trim() === '---';
+                            const text = typeof item === 'object' ? item.text : item;
+                            const isBold = typeof item === 'object' && item.bold;
                             
-                            if (item.trim() === '') {
+                            const isTitle = text.startsWith('🎉') || text.startsWith('🎊') || text.startsWith('📢') || text.startsWith('📈') || text.trim() === '';
+                            const isNumbered = /^\d+\./.test(text.trim());
+                            const isDivider = text.trim() === '---';
+                            
+                            if (text.trim() === '') {
                               return <div key={idx} className="h-2"></div>;
                             }
                             
@@ -308,22 +310,22 @@ function App() {
                             if (isTitle) {
                               return (
                                 <div key={idx} className="font-bold text-lg text-primary mb-2 mt-1">
-                                  {item}
+                                  {text}
                                 </div>
                               );
                             }
                             
                             if (isNumbered) {
                               return (
-                                <div key={idx} className="pl-2">
-                                  {item}
+                                <div key={idx} className="pl-2" style={{ fontWeight: isBold ? 'bold' : 'normal' }}>
+                                  {text}
                                 </div>
                               );
                             }
                             
                             return (
-                              <div key={idx} className="list-disc pl-5">
-                                {item}
+                              <div key={idx} className="list-disc pl-5" style={{ fontWeight: isBold ? 'bold' : 'normal' }}>
+                                {text}
                               </div>
                             );
                           })}

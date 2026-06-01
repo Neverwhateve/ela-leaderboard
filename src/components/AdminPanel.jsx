@@ -1433,31 +1433,98 @@ const AdminPanel = ({ onBack }) => {
                   </div>
 
                   <div className="space-y-3">
-                    {section.content.map((line, lineIndex) => (
-                      <div key={lineIndex} className="flex gap-3">
-                        <input
-                          type="text"
-                          value={line}
-                          onChange={(e) => {
-                            const newSections = [...announcementConfig.sections];
-                            newSections[sectionIndex].content[lineIndex] = e.target.value;
-                            setAnnouncementConfig({ ...announcementConfig, sections: newSections });
-                          }}
-                          placeholder="内容行"
-                          className="flex-1 px-4 py-3 text-base border border-gray-300 rounded focus:outline-none focus:border-primary"
-                        />
-                        <button
-                          onClick={() => {
-                            const newSections = [...announcementConfig.sections];
-                            newSections[sectionIndex].content = newSections[sectionIndex].content.filter((_, i) => i !== lineIndex);
-                            setAnnouncementConfig({ ...announcementConfig, sections: newSections });
-                          }}
-                          className="px-4 py-3 bg-gray-200 rounded text-base"
-                        >
-                          ×
-                        </button>
-                      </div>
-                    ))}
+                    {section.content.map((lineItem, lineIndex) => {
+                      const lineText = typeof lineItem === 'string' ? lineItem : lineItem.text;
+                      const lineBold = typeof lineItem === 'object' && lineItem.bold;
+                      
+                      return (
+                        <div key={lineIndex} className="flex items-center gap-2">
+                          <button
+                            onClick={() => {
+                              if (lineIndex > 0) {
+                                const newSections = [...announcementConfig.sections];
+                                const content = [...newSections[sectionIndex].content];
+                                [content[lineIndex], content[lineIndex - 1]] = [content[lineIndex - 1], content[lineIndex]];
+                                newSections[sectionIndex].content = content;
+                                setAnnouncementConfig({ ...announcementConfig, sections: newSections });
+                              }
+                            }}
+                            disabled={lineIndex === 0}
+                            className="px-3 py-3 rounded text-base transition-colors"
+                            style={{
+                              backgroundColor: lineIndex === 0 ? '#e0e0e0' : '#2196F3',
+                              color: lineIndex === 0 ? '#999' : 'white',
+                              cursor: lineIndex === 0 ? 'not-allowed' : 'pointer'
+                            }}
+                          >
+                            ↑
+                          </button>
+                          <button
+                            onClick={() => {
+                              if (lineIndex < section.content.length - 1) {
+                                const newSections = [...announcementConfig.sections];
+                                const content = [...newSections[sectionIndex].content];
+                                [content[lineIndex], content[lineIndex + 1]] = [content[lineIndex + 1], content[lineIndex]];
+                                newSections[sectionIndex].content = content;
+                                setAnnouncementConfig({ ...announcementConfig, sections: newSections });
+                              }
+                            }}
+                            disabled={lineIndex === section.content.length - 1}
+                            className="px-3 py-3 rounded text-base transition-colors"
+                            style={{
+                              backgroundColor: lineIndex === section.content.length - 1 ? '#e0e0e0' : '#2196F3',
+                              color: lineIndex === section.content.length - 1 ? '#999' : 'white',
+                              cursor: lineIndex === section.content.length - 1 ? 'not-allowed' : 'pointer'
+                            }}
+                          >
+                            ↓
+                          </button>
+                          <input
+                            type="text"
+                            value={lineText}
+                            onChange={(e) => {
+                              const newSections = [...announcementConfig.sections];
+                              if (typeof lineItem === 'string') {
+                                newSections[sectionIndex].content[lineIndex] = e.target.value;
+                              } else {
+                                newSections[sectionIndex].content[lineIndex] = { ...lineItem, text: e.target.value };
+                              }
+                              setAnnouncementConfig({ ...announcementConfig, sections: newSections });
+                            }}
+                            placeholder="内容行"
+                            className="flex-1 px-4 py-3 text-base border border-gray-300 rounded focus:outline-none focus:border-primary"
+                            style={{ fontWeight: lineBold ? 'bold' : 'normal' }}
+                          />
+                          <label className="flex items-center gap-2 px-3 py-3 bg-yellow-50 rounded cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={lineBold || false}
+                              onChange={(e) => {
+                                const newSections = [...announcementConfig.sections];
+                                if (typeof lineItem === 'string') {
+                                  newSections[sectionIndex].content[lineIndex] = { text: lineText, bold: e.target.checked };
+                                } else {
+                                  newSections[sectionIndex].content[lineIndex] = { ...lineItem, bold: e.target.checked };
+                                }
+                                setAnnouncementConfig({ ...announcementConfig, sections: newSections });
+                              }}
+                              className="w-5 h-5 cursor-pointer"
+                            />
+                            <span className="text-sm font-medium text-yellow-700" style={{ fontWeight: 'bold' }}>B</span>
+                          </label>
+                          <button
+                            onClick={() => {
+                              const newSections = [...announcementConfig.sections];
+                              newSections[sectionIndex].content = newSections[sectionIndex].content.filter((_, i) => i !== lineIndex);
+                              setAnnouncementConfig({ ...announcementConfig, sections: newSections });
+                            }}
+                            className="px-4 py-3 bg-gray-200 rounded text-base hover:bg-gray-300"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      );
+                    })}
                   </div>
 
                   <button
