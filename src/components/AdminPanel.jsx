@@ -1571,6 +1571,45 @@ const AdminPanel = ({ onBack }) => {
               {pointCategories.map((category, categoryIndex) => (
                 <div key={category.id} className="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
                   <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
+                    {/* 分类排序按钮 */}
+                    <div className="flex items-center gap-1">
+                      <button
+                        onClick={() => {
+                          if (categoryIndex > 0) {
+                            const newCategories = [...pointCategories];
+                            [newCategories[categoryIndex], newCategories[categoryIndex - 1]] = [newCategories[categoryIndex - 1], newCategories[categoryIndex]];
+                            setPointCategories(newCategories);
+                          }
+                        }}
+                        disabled={categoryIndex === 0}
+                        className="px-2 py-2 rounded text-base transition-colors"
+                        style={{
+                          backgroundColor: categoryIndex === 0 ? '#e0e0e0' : '#2196F3',
+                          color: categoryIndex === 0 ? '#999' : 'white',
+                          cursor: categoryIndex === 0 ? 'not-allowed' : 'pointer'
+                        }}
+                      >
+                        ↑
+                      </button>
+                      <button
+                        onClick={() => {
+                          if (categoryIndex < pointCategories.length - 1) {
+                            const newCategories = [...pointCategories];
+                            [newCategories[categoryIndex], newCategories[categoryIndex + 1]] = [newCategories[categoryIndex + 1], newCategories[categoryIndex]];
+                            setPointCategories(newCategories);
+                          }
+                        }}
+                        disabled={categoryIndex === pointCategories.length - 1}
+                        className="px-2 py-2 rounded text-base transition-colors"
+                        style={{
+                          backgroundColor: categoryIndex === pointCategories.length - 1 ? '#e0e0e0' : '#2196F3',
+                          color: categoryIndex === pointCategories.length - 1 ? '#999' : 'white',
+                          cursor: categoryIndex === pointCategories.length - 1 ? 'not-allowed' : 'pointer'
+                        }}
+                      >
+                        ↓
+                      </button>
+                    </div>
                     <div className="flex-1 flex items-center gap-3">
                       <span className="text-2xl">{category.icon}</span>
                       <input
@@ -1598,6 +1637,49 @@ const AdminPanel = ({ onBack }) => {
                   <div className="space-y-3">
                     {category.items.map((item, itemIndex) => (
                       <div key={itemIndex} className="flex flex-col sm:flex-row gap-3">
+                        {/* 项目排序按钮 */}
+                        <div className="flex items-center gap-1">
+                          <button
+                            onClick={() => {
+                              if (itemIndex > 0) {
+                                const newCategories = [...pointCategories];
+                                const items = [...newCategories[categoryIndex].items];
+                                [items[itemIndex], items[itemIndex - 1]] = [items[itemIndex - 1], items[itemIndex]];
+                                newCategories[categoryIndex].items = items;
+                                setPointCategories(newCategories);
+                              }
+                            }}
+                            disabled={itemIndex === 0}
+                            className="px-2 py-2 rounded text-base transition-colors"
+                            style={{
+                              backgroundColor: itemIndex === 0 ? '#e0e0e0' : '#2196F3',
+                              color: itemIndex === 0 ? '#999' : 'white',
+                              cursor: itemIndex === 0 ? 'not-allowed' : 'pointer'
+                            }}
+                          >
+                            ↑
+                          </button>
+                          <button
+                            onClick={() => {
+                              if (itemIndex < category.items.length - 1) {
+                                const newCategories = [...pointCategories];
+                                const items = [...newCategories[categoryIndex].items];
+                                [items[itemIndex], items[itemIndex + 1]] = [items[itemIndex + 1], items[itemIndex]];
+                                newCategories[categoryIndex].items = items;
+                                setPointCategories(newCategories);
+                              }
+                            }}
+                            disabled={itemIndex === category.items.length - 1}
+                            className="px-2 py-2 rounded text-base transition-colors"
+                            style={{
+                              backgroundColor: itemIndex === category.items.length - 1 ? '#e0e0e0' : '#2196F3',
+                              color: itemIndex === category.items.length - 1 ? '#999' : 'white',
+                              cursor: itemIndex === category.items.length - 1 ? 'not-allowed' : 'pointer'
+                            }}
+                          >
+                            ↓
+                          </button>
+                        </div>
                         <input
                           type="text"
                           value={item.name}
@@ -1608,7 +1690,21 @@ const AdminPanel = ({ onBack }) => {
                           }}
                           placeholder="项目名称"
                           className="flex-1 px-4 py-2 text-base border border-gray-300 rounded focus:outline-none focus:border-primary"
+                          style={{ fontWeight: item.bold ? 'bold' : 'normal' }}
                         />
+                        <label className="flex items-center gap-2 px-3 py-2 bg-yellow-50 rounded cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={item.bold || false}
+                            onChange={(e) => {
+                              const newCategories = [...pointCategories];
+                              newCategories[categoryIndex].items[itemIndex].bold = e.target.checked;
+                              setPointCategories(newCategories);
+                            }}
+                            className="w-4 h-4 cursor-pointer"
+                          />
+                          <span className="text-sm font-medium text-yellow-700" style={{ fontWeight: 'bold' }}>B</span>
+                        </label>
                         <div className="flex items-center gap-2">
                           <span className="text-gray-500">+</span>
                           <input
