@@ -193,10 +193,6 @@ function App() {
 
   return (
     <>
-      <Loading 
-        active={loading} 
-        style={{ position: 'fixed', inset: 0, zIndex: 9999 }} 
-      />
       <Cursor>
         {currentPage === 'laborDay' ? (
           <LaborDayEvent onBack={() => setCurrentPage('home')} />
