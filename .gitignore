@@ -25,3 +25,10 @@ dist-ssr
 
 # Git auto-generated files
 src/git-time.json
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example

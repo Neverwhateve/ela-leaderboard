@@ -7,9 +7,10 @@
     "dev": "node scripts/get-git-time.cjs && vite",
     "build": "node scripts/get-git-time.cjs && vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
+    "preview": "npm run build && wrangler dev",
     "generate-excel": "node scripts/generateExcel.cjs",
-    "labor-day-template": "node scripts/generateLaborDayExcel.cjs"
+    "labor-day-template": "node scripts/generateLaborDayExcel.cjs",
+    "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
     "@fontsource/m-plus-rounded-1c": "^5.2.10",
@@ -23,6 +24,7 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.40.2",
     "@eslint/js": "^9.39.4",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
@@ -34,6 +36,7 @@
     "globals": "^17.4.0",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.4",
-    "vite": "^8.0.4"
+    "vite": "^8.0.4",
+    "wrangler": "^4.100.0"
   }
 }
